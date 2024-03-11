@@ -1,2 +1,2 @@
 # ic-project
-A .NET + React web application by Diana Laptica and Robert Gherasim.
+A .NET + React native mobile application by Diana Laptica and Robert Gherasim.
