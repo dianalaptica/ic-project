@@ -1,5 +1,6 @@
-using BackEnd.Aplication.Services.Auth;
+using System.Text.Json.Serialization;
 using BackEnd.Aplication.Services.Authentication;
+using BackEnd.Aplication.Services.Trips;
 using BackEnd.Domain.Interfaces;
 using BackEnd.Infrastructure.Data;
 using BackEnd.Infrastructure.Repositories;
@@ -14,11 +15,14 @@ var connectionString = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
 // Add repositories here
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITripRepository, TripRepository>();
 // Add new services here
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<ITripService, TripService>();
 
 builder.Services.AddCors();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(x =>
+    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();

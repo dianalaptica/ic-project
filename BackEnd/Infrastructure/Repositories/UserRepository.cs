@@ -20,6 +20,13 @@ public class UserRepository : Repository<User>, IUserRepository
         return await FindByCondition(u => u.Id.Equals(id), trackChanges)
             .SingleOrDefaultAsync();
     }
+    
+    public async Task<User?> GetByIdWithTripsAsync(Guid id, bool trackChanges)
+    {
+        return await FindByCondition(u => u.Id.Equals(id), trackChanges)
+            .Include(u => u.Trips)
+            .SingleOrDefaultAsync();
+    }
 
     public void CreateUser(User user)
     {
@@ -29,6 +36,11 @@ public class UserRepository : Repository<User>, IUserRepository
     public void DeleteUser(User user)
     {
         Delete(user);
+    }
+    
+    public void UpdateUser(User user)
+    {
+        Update(user);
     }
     
     public async Task SaveAsync()
