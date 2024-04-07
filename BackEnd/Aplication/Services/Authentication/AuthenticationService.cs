@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using BackEnd.Aplication.DTOs;
-using BackEnd.Aplication.Services.Auth;
 using BackEnd.Domain.Interfaces;
 using BackEnd.Domain.Models;
 using Microsoft.IdentityModel.Tokens;
@@ -29,7 +28,7 @@ public class AuthenticationService : IAuthenticationService
 
         var user = new User
         {
-            Id = Guid.NewGuid().ToString(),
+            Id = Guid.NewGuid(),
             FirstName = request.FirstName,
             LastName = request.LastName,
             Email = request.Email,

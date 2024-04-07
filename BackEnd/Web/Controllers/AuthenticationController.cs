@@ -1,22 +1,22 @@
 using System.Net.Mime;
 using BackEnd.Aplication.DTOs;
-using BackEnd.Aplication.Services.Auth;
+using BackEnd.Aplication.Services.Authentication;
 using BackEnd.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackEnd.Web.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/auth")]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
 [ApiController]
 [Authorize]
-public class AuthController : ControllerBase
+public class AuthentificationController : ControllerBase
 {
     private readonly IAuthenticationService _authService;
     
-    public AuthController(IAuthenticationService authService)
+    public AuthentificationController(IAuthenticationService authService)
     {
         _authService = authService;
     }
