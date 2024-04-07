@@ -134,6 +134,7 @@ public partial class ToursitDbContext : DbContext
         {
             entity.ToTable("User");
 
+            entity.Property(e => e.Email).IsUnicode(false);
             entity.Property(e => e.FirstName).IsUnicode(false);
             entity.Property(e => e.Gender).IsUnicode(false);
             entity.Property(e => e.LastName).IsUnicode(false);

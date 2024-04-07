@@ -29,6 +29,8 @@ public partial class User
 
     public int RoleId { get; set; }
 
+    public string Email { get; set; } = null!;
+
     public virtual Role Role { get; set; } = null!;
 
     public virtual ICollection<UserNotification> UserNotifications { get; set; } = new List<UserNotification>();
