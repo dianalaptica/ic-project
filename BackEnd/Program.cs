@@ -17,6 +17,10 @@ builder.Services.AddDbContext<ToursitDbContext>(options => options.UseSqlServer(
 // Add repositories here
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITripRepository, TripRepository>();
+builder.Services.AddScoped<IAppliedForGuideRepository, AppliedForGuideRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<ICountryRepository, CountryRepository>();
+builder.Services.AddScoped<ICityRepository, CityRepository>();
 // Add new services here
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ITripService, TripService>();
