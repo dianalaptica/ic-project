@@ -6,8 +6,8 @@ public interface ICountryRepository
 {
     Task<IEnumerable<Country>> GetAllAsync(bool trackChanges);
     Task<Country?> GetByIdAsync(int id, bool trackChanges);
-    void CreateCountry(Country country);
-    void DeleteCountry(Country country);
-    void UpdateCountry(Country country);
-    Task<int> SaveAsync();
+    void Create(Country country);
+    void Delete(Country country);
+    void Update(Country country);
+    Task<int> SaveChangesAsync();
 }

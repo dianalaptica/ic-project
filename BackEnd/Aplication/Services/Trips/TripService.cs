@@ -54,8 +54,8 @@ public class TripService : ITripService
             // TODO: add the rest of the fields
         };
 
-        _tripRepository.CreateTrip(trip);
-        await _tripRepository.SaveAsync();
+        _tripRepository.Create(trip);
+        await _tripRepository.SaveChangesAsync();
         
         return new TripResponseDto
         {
@@ -94,8 +94,8 @@ public class TripService : ITripService
             trip.Users.Add(user);
         }
 
-        _tripRepository.UpdateTrip(trip);
-        await _tripRepository.SaveAsync();
+        _tripRepository.Update(trip);
+        await _tripRepository.SaveChangesAsync();
 
         if (user.Trips is null)
         {
@@ -106,8 +106,8 @@ public class TripService : ITripService
             user.Trips.Add(trip);
         }
 
-        _userRepository.UpdateUser(user);
-        await _userRepository.SaveAsync();
+        _userRepository.Update(user);
+        await _userRepository.SaveChangesAsync();
 
         return new TripResponseDto
         {
@@ -138,12 +138,12 @@ public class TripService : ITripService
             trip.Users.Any(t => t.Id == userId) == false) return null;
         
         trip.Users?.Remove(user);
-        _tripRepository.UpdateTrip(trip);
-        await _tripRepository.SaveAsync();
+        _tripRepository.Update(trip);
+        await _tripRepository.SaveChangesAsync();
 
         user.Trips?.Remove(trip);
-        _userRepository.UpdateUser(user);
-        await _userRepository.SaveAsync();
+        _userRepository.Update(user);
+        await _userRepository.SaveChangesAsync();
 
         return new TripResponseDto
         {
@@ -165,8 +165,8 @@ public class TripService : ITripService
         var trip = await _tripRepository.GetByIdWithIncludeAsync(id, true);
         if (trip is null) return null;
 
-        _tripRepository.DeleteTrip(trip);
-        await _tripRepository.SaveAsync();
+        _tripRepository.Delete(trip);
+        await _tripRepository.SaveChangesAsync();
 
         return new TripResponseDto
         {

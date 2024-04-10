@@ -22,24 +22,4 @@ public class RoleRepository : Repository<Role>, IRoleRepository
         return await FindByCondition(r => r.Id == id, trackChanges)
             .SingleOrDefaultAsync();
     }
-
-    public void CreateRole(Role role)
-    {
-        Create(role);
-    }
-
-    public void DeleteRole(Role role)
-    {
-        Create(role);
-    }
-
-    public void UpdateRole(Role role)
-    {
-        Update(role);
-    }
-
-    public async Task<int> SaveAsync()
-    {
-        return await SaveChangesAsync();
-    }
 }

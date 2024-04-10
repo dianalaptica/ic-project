@@ -8,8 +8,8 @@ public interface ITripRepository
     Task<IEnumerable<Trip>> GetAllAsync(bool trackChanges);
     Task<Trip?> GetByIdAsync(int id, bool trackChanges);
     Task<Trip?> GetByIdWithIncludeAsync(int id, bool trackChanges);
-    void CreateTrip(Trip trip);
-    void DeleteTrip(Trip trip);
-    void UpdateTrip(Trip trip);
-    Task<int> SaveAsync();
+    void Create(Trip trip);
+    void Delete(Trip trip);
+    void Update(Trip trip);
+    Task<int> SaveChangesAsync();
 }

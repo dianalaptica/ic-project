@@ -47,8 +47,8 @@ public class UserController : ControllerBase
             IsApproved = false
         };
         
-        _appliedForGuideRepository.CreateAppliedForGuide(application);
-        await _appliedForGuideRepository.SaveAsync();
+        _appliedForGuideRepository.Create(application);
+        await _appliedForGuideRepository.SaveChangesAsync();
         
         return Ok(application);
     }
@@ -67,8 +67,8 @@ public class UserController : ControllerBase
         }
 
         application.IsApproved = true;
-        _appliedForGuideRepository.UpdateAppliedForGuide(application);
-        await _appliedForGuideRepository.SaveAsync();
+        _appliedForGuideRepository.Update(application);
+        await _appliedForGuideRepository.SaveChangesAsync();
         
         var user = await _userRepository.GetByIdAsync(application.UserId, true);
         if (user == null)
@@ -77,8 +77,8 @@ public class UserController : ControllerBase
         }
         
         user.RoleId = 3; // the guide id
-        _userRepository.UpdateUser(user);
-        await _userRepository.SaveAsync();
+        _userRepository.Update(user);
+        await _userRepository.SaveChangesAsync();
         
         return Ok(application);
     }

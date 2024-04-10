@@ -28,26 +28,6 @@ public class UserRepository : Repository<User>, IUserRepository
             .SingleOrDefaultAsync();
     }
 
-    public void CreateUser(User? user)
-    {
-        Create(user);
-    }
-
-    public void DeleteUser(User user)
-    {
-        Delete(user);
-    }
-    
-    public void UpdateUser(User user)
-    {
-        Update(user);
-    }
-    
-    public async Task<int> SaveAsync()
-    {
-        return await SaveChangesAsync();
-    }
-
     public async Task<User?> GetUserByEmail(string email, bool trackChanges)
     {
         return await FindByCondition(u => u.Email == email, trackChanges)

@@ -29,24 +29,4 @@ public class TripRepository : Repository<Trip>, ITripRepository
             .Include(t => t.City)
             .SingleOrDefaultAsync();
     }
-    
-    public void CreateTrip(Trip trip)
-    {
-        Create(trip);
-    }
-
-    public void DeleteTrip(Trip trip)
-    {
-        Delete(trip);
-    }
-
-    public void UpdateTrip(Trip trip)
-    {
-        Update(trip);
-    }
-
-    public async Task<int> SaveAsync()
-    {
-        return await SaveChangesAsync();
-    }
 }

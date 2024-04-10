@@ -6,8 +6,8 @@ public interface ICityRepository
 {
     Task<IEnumerable<City>> GetAllAsync(bool trackChanges);
     Task<City?> GetByIdAsync(int id, bool trackChanges);
-    void CreateCity(City city);
-    void DeleteCity(City city);
-    void UpdateCity(City city);
-    Task<int> SaveAsync();
+    void Create(City city);
+    void Delete(City city);
+    void Update(City city);
+    Task<int> SaveChangesAsync();
 }
