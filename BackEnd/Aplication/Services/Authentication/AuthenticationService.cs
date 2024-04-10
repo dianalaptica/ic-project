@@ -22,19 +22,26 @@ public class AuthenticationService : IAuthenticationService
         _httpContext = httpContext;
     }
 
-    public async Task<User> RegisterUser(UserRegisterDto request)
+    public async Task<User?> RegisterUser(UserRegisterDto request)
     {
+        if (await _userRepository.GetUserByEmail(request.Email, false) != null) return null;
+        if (await _userRepository.GetUserByPhoneNumber(request.PhoneNumber, false) != null) return null;
         CreatePasswordHash(request.Password, out var passwordHash, out var passwordSalt);
-
+        
         var user = new User
         {
-            Id = Guid.NewGuid(),
             FirstName = request.FirstName,
             LastName = request.LastName,
+            Gender = request.Gender,
+            PhoneNumber = request.PhoneNumber,
             Email = request.Email,
             PasswordHash = passwordHash,
             PasswordSalt = passwordSalt,
-            Role = "user" // TODO: make it nicer
+            RoleId = 2, // the tourist id
+            TokenExpires = DateTime.Today,
+            TokenCreated = DateTime.Today,
+            RefreshToken = string.Empty
+            // TODO: make a utils class with enum of roles
         };
         
         _userRepository.CreateUser(user);
@@ -78,7 +85,7 @@ public class AuthenticationService : IAuthenticationService
             TokenExpires = refreshToken.Expires,
             TokenCreated = refreshToken.Created,
             Email = user.Email,
-            Role = user.Role
+            Role = user.Role.Name // TODO: include table
         };
     }
 
@@ -99,7 +106,7 @@ public class AuthenticationService : IAuthenticationService
             Success = true,
             Token = jwt,
             Email = user.Email,
-            Role = user.Role
+            Role = user.Role.Name
         };
     }
 
@@ -123,7 +130,7 @@ public class AuthenticationService : IAuthenticationService
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.Email),
-            new Claim(ClaimTypes.Role, user.Role)
+            new Claim(ClaimTypes.Role, user.Role.Name)
         };
 
         var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
@@ -135,9 +142,9 @@ public class AuthenticationService : IAuthenticationService
         return jwt;
     }
     
-    private RefreshToken CreateRefreshToken()
+    private RefreshTokenDto CreateRefreshToken()
     {
-        var refreshToken = new RefreshToken
+        var refreshToken = new RefreshTokenDto
         {
             Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
             Expires = DateTime.Now.AddDays(7),
@@ -147,19 +154,19 @@ public class AuthenticationService : IAuthenticationService
         return refreshToken;
     }
 
-    private async void SetRefreshToken(User user, RefreshToken refreshToken)
+    private async void SetRefreshToken(User user, RefreshTokenDto refreshTokenDto)
     {
         var cookieOptions = new CookieOptions
         {
             HttpOnly = true,
-            Expires = refreshToken.Expires
+            Expires = refreshTokenDto.Expires
         };
         _httpContext?.HttpContext?.Response
-            .Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
+            .Cookies.Append("refreshToken", refreshTokenDto.Token, cookieOptions);
 
-        user.RefreshToken = refreshToken.Token;
-        user.TokenCreated = refreshToken.Created;
-        user.TokenExpires = refreshToken.Expires;
+        user.RefreshToken = refreshTokenDto.Token;
+        user.TokenCreated = refreshTokenDto.Created;
+        user.TokenExpires = refreshTokenDto.Expires;
         
         await _userRepository.SaveAsync();// TODO: Might not be compelte
     }

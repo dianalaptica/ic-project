@@ -15,12 +15,14 @@ public class TripService : ITripService
     private readonly ITripRepository _tripRepository;
     private readonly IHttpContextAccessor _httpContext;
     private readonly IUserRepository _userRepository;
+    private readonly ICityRepository _cityRepository;
 
-    public TripService(ITripRepository tripRepository, IHttpContextAccessor httpContext, IUserRepository userRepository)
+    public TripService(ITripRepository tripRepository, IHttpContextAccessor httpContext, IUserRepository userRepository, ICityRepository cityRepository)
     {
         _tripRepository = tripRepository;
         _httpContext = httpContext;
         _userRepository = userRepository;
+        _cityRepository = cityRepository;
     }
 
     public async Task<IEnumerable<Trip>> GetAllTripsAsync(bool trackChanges)
@@ -28,67 +30,68 @@ public class TripService : ITripService
         return await _tripRepository.GetAllAsync(trackChanges);
     }
 
-    public async Task<Trip?> GetTripByIdAsync(Guid id, bool trackChanges)
+    public async Task<Trip?> GetTripByIdAsync(int id, bool trackChanges)
     {
-        return await _tripRepository.GetByIdWithUsersAsync(id, trackChanges);
+        return await _tripRepository.GetByIdWithIncludeAsync(id, trackChanges);
     }
 
     public async Task<TripResponseDto?> CreateTripAsync(TripCreateDto tripCreateDto)
     {
-        var guideId = Guid.Parse(_httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        var guideId = int.Parse(_httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         var guide = await _userRepository.GetByIdAsync(guideId, true);
         if (guide is null) return null;
 
         var trip = new Trip
         {
-            Id = Guid.NewGuid(),
-            TouristGuide = guide,
+            GuideId = guideId,
             Title = tripCreateDto.Title,
             Description = tripCreateDto.Description,
-            Location = tripCreateDto.Location,
-            StartDate = DateTime.Today,
-            EndDate = DateTime.Today,
+            Address = tripCreateDto.Adress,
+            StartDate = tripCreateDto.StartDate,
+            EndDate = tripCreateDto.EndDate,
             MaxTourists = tripCreateDto.MaxTourists,
-            Tourists = null
+            CityId = tripCreateDto.CityId
+            // TODO: add the rest of the fields
         };
 
         _tripRepository.CreateTrip(trip);
         await _tripRepository.SaveAsync();
-
+        
         return new TripResponseDto
         {
             Id = trip.Id,
-            TouristGuide = trip.TouristGuide.Id,
+            GuideID = trip.GuideId,
             Title = trip.Title,
             Description = trip.Description,
-            Location = trip.Location,
+            Adress = trip.Address,
             StartDate = trip.StartDate,
             EndDate = trip.EndDate,
             MaxTourists = trip.MaxTourists,
-            Tourists = trip.Tourists?.Select(t => t.Id).ToList()
+            Users = trip.Users?.Select(t => t.Id).ToList(),
+            CityName = (await _cityRepository.GetByIdAsync(trip.CityId, false)).Name
         };
     }
 
-    public async Task<TripResponseDto?> JoinTripAsync(Guid id)
+    public async Task<TripResponseDto?> JoinTripAsync(int id)
     {
-        var trip = await _tripRepository.GetByIdWithUsersAsync(id, true);
+        var trip = await _tripRepository.GetByIdWithIncludeAsync(id, true);
         if (trip is null) return null;
         var limit = trip.MaxTourists;
 
-        var userId = Guid.Parse(_httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        var userId = int.Parse(_httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         var user = await _userRepository.GetByIdWithTripsAsync(userId, true);
         if (user is null) return null;
         
-        if (trip.Tourists != null &&
-            (trip.Tourists.Any(t => t.Id == userId) || limit <= trip.Tourists.Count)) return null;
+        if (trip.Users != null &&
+            (trip.Users.Any(t => t.Id == userId) || limit <= trip.Users.Count)) return null;
         
-        if (trip.Tourists is null)
+        if (trip.Users is null)
         {
-            trip.Tourists = new List<User> { user };
+            trip.Users = new List<User> { user };
         }
         else
         {
-            trip.Tourists.Add(user);
+            trip.Users.Add(user);
         }
 
         _tripRepository.UpdateTrip(trip);
@@ -109,31 +112,32 @@ public class TripService : ITripService
         return new TripResponseDto
         {
             Id = trip.Id,
-            TouristGuide = trip.TouristGuide.Id,
+            GuideID = trip.GuideId,
             Title = trip.Title,
             Description = trip.Description,
-            Location = trip.Location,
+            Adress = trip.Address,
             StartDate = trip.StartDate,
             EndDate = trip.EndDate,
             MaxTourists = trip.MaxTourists,
-            Tourists = trip.Tourists?.Select(t => t.Id).ToList()
+            Users = trip.Users?.Select(t => t.Id).ToList(),
+            CityName = trip.City.Name
         };
     }
 
-    public async Task<TripResponseDto?> RemoveTripAsync(Guid id)
+    public async Task<TripResponseDto?> RemoveTripAsync(int id)
     {
-        var trip = await _tripRepository.GetByIdWithUsersAsync(id, true);
+        var trip = await _tripRepository.GetByIdWithIncludeAsync(id, true);
         if (trip is null) return null;
         var limit = trip.MaxTourists;
 
-        var userId = Guid.Parse(_httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        var userId = int.Parse(_httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         var user = await _userRepository.GetByIdWithTripsAsync(userId, true);
         if (user is null) return null;
 
-        if (trip.Tourists == null ||
-            trip.Tourists.Any(t => t.Id == userId) == false) return null;
+        if (trip.Users == null ||
+            trip.Users.Any(t => t.Id == userId) == false) return null;
         
-        trip.Tourists?.Remove(user);
+        trip.Users?.Remove(user);
         _tripRepository.UpdateTrip(trip);
         await _tripRepository.SaveAsync();
 
@@ -144,20 +148,21 @@ public class TripService : ITripService
         return new TripResponseDto
         {
             Id = trip.Id,
-            TouristGuide = trip.TouristGuide.Id,
+            GuideID = trip.GuideId,
             Title = trip.Title,
             Description = trip.Description,
-            Location = trip.Location,
+            Adress = trip.Address,
             StartDate = trip.StartDate,
             EndDate = trip.EndDate,
             MaxTourists = trip.MaxTourists,
-            Tourists = trip.Tourists?.Select(t => t.Id).ToList()
+            Users = trip.Users?.Select(t => t.Id).ToList(),
+            CityName = trip.City.Name
         };
     }
 
-    public async Task<TripResponseDto?> DeleteTripAsync(Guid id)
+    public async Task<TripResponseDto?> DeleteTripAsync(int id)
     {
-        var trip = await _tripRepository.GetByIdWithUsersAsync(id, true);
+        var trip = await _tripRepository.GetByIdWithIncludeAsync(id, true);
         if (trip is null) return null;
 
         _tripRepository.DeleteTrip(trip);
@@ -166,14 +171,15 @@ public class TripService : ITripService
         return new TripResponseDto
         {
             Id = trip.Id,
-            TouristGuide = trip.TouristGuide.Id,
+            GuideID = trip.GuideId,
             Title = trip.Title,
             Description = trip.Description,
-            Location = trip.Location,
+            Adress = trip.Address,
             StartDate = trip.StartDate,
             EndDate = trip.EndDate,
             MaxTourists = trip.MaxTourists,
-            Tourists = trip.Tourists?.Select(t => t.Id).ToList()
+            Users = trip.Users?.Select(t => t.Id).ToList(),
+            CityName = trip.City.Name
         };
     }
 }

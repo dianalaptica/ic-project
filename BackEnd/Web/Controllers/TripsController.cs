@@ -31,7 +31,7 @@ public class TripsController : ControllerBase
     
     [HttpGet("{id}")]
     [AllowAnonymous]
-    public async Task<ActionResult<Trip>> GetTrip([FromRoute]Guid id)
+    public async Task<ActionResult<Trip>> GetTrip([FromRoute]int id)
     {
         var trip = await _tripsService.GetTripByIdAsync(id, false);
         if (trip is not null)
@@ -43,7 +43,7 @@ public class TripsController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "guide")]
+    [Authorize(Roles = "Guide")]
     public async Task<ActionResult<Trip>> CreateTrip([FromBody] TripCreateDto trip)
     {
         var result = await _tripsService.CreateTripAsync(trip);
@@ -56,8 +56,8 @@ public class TripsController : ControllerBase
     }
 
     [HttpPatch("join/{id}")]
-    [Authorize(Roles = "user")]
-    public async Task<ActionResult<Trip>> JoinTrip([FromRoute]Guid id)
+    [Authorize(Roles = "Tourist")]
+    public async Task<ActionResult<Trip>> JoinTrip([FromRoute]int id)
     {
         var result = await _tripsService.JoinTripAsync(id);
         if (result is not null)
@@ -69,8 +69,8 @@ public class TripsController : ControllerBase
     }
     
     [HttpPatch("remove/{id}")]
-    [Authorize(Roles = "user")]
-    public async Task<ActionResult<Trip>> RemoveTrip([FromRoute]Guid id)
+    [Authorize(Roles = "Tourist")]
+    public async Task<ActionResult<Trip>> RemoveTrip([FromRoute]int id)
     {
         var result = await _tripsService.RemoveTripAsync(id);
         if (result is not null)
@@ -82,8 +82,8 @@ public class TripsController : ControllerBase
     }
     
     [HttpDelete("{id}")]
-    [Authorize(Roles = "guide")]
-    public async Task<ActionResult> DeleteTrip([FromRoute]Guid id)
+    [Authorize(Roles = "Guide")]
+    public async Task<ActionResult> DeleteTrip([FromRoute]int id)
     {
         var result = await _tripsService.DeleteTripAsync(id);
         if (result is not null)

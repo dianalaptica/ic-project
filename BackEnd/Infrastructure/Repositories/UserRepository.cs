@@ -7,7 +7,7 @@ namespace BackEnd.Infrastructure.Repositories;
 
 public class UserRepository : Repository<User>, IUserRepository
 {   
-    public UserRepository(ApplicationDbContext context) : base(context) { }
+    public UserRepository(ToursitDbContext context) : base(context) { }
 
     public async Task<IEnumerable<User>> GetAllAsync(bool trackChanges)
     {
@@ -15,20 +15,20 @@ public class UserRepository : Repository<User>, IUserRepository
             .ToListAsync();
     }
 
-    public async Task<User?> GetByIdAsync(Guid id, bool trackChanges)
+    public async Task<User?> GetByIdAsync(int id, bool trackChanges)
     {
-        return await FindByCondition(u => u.Id.Equals(id), trackChanges)
+        return await FindByCondition(u => u.Id == id, trackChanges)
             .SingleOrDefaultAsync();
     }
     
-    public async Task<User?> GetByIdWithTripsAsync(Guid id, bool trackChanges)
+    public async Task<User?> GetByIdWithTripsAsync(int id, bool trackChanges)
     {
-        return await FindByCondition(u => u.Id.Equals(id), trackChanges)
+        return await FindByCondition(u => u.Id == id, trackChanges)
             .Include(u => u.Trips)
             .SingleOrDefaultAsync();
     }
 
-    public void CreateUser(User user)
+    public void CreateUser(User? user)
     {
         Create(user);
     }
@@ -43,14 +43,15 @@ public class UserRepository : Repository<User>, IUserRepository
         Update(user);
     }
     
-    public async Task SaveAsync()
+    public async Task<int> SaveAsync()
     {
-        await SaveChangesAsync();
+        return await SaveChangesAsync();
     }
 
     public async Task<User?> GetUserByEmail(string email, bool trackChanges)
     {
         return await FindByCondition(u => u.Email == email, trackChanges)
+            .Include(u => u.Role)
             .SingleOrDefaultAsync();
     }
     
@@ -58,6 +59,12 @@ public class UserRepository : Repository<User>, IUserRepository
     {   
         if (refreshToken == null) return null;
         return await FindByCondition(u => u.RefreshToken == refreshToken, trackChanges)
+            .SingleOrDefaultAsync();
+    }
+
+    public async Task<User?> GetUserByPhoneNumber(string phoneNumber, bool trackChanges)
+    {
+        return await FindByCondition(u => u.PhoneNumber == phoneNumber, trackChanges)
             .SingleOrDefaultAsync();
     }
 }

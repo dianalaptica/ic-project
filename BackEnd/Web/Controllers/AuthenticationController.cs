@@ -12,11 +12,11 @@ namespace BackEnd.Web.Controllers;
 [Produces(MediaTypeNames.Application.Json)]
 [ApiController]
 [Authorize]
-public class AuthentificationController : ControllerBase
+public class AuthenticationController : ControllerBase
 {
     private readonly IAuthenticationService _authService;
     
-    public AuthentificationController(IAuthenticationService authService)
+    public AuthenticationController(IAuthenticationService authService)
     {
         _authService = authService;
     }
@@ -24,10 +24,16 @@ public class AuthentificationController : ControllerBase
     [HttpPost("register")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<User>> RegisterUser([FromBody] UserRegisterDto request)
     {
         var response = await _authService.RegisterUser(request);
-        return Ok(response);
+        if (response != null)
+        {
+            return Ok(response);
+        }
+
+        return BadRequest();
     }
     
     [HttpPost("login")]
