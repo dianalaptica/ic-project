@@ -91,7 +91,7 @@ img, video{
     background: var(--paleGreen);
 }
 
-.loginPage{
+.loginPage, .registerPage{
     height: 100vh;
     width: 100%;
     margin: auto;
@@ -186,7 +186,7 @@ img, video{
             flex-basis: 50%;
             margin: auto;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1rem;
             transform: translateY(-1rem);
 
             .headerDiv{
@@ -194,7 +194,7 @@ img, video{
                 padding: 1.5rem 0;
 
                 img{
-                    width: 60px;
+                    width: 80px;
                     padding-bottom: .5rem;
                 }
 
