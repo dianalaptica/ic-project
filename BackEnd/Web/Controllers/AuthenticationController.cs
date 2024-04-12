@@ -1,22 +1,22 @@
 using System.Net.Mime;
 using BackEnd.Aplication.DTOs;
-using BackEnd.Aplication.Services.Auth;
+using BackEnd.Aplication.Services.Authentication;
 using BackEnd.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackEnd.Web.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/auth")]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
 [ApiController]
 [Authorize]
-public class AuthController : ControllerBase
+public class AuthenticationController : ControllerBase
 {
     private readonly IAuthenticationService _authService;
     
-    public AuthController(IAuthenticationService authService)
+    public AuthenticationController(IAuthenticationService authService)
     {
         _authService = authService;
     }
@@ -24,10 +24,16 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<User>> RegisterUser([FromBody] UserRegisterDto request)
     {
         var response = await _authService.RegisterUser(request);
-        return Ok(response);
+        if (response != null)
+        {
+            return Ok(response);
+        }
+
+        return BadRequest();
     }
     
     [HttpPost("login")]

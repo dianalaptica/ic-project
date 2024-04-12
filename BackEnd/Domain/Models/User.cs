@@ -1,15 +1,36 @@
-namespace BackEnd.Domain.Models;
+﻿namespace BackEnd.Domain.Models;
 
-public class User
+public partial class User
 {
-    public string Id { get; set; } = string.Empty;
-    public string FirstName { get; set; } = string.Empty;
-    public string LastName { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public byte[] PasswordHash { get; set; } = new byte[32];
-    public byte[] PasswordSalt { get; set; } = new byte[32];
-    public string RefreshToken { get; set; } = string.Empty;
+    public int Id { get; set; }
+
+    public string FirstName { get; set; } = null!;
+
+    public string LastName { get; set; } = null!;
+
+    public string Gender { get; set; } = null!;
+
+    public string PhoneNumber { get; set; } = null!;
+
+    public byte[] PasswordHash { get; set; } = null!;
+
+    public byte[] PasswordSalt { get; set; } = null!;
+
+    public string RefreshToken { get; set; } = null!;
+
     public DateTime TokenCreated { get; set; }
+
     public DateTime TokenExpires { get; set; }
-    public string Role { get; set; } = string.Empty;
+
+    public byte[]? ProfilePicture { get; set; }
+
+    public int RoleId { get; set; }
+
+    public string Email { get; set; } = null!;
+
+    public virtual Role Role { get; set; } = null!;
+
+    public virtual ICollection<UserNotification> UserNotifications { get; set; } = new List<UserNotification>();
+
+    public virtual ICollection<Trip> Trips { get; set; } = new List<Trip>();
 }

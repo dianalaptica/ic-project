@@ -6,9 +6,9 @@ namespace BackEnd.Infrastructure.Repositories;
 
 public class Repository<T> : IRepository<T> where T : class
 {
-    private readonly ApplicationDbContext _appDbContext;
+    private readonly ToursitDbContext _appDbContext;
 
-    public Repository(ApplicationDbContext appDbContext)
+    public Repository(ToursitDbContext appDbContext)
     {
         _appDbContext = appDbContext;
     }
@@ -46,8 +46,8 @@ public class Repository<T> : IRepository<T> where T : class
         _appDbContext.Set<T>().Remove(entity);
     }
     
-    public async Task SaveChangesAsync()
+    public async Task<int> SaveChangesAsync()
     {
-        await _appDbContext.SaveChangesAsync();
+        return await _appDbContext.SaveChangesAsync();
     }
 }
