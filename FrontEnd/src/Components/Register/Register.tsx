@@ -38,7 +38,12 @@ const Register = () => {
               <label htmlFor="firstname">First Name</label>
               <div className="input flex">
                 <MdOutlineDriveFileRenameOutline className="icon" />
-                <input type="text" id="email" placeholder="Enter First Name" />
+                <input
+                  required
+                  type="text"
+                  id="firstname"
+                  placeholder="Enter First Name"
+                />
               </div>
             </div>
 
@@ -46,7 +51,12 @@ const Register = () => {
               <label htmlFor="lastname">Last Name</label>
               <div className="input flex">
                 <MdOutlineDriveFileRenameOutline className="icon" />
-                <input type="text" id="email" placeholder="Enter Last Name" />
+                <input
+                  required
+                  type="text"
+                  id="lastname"
+                  placeholder="Enter Last Name"
+                />
               </div>
             </div>
 
@@ -54,7 +64,12 @@ const Register = () => {
               <label htmlFor="email">Email</label>
               <div className="input flex">
                 <FaUserShield className="icon" />
-                <input type="text" id="email" placeholder="Enter Email" />
+                <input
+                  required
+                  type="text"
+                  id="email"
+                  placeholder="Enter Email"
+                />
               </div>
             </div>
 
@@ -63,8 +78,9 @@ const Register = () => {
               <div className="input flex">
                 <MdOutlinePhoneIphone className="icon" />
                 <input
+                  required
                   type="text"
-                  id="email"
+                  id="phonenumber"
                   placeholder="Enter Phone Number"
                 />
               </div>
@@ -75,6 +91,7 @@ const Register = () => {
               <div className="input flex">
                 <BsFillShieldLockFill className="icon" />
                 <input
+                  required
                   type="password"
                   id="password"
                   placeholder="Enter Password"
