@@ -32,7 +32,7 @@ const Login = () => {
           </div>
 
           <form action="" className="form grid">
-            <span className="showMessage">Login status</span>
+            {/* <span className="showMessage">Login status</span> */}
 
             <div className="inputDiv">
               <label htmlFor="email">Email</label>
