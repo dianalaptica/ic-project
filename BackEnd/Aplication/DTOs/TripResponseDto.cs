@@ -10,7 +10,6 @@ public class TripResponseDto
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public int MaxTourists { get; set; }
-    public List<int>? Users { get; set; }
 
     public string CityName { get; set; }
 }

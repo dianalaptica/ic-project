@@ -34,6 +34,17 @@ public class TripService : ITripService
     {
         return await _tripRepository.GetByIdWithIncludeAsync(id, trackChanges);
     }
+    
+    public async Task<TripQueryResponseDto<TripResponseDto>> GetTripsByQuery(
+        string? searchTitle,
+        string? sortColumn,
+        string? sortOrder,
+        int page,
+        int pageSize,
+        bool trackChanges)
+    {
+        return await _tripRepository.GetAllQueryAsync(searchTitle, sortColumn, sortOrder, page, pageSize, trackChanges);
+    }
 
     public async Task<TripResponseDto?> CreateTripAsync(TripCreateDto tripCreateDto)
     {
@@ -67,7 +78,7 @@ public class TripService : ITripService
             StartDate = trip.StartDate,
             EndDate = trip.EndDate,
             MaxTourists = trip.MaxTourists,
-            Users = trip.Users?.Select(t => t.Id).ToList(),
+            // Users = trip.Users?.Select(t => t.Id).ToList(),
             CityName = (await _cityRepository.GetByIdAsync(trip.CityId, false)).Name
         };
     }
@@ -119,7 +130,7 @@ public class TripService : ITripService
             StartDate = trip.StartDate,
             EndDate = trip.EndDate,
             MaxTourists = trip.MaxTourists,
-            Users = trip.Users?.Select(t => t.Id).ToList(),
+            // Users = trip.Users?.Select(t => t.Id).ToList(),
             CityName = trip.City.Name
         };
     }
@@ -155,7 +166,7 @@ public class TripService : ITripService
             StartDate = trip.StartDate,
             EndDate = trip.EndDate,
             MaxTourists = trip.MaxTourists,
-            Users = trip.Users?.Select(t => t.Id).ToList(),
+            // Users = trip.Users?.Select(t => t.Id).ToList(),
             CityName = trip.City.Name
         };
     }
@@ -178,7 +189,7 @@ public class TripService : ITripService
             StartDate = trip.StartDate,
             EndDate = trip.EndDate,
             MaxTourists = trip.MaxTourists,
-            Users = trip.Users?.Select(t => t.Id).ToList(),
+            // Users = trip.Users?.Select(t => t.Id).ToList(),
             CityName = trip.City.Name
         };
     }

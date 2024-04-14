@@ -9,8 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace BackEnd.Web.Controllers;
 
 [Route("api/user")]
-[Consumes(MediaTypeNames.Application.Json)]
-[Produces(MediaTypeNames.Application.Json)]
 [ApiController]
 [Authorize]
 public class UserController : ControllerBase
@@ -26,6 +24,7 @@ public class UserController : ControllerBase
         _appliedForGuideRepository = appliedForGuideRepository;
     }
     
+    // TODO: change response to be nicer
     [HttpPost("apply-guide")]
     [Authorize(Roles = "Tourist")]
     [ProducesResponseType(StatusCodes.Status200OK)]

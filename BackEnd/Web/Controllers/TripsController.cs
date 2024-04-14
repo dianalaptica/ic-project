@@ -5,6 +5,7 @@ using BackEnd.Domain.Interfaces;
 using BackEnd.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BackEnd.Web.Controllers;
 
@@ -23,24 +24,34 @@ public class TripsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Trip>>> GetTrips()
-    {
-        var trips = await _tripsService.GetAllTripsAsync(false);
-        return Ok(trips);
-    }
-    
-    [HttpGet("{id}")]
     [AllowAnonymous]
-    public async Task<ActionResult<Trip>> GetTrip([FromRoute]int id)
+    public async Task<ActionResult<TripQueryResponseDto<TripResponseDto>>> GetTrips(
+        [FromQuery] string? searchTitle,
+        [FromQuery] string? sortColumn,
+        [FromQuery] string? sortOrder,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 100)
     {
-        var trip = await _tripsService.GetTripByIdAsync(id, false);
-        if (trip is not null)
+        var result = await _tripsService.GetTripsByQuery(searchTitle, sortColumn, sortOrder, page, pageSize, false);
+        if (!result.Trips.IsNullOrEmpty())
         {
-            return Ok(trip);
+            return Ok(result);
         }
-
         return NotFound();
     }
+    
+    // [HttpGet("{id}")]
+    // [AllowAnonymous]
+    // public async Task<ActionResult<Trip>> GetTripById([FromRoute]int id)
+    // {
+    //     var trip = await _tripsService.GetTripByIdAsync(id, false);
+    //     if (trip is not null)
+    //     {
+    //         return Ok(trip);
+    //     }
+    //
+    //     return NotFound();
+    // }
 
     [HttpPost]
     [Authorize(Roles = "Guide")]
@@ -85,6 +96,8 @@ public class TripsController : ControllerBase
     [Authorize(Roles = "Guide")]
     public async Task<ActionResult> DeleteTrip([FromRoute]int id)
     {
+        // TODO: NOT WORKING, UPDATE TO DELETE ON CASCADE
+        // TODO: ALSO CHECK IF THE USER IS THE OWNER OF THE TRIP
         var result = await _tripsService.DeleteTripAsync(id);
         if (result is not null)
         {
