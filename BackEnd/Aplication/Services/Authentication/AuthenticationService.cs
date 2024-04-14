@@ -74,7 +74,7 @@ public class AuthenticationService : IAuthenticationService
 
         var jwt = CreateToken(user);
         var refreshToken = CreateRefreshToken();
-        SetRefreshToken(user, refreshToken);
+        await SetRefreshToken(user, refreshToken);
 
         return new AuthenticationResponseDto
         {
@@ -154,7 +154,7 @@ public class AuthenticationService : IAuthenticationService
         return refreshToken;
     }
 
-    private async void SetRefreshToken(User user, RefreshTokenDto refreshTokenDto)
+    private async Task SetRefreshToken(User user, RefreshTokenDto refreshTokenDto)
     {
         var cookieOptions = new CookieOptions
         {
