@@ -97,7 +97,7 @@ img, video {
   box-shadow: 0 7px 50px rgb(214, 223, 213);
 }
 .loginPage .container, .registerPage .container {
-  height: 75vh;
+  height: 80vh;
   width: 60%;
   margin: auto;
   justify-content: space-between;
