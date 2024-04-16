@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using BackEnd.Aplication.DTOs;
 using BackEnd.Domain.Interfaces;
 using BackEnd.Domain.Models;
 using BackEnd.Infrastructure.Data;
@@ -29,24 +30,58 @@ public class TripRepository : Repository<Trip>, ITripRepository
             .Include(t => t.City)
             .SingleOrDefaultAsync();
     }
-    
-    public void CreateTrip(Trip trip)
+    // TODO: maybe not the nicest way to do this
+    // TODO: try to refactor this
+    public async Task<TripQueryResponseDto<TripResponseDto>> GetAllQueryAsync(
+        string? searchTitle,
+        string? sortColumn,
+        string? sortOrder,
+        int page,
+        int pageSize,
+        bool trackChanges)
     {
-        Create(trip);
-    }
+        var query = FindAll(trackChanges);
+        
+        if (!string.IsNullOrWhiteSpace(searchTitle))
+        {
+            query = query.Where(t => t.Title.Contains(searchTitle));
+        }
+        
+        Expression<Func<Trip, object>> keySelector = sortColumn?.ToLower() switch
+        {
+            "title" => t => t.Title,
+            "city" => t => t.City.Name,
+            _ => t => t.Id
+        };
 
-    public void DeleteTrip(Trip trip)
-    {
-        Delete(trip);
-    }
-
-    public void UpdateTrip(Trip trip)
-    {
-        Update(trip);
-    }
-
-    public async Task<int> SaveAsync()
-    {
-        return await SaveChangesAsync();
+        if (sortOrder?.ToLower() == "desc")
+        {
+            query = query.OrderByDescending(keySelector);
+        }
+        else
+        {
+            query = query.OrderBy(keySelector);
+        }
+        
+        var result = await query
+            .Include(t => t.City)
+            // .Include(c => c.City.Country)
+            .Select(t => new TripResponseDto
+            {
+                Id = t.Id,
+                GuideID = t.GuideId,
+                Title = t.Title,
+                Description = t.Description,
+                Adress = t.Address,
+                StartDate = t.StartDate,
+                EndDate = t.EndDate,
+                MaxTourists = t.MaxTourists,
+                CityName = t.City.Name
+            })
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        
+        return new TripQueryResponseDto<TripResponseDto>(result, page, pageSize, await query.CountAsync());
     }
 }

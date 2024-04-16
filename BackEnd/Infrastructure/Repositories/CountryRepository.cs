@@ -22,24 +22,4 @@ public class CountryRepository : Repository<Country>, ICountryRepository
         return await FindByCondition(t => t.Id == id, trackChanges)
             .SingleOrDefaultAsync();
     }
-
-    public void CreateCountry(Country country)
-    {
-        Create(country);
-    }
-
-    public void DeleteCountry(Country country)
-    {
-        Delete(country);
-    }
-
-    public void UpdateCountry(Country country)
-    {
-        Update(country);
-    }
-
-    public async Task<int> SaveAsync()
-    {
-        return await SaveChangesAsync();
-    }
 }

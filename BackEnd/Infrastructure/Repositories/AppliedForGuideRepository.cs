@@ -22,24 +22,4 @@ public class AppliedForGuideRepository : Repository<AppliedForGuide>, IAppliedFo
         return await FindByCondition(r => r.UserId == id, trackChanges)
             .SingleOrDefaultAsync();
     }
-
-    public void CreateAppliedForGuide(AppliedForGuide appliedForGuide)
-    {
-        Create(appliedForGuide);
-    }
-
-    public void DeleteAppliedForGuide(AppliedForGuide appliedForGuide)
-    {
-        Delete(appliedForGuide);
-    }
-
-    public void UpdateAppliedForGuide(AppliedForGuide appliedForGuide)
-    {
-        Update(appliedForGuide);
-    }
-
-    public async Task<int> SaveAsync()
-    {
-        return await SaveChangesAsync();
-    }
 }

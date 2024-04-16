@@ -34,6 +34,17 @@ public class TripService : ITripService
     {
         return await _tripRepository.GetByIdWithIncludeAsync(id, trackChanges);
     }
+    
+    public async Task<TripQueryResponseDto<TripResponseDto>> GetTripsByQuery(
+        string? searchTitle,
+        string? sortColumn,
+        string? sortOrder,
+        int page,
+        int pageSize,
+        bool trackChanges)
+    {
+        return await _tripRepository.GetAllQueryAsync(searchTitle, sortColumn, sortOrder, page, pageSize, trackChanges);
+    }
 
     public async Task<TripResponseDto?> CreateTripAsync(TripCreateDto tripCreateDto)
     {
@@ -54,8 +65,8 @@ public class TripService : ITripService
             // TODO: add the rest of the fields
         };
 
-        _tripRepository.CreateTrip(trip);
-        await _tripRepository.SaveAsync();
+        _tripRepository.Create(trip);
+        await _tripRepository.SaveChangesAsync();
         
         return new TripResponseDto
         {
@@ -67,7 +78,7 @@ public class TripService : ITripService
             StartDate = trip.StartDate,
             EndDate = trip.EndDate,
             MaxTourists = trip.MaxTourists,
-            Users = trip.Users?.Select(t => t.Id).ToList(),
+            // Users = trip.Users?.Select(t => t.Id).ToList(),
             CityName = (await _cityRepository.GetByIdAsync(trip.CityId, false)).Name
         };
     }
@@ -94,8 +105,8 @@ public class TripService : ITripService
             trip.Users.Add(user);
         }
 
-        _tripRepository.UpdateTrip(trip);
-        await _tripRepository.SaveAsync();
+        _tripRepository.Update(trip);
+        await _tripRepository.SaveChangesAsync();
 
         if (user.Trips is null)
         {
@@ -106,8 +117,8 @@ public class TripService : ITripService
             user.Trips.Add(trip);
         }
 
-        _userRepository.UpdateUser(user);
-        await _userRepository.SaveAsync();
+        _userRepository.Update(user);
+        await _userRepository.SaveChangesAsync();
 
         return new TripResponseDto
         {
@@ -119,7 +130,7 @@ public class TripService : ITripService
             StartDate = trip.StartDate,
             EndDate = trip.EndDate,
             MaxTourists = trip.MaxTourists,
-            Users = trip.Users?.Select(t => t.Id).ToList(),
+            // Users = trip.Users?.Select(t => t.Id).ToList(),
             CityName = trip.City.Name
         };
     }
@@ -138,12 +149,12 @@ public class TripService : ITripService
             trip.Users.Any(t => t.Id == userId) == false) return null;
         
         trip.Users?.Remove(user);
-        _tripRepository.UpdateTrip(trip);
-        await _tripRepository.SaveAsync();
+        _tripRepository.Update(trip);
+        await _tripRepository.SaveChangesAsync();
 
         user.Trips?.Remove(trip);
-        _userRepository.UpdateUser(user);
-        await _userRepository.SaveAsync();
+        _userRepository.Update(user);
+        await _userRepository.SaveChangesAsync();
 
         return new TripResponseDto
         {
@@ -155,7 +166,7 @@ public class TripService : ITripService
             StartDate = trip.StartDate,
             EndDate = trip.EndDate,
             MaxTourists = trip.MaxTourists,
-            Users = trip.Users?.Select(t => t.Id).ToList(),
+            // Users = trip.Users?.Select(t => t.Id).ToList(),
             CityName = trip.City.Name
         };
     }
@@ -165,8 +176,8 @@ public class TripService : ITripService
         var trip = await _tripRepository.GetByIdWithIncludeAsync(id, true);
         if (trip is null) return null;
 
-        _tripRepository.DeleteTrip(trip);
-        await _tripRepository.SaveAsync();
+        _tripRepository.Delete(trip);
+        await _tripRepository.SaveChangesAsync();
 
         return new TripResponseDto
         {
@@ -178,7 +189,7 @@ public class TripService : ITripService
             StartDate = trip.StartDate,
             EndDate = trip.EndDate,
             MaxTourists = trip.MaxTourists,
-            Users = trip.Users?.Select(t => t.Id).ToList(),
+            // Users = trip.Users?.Select(t => t.Id).ToList(),
             CityName = trip.City.Name
         };
     }

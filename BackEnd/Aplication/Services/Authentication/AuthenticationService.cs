@@ -44,8 +44,8 @@ public class AuthenticationService : IAuthenticationService
             // TODO: make a utils class with enum of roles
         };
         
-        _userRepository.CreateUser(user);
-        await _userRepository.SaveAsync();
+        _userRepository.Create(user);
+        await _userRepository.SaveChangesAsync();
 
         return user;
     }
@@ -74,7 +74,7 @@ public class AuthenticationService : IAuthenticationService
 
         var jwt = CreateToken(user);
         var refreshToken = CreateRefreshToken();
-        SetRefreshToken(user, refreshToken);
+        await SetRefreshToken(user, refreshToken);
 
         return new AuthenticationResponseDto
         {
@@ -154,7 +154,7 @@ public class AuthenticationService : IAuthenticationService
         return refreshToken;
     }
 
-    private async void SetRefreshToken(User user, RefreshTokenDto refreshTokenDto)
+    private async Task SetRefreshToken(User user, RefreshTokenDto refreshTokenDto)
     {
         var cookieOptions = new CookieOptions
         {
@@ -168,6 +168,6 @@ public class AuthenticationService : IAuthenticationService
         user.TokenCreated = refreshTokenDto.Created;
         user.TokenExpires = refreshTokenDto.Expires;
         
-        await _userRepository.SaveAsync();// TODO: Might not be compelte
+        await _userRepository.SaveChangesAsync();// TODO: Might not be compelte
     }
 }

@@ -8,8 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace BackEnd.Web.Controllers;
 
 [Route("api/auth")]
-[Consumes(MediaTypeNames.Application.Json)]
-[Produces(MediaTypeNames.Application.Json)]
 [ApiController]
 [Authorize]
 public class AuthenticationController : ControllerBase
