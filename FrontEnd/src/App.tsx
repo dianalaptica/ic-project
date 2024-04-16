@@ -1,30 +1,16 @@
-import Dashboard from "./Components/Dashboard/Dashboard";
-import Login from "./Components/Login/Login";
-import Register from "./Components/Register/Register";
+import { Outlet } from "react-router-dom";
 import "./App.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-//import Message from "./StartPage";
-
-// create a router
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Login />,
-  },
-  {
-    path: "/register",
-    element: <Register />,
-  },
-  {
-    path: "/dashboard",
-    element: <Dashboard />,
-  },
-]);
+import { ToastContainer } from "react-toastify";
+import "react-toastify/ReactToastify.css";
+import { UserProvider } from "./Context/useAuth";
 
 function App() {
   return (
     <>
-      <RouterProvider router={router} />
+      <UserProvider>
+        <Outlet />
+        <ToastContainer />
+      </UserProvider>
     </>
   );
 }
