@@ -5,6 +5,7 @@ import Dashboard from "../Components/Dashboard/Dashboard";
 import App from "../App";
 import ProtectedRoute from "./ProtectedRoute";
 import Admin from "../Components/Admin/Admin";
+import AdminRoute from "./AdminRoute";
 
 // create a router
 export const router = createBrowserRouter([
@@ -26,7 +27,9 @@ export const router = createBrowserRouter([
         path: "admin",
         element: (
           <ProtectedRoute>
-            <Admin />
+            <AdminRoute>
+              <Admin />
+            </AdminRoute>
           </ProtectedRoute>
         ),
       },

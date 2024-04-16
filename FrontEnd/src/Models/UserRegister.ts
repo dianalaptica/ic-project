@@ -5,4 +5,5 @@ export type UserRegister = {
     phoneNumber: string;
     password: string;
     token: string;
+    role: string;
 };
