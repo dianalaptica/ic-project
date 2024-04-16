@@ -6,6 +6,7 @@ import App from "../App";
 import ProtectedRoute from "./ProtectedRoute";
 import Admin from "../Components/Admin/Admin";
 import AdminRoute from "./AdminRoute";
+import TouristRoute from "./TouristRoute";
 
 // create a router
 export const router = createBrowserRouter([
@@ -19,7 +20,9 @@ export const router = createBrowserRouter([
         path: "dashboard",
         element: (
           <ProtectedRoute>
-            <Dashboard />
+            <TouristRoute>
+              <Dashboard />
+            </TouristRoute>
           </ProtectedRoute>
         ),
       },
