@@ -11,7 +11,7 @@ const TouristRoute = ({ children }: Props) => {
   return user?.role === "Tourist" ? (
     <>{children}</>
   ) : (
-    <Navigate to="/dashboard" state={{ from: location }} replace />
+    <Navigate to="/admin" state={{ from: location }} replace />
   );
 };
 
