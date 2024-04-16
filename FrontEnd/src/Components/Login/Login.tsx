@@ -6,8 +6,33 @@ import { Link } from "react-router-dom";
 import { FaUserShield } from "react-icons/fa";
 import { BsFillShieldLockFill } from "react-icons/bs";
 import { AiOutlineSwapRight } from "react-icons/ai";
+import * as Yup from "yup";
+import { useAuth } from "../../Context/useAuth";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+type LoginFormInputs = {
+  email: string;
+  password: string;
+};
+
+const validation = Yup.object().shape({
+  email: Yup.string().required("Email is required"),
+  password: Yup.string().required("Password is required"),
+});
 
 const Login = () => {
+  const { loginUser } = useAuth();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormInputs>({ resolver: yupResolver(validation) });
+
+  const handleLogin = (form: LoginFormInputs) => {
+    loginUser(form.email, form.password);
+  };
+
   return (
     <div className="loginPage flex">
       <div className="container flex">
@@ -31,14 +56,24 @@ const Login = () => {
             <h3>Welcome Back!</h3>
           </div>
 
-          <form action="" className="form grid">
+          <form
+            action=""
+            className="form grid"
+            onSubmit={handleSubmit(handleLogin)}
+          >
             {/* <span className="showMessage">Login status</span> */}
 
             <div className="inputDiv">
               <label htmlFor="email">Email</label>
               <div className="input flex">
                 <FaUserShield className="icon" />
-                <input type="text" id="email" placeholder="Enter Email" />
+                <input
+                  type="text"
+                  id="email"
+                  placeholder="Enter Email"
+                  {...register("email")}
+                />
+                {errors.email ? <p>{errors.email.message}</p> : ""}
               </div>
             </div>
 
@@ -47,10 +82,13 @@ const Login = () => {
               <div className="input flex">
                 <BsFillShieldLockFill className="icon" />
                 <input
+                  required
                   type="password"
                   id="password"
                   placeholder="Enter Password"
+                  {...register("password")}
                 />
+                {errors.password ? <p>{errors.password.message}</p> : ""}
               </div>
             </div>
 

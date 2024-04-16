@@ -8,8 +8,45 @@ import { BsFillShieldLockFill } from "react-icons/bs";
 import { AiOutlineSwapRight } from "react-icons/ai";
 import { MdOutlineDriveFileRenameOutline } from "react-icons/md";
 import { MdOutlinePhoneIphone } from "react-icons/md";
+import * as Yup from "yup";
+import { useAuth } from "../../Context/useAuth";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+type RegisterFormInputs = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  password: string;
+};
+
+const validation = Yup.object().shape({
+  firstName: Yup.string().required("First Name is required"),
+  lastName: Yup.string().required("Last Name is required"),
+  email: Yup.string().required("Email is required"),
+  phoneNumber: Yup.string().required("Phone Number is required"),
+  password: Yup.string().required("Password is required"),
+});
 
 const Register = () => {
+  const { registerUser } = useAuth();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterFormInputs>({ resolver: yupResolver(validation) });
+
+  const handleRegister = (form: RegisterFormInputs) => {
+    registerUser(
+      form.firstName,
+      form.lastName,
+      form.email,
+      form.phoneNumber,
+      form.password
+    );
+  };
+
   return (
     <div className="registerPage flex">
       <div className="container flex">
@@ -33,17 +70,22 @@ const Register = () => {
             <h3>Let Us Know You!</h3>
           </div>
 
-          <form action="" className="form grid">
+          <form
+            action=""
+            className="form grid"
+            onSubmit={handleSubmit(handleRegister)}
+          >
             <div className="inputDiv">
               <label htmlFor="firstname">First Name</label>
               <div className="input flex">
                 <MdOutlineDriveFileRenameOutline className="icon" />
                 <input
-                  required
                   type="text"
                   id="firstname"
                   placeholder="Enter First Name"
+                  {...register("firstName")}
                 />
+                {errors.firstName ? <p>{errors.firstName.message}</p> : ""}
               </div>
             </div>
 
@@ -52,11 +94,12 @@ const Register = () => {
               <div className="input flex">
                 <MdOutlineDriveFileRenameOutline className="icon" />
                 <input
-                  required
                   type="text"
                   id="lastname"
                   placeholder="Enter Last Name"
+                  {...register("lastName")}
                 />
+                {errors.lastName ? <p>{errors.lastName.message}</p> : ""}
               </div>
             </div>
 
@@ -65,11 +108,12 @@ const Register = () => {
               <div className="input flex">
                 <FaUserShield className="icon" />
                 <input
-                  required
                   type="text"
                   id="email"
                   placeholder="Enter Email"
+                  {...register("email")}
                 />
+                {errors.email ? <p>{errors.email.message}</p> : ""}
               </div>
             </div>
 
@@ -78,11 +122,12 @@ const Register = () => {
               <div className="input flex">
                 <MdOutlinePhoneIphone className="icon" />
                 <input
-                  required
                   type="text"
                   id="phonenumber"
                   placeholder="Enter Phone Number"
+                  {...register("phoneNumber")}
                 />
+                {errors.phoneNumber ? <p>{errors.phoneNumber.message}</p> : ""}
               </div>
             </div>
 
@@ -91,11 +136,12 @@ const Register = () => {
               <div className="input flex">
                 <BsFillShieldLockFill className="icon" />
                 <input
-                  required
                   type="password"
                   id="password"
                   placeholder="Enter Password"
+                  {...register("password")}
                 />
+                {errors.password ? <p>{errors.password.message}</p> : ""}
               </div>
             </div>
 
