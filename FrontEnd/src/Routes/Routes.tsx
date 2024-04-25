@@ -7,6 +7,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Admin from "../Components/Admin/Admin";
 import AdminRoute from "./AdminRoute";
 import TouristRoute from "./TouristRoute";
+import Test from "../Components/Test/Test";
 
 // create a router
 export const router = createBrowserRouter([
@@ -16,6 +17,7 @@ export const router = createBrowserRouter([
     children: [
       { path: "", element: <Login /> },
       { path: "register", element: <Register /> },
+      { path: "test", element: <Test /> },
       {
         path: "dashboard",
         element: (
