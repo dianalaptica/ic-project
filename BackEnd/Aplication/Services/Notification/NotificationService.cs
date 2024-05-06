@@ -40,12 +40,17 @@ public class NotificationService : INotificationService
     public async Task<IEnumerable<NotificationResponseDto>> GetNotificationsByUserIdAsync(bool trackChanges)
     {
         var userId = int.Parse(_httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        Console.WriteLine(userId);
         return await _userNotificationRepository.GetNotificationsByUserIdAsync(userId, trackChanges);
     }
 
     public async Task<NotificationResponseDto?> CreateNotificationAsync(NotificationCreateDto tripNotificationCreateDto)
     {
+        var trip = await _tripRepository.GetByIdAsync(tripNotificationCreateDto.TripId, false);
+        if (trip == null)
+        {
+            return null;
+        }
+
         var tripNotification = new TripNotification
         {
             TripId = tripNotificationCreateDto.TripId,
@@ -76,8 +81,53 @@ public class NotificationService : INotificationService
         };
     }
 
-    public Task<NotificationResponseDto?> DeleteNotificationAsync(int id)
+    public async Task<NotificationResponseDto?> UpdateReadStatusAsync(int id, bool trackChanges)
     {
-        throw new NotImplementedException();
+        var userId = int.Parse(_httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        var notification = await _tripNotificationRepository.GetByIdAsync(id, trackChanges);
+        if (notification == null)
+        {
+            return null;
+        }
+        
+        var userNotification = notification.UserNotifications.FirstOrDefault(un => un.UserId == userId);
+        if (userNotification == null)
+        {
+            return null;
+        }
+
+        if (userNotification.IsRead == false)
+        {
+            userNotification.IsRead = true;
+            await _tripRepository.SaveChangesAsync();
+        }
+        
+        return new NotificationResponseDto
+        {
+            Id = notification.Id,
+            TripId = notification.TripId,
+            Title = notification.Title,
+            Message = notification.Message
+        };
+    }
+    
+    public async Task<NotificationResponseDto?> DeleteNotificationAsync(int id)
+    {   
+        var notification = await _tripNotificationRepository.GetByIdAsync(id, true);
+        if (notification == null)
+        {
+            return null;
+        }
+        
+        _tripNotificationRepository.Delete(notification);
+        await _tripNotificationRepository.SaveChangesAsync();
+        
+        return new NotificationResponseDto
+        {
+            Id = notification.Id,
+            TripId = notification.TripId,
+            Title = notification.Title,
+            Message = notification.Message
+        };
     }
 }

@@ -57,5 +57,32 @@ public class NotificationController : ControllerBase
         return Ok(notifications);
     }
     
-    // TODO: ADD DELETE METHOD AND PATCH FOR ISREAD
+    [HttpPatch("user/{id}")]
+    [Authorize(Roles = "Tourist")]
+    public async Task<ActionResult<TripNotification>> UpdateReadStatus([FromRoute]int id)
+    {
+        var notification = await _notificationService.UpdateReadStatusAsync(id, true);
+        if (notification == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(notification);
+    }
+    
+    [HttpDelete("{id}")]
+    [Authorize(Roles = "Guide")]
+    public async Task<ActionResult<TripNotification>> DeleteNotification([FromRoute]int id)
+    {
+        var notification = await _notificationService.DeleteNotificationAsync(id);
+        if (notification == null)
+        {
+            return BadRequest();
+        }
+
+        return NoContent();
+    }
+    
+    // TODO: THERE MIGHT BE NICE TO ADD MORE VALIDATION VIA JWT TOKEN
+    // TODO: ONLY A GUIDE CAN MODIFY HIS TRIPS NOT ANOTHER GUIDE
 }

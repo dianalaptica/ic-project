@@ -121,7 +121,7 @@ public partial class ToursitDbContext : DbContext
 
             entity.HasOne(d => d.Trip).WithMany(p => p.TripNotifications)
                 .HasForeignKey(d => d.TripId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_TripNotification_Trip");
         });
 
@@ -153,12 +153,12 @@ public partial class ToursitDbContext : DbContext
 
             entity.HasOne(d => d.Notification).WithMany(p => p.UserNotifications)
                 .HasForeignKey(d => d.NotificationId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_UserNotification_TripNotification");
 
             entity.HasOne(d => d.User).WithMany(p => p.UserNotifications)
                 .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_UserNotification_User");
         });
 

@@ -16,6 +16,14 @@ public class TripNotificationRepository : Repository<TripNotification>, ITripNot
     public async Task<TripNotification?> GetByIdAsync(int id, bool trackChanges)
     {
         return await FindByCondition(n => n.Id == id, trackChanges)
+            .Include(n => n.UserNotifications)
             .SingleOrDefaultAsync();
+    }
+    
+    public async Task<IEnumerable<TripNotification>> GetByTripIdAsync(int tripId, bool trackChanges)
+    {
+        return await FindByCondition(n => n.TripId == tripId, trackChanges)
+            .Include(n => n.UserNotifications)
+            .ToListAsync();
     }
 }

@@ -97,11 +97,11 @@ public class TripsController : ControllerBase
     public async Task<ActionResult> DeleteTrip([FromRoute]int id)
     {
         var result = await _tripsService.DeleteTripAsync(id);
-        if (result is not null)
+        if (result is null)
         {
-            return NoContent();
+            return BadRequest();
         }
 
-        return BadRequest();
+        return NoContent();
     }
 }
