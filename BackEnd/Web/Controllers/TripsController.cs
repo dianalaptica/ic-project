@@ -40,18 +40,18 @@ public class TripsController : ControllerBase
         return NotFound();
     }
     
-    // [HttpGet("{id}")]
-    // [AllowAnonymous]
-    // public async Task<ActionResult<Trip>> GetTripById([FromRoute]int id)
-    // {
-    //     var trip = await _tripsService.GetTripByIdAsync(id, false);
-    //     if (trip is not null)
-    //     {
-    //         return Ok(trip);
-    //     }
-    //
-    //     return NotFound();
-    // }
+    [HttpGet("{id}")]
+    [Authorize(Roles = "Guide, Tourist")]
+    public async Task<ActionResult<Trip>> GetTripById([FromRoute]int id)
+    {
+        var trip = await _tripsService.GetTripByIdAsync(id, false);
+        if (trip is not null)
+        {
+            return Ok(trip);
+        }
+    
+        return NotFound();
+    }
 
     [HttpPost]
     [Authorize(Roles = "Guide")]
@@ -96,8 +96,6 @@ public class TripsController : ControllerBase
     [Authorize(Roles = "Guide")]
     public async Task<ActionResult> DeleteTrip([FromRoute]int id)
     {
-        // TODO: NOT WORKING, UPDATE TO DELETE ON CASCADE
-        // TODO: ALSO CHECK IF THE USER IS THE OWNER OF THE TRIP
         var result = await _tripsService.DeleteTripAsync(id);
         if (result is not null)
         {

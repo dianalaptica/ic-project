@@ -5,7 +5,7 @@ namespace BackEnd.Aplication.Services.Authentication;
 
 public interface IAuthenticationService
 {
-    Task<User?> RegisterUser(UserRegisterDto request);
+    Task<AuthenticationResponseDto?> RegisterUser(UserRegisterDto request);
     Task<AuthenticationResponseDto> LoginUser(UserLoginDto request);
     Task<AuthenticationResponseDto> RefreshToken();
 }

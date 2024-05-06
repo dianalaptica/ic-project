@@ -99,11 +99,11 @@ public partial class ToursitDbContext : DbContext
                     "UserTrip",
                     r => r.HasOne<User>().WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK_UserTrip_User"),
                     l => l.HasOne<Trip>().WithMany()
                         .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK_UserTrip_Trip"),
                     j =>
                     {
