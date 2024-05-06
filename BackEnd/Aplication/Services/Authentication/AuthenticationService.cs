@@ -22,7 +22,7 @@ public class AuthenticationService : IAuthenticationService
         _httpContext = httpContext;
     }
 
-    public async Task<User?> RegisterUser(UserRegisterDto request)
+    public async Task<AuthenticationResponseDto?> RegisterUser(UserRegisterDto request)
     {
         if (await _userRepository.GetUserByEmail(request.Email, false) != null) return null;
         if (await _userRepository.GetUserByPhoneNumber(request.PhoneNumber, false) != null) return null;
@@ -32,7 +32,7 @@ public class AuthenticationService : IAuthenticationService
         {
             FirstName = request.FirstName,
             LastName = request.LastName,
-            Gender = request.Gender,
+            Gender = request.Gender ?? "Not specified",
             PhoneNumber = request.PhoneNumber,
             Email = request.Email,
             PasswordHash = passwordHash,
@@ -46,8 +46,13 @@ public class AuthenticationService : IAuthenticationService
         
         _userRepository.Create(user);
         await _userRepository.SaveChangesAsync();
-
-        return user;
+        
+        return new AuthenticationResponseDto
+        {
+            Success = true,
+            Message = "Registered successfully!",
+            Email = user.Email
+        };
     }
 
     public async Task<AuthenticationResponseDto> LoginUser(UserLoginDto request)
@@ -85,7 +90,7 @@ public class AuthenticationService : IAuthenticationService
             TokenExpires = refreshToken.Expires,
             TokenCreated = refreshToken.Created,
             Email = user.Email,
-            Role = user.Role.Name // TODO: include table
+            Role = user.Role.Name
         };
     }
 
@@ -168,6 +173,6 @@ public class AuthenticationService : IAuthenticationService
         user.TokenCreated = refreshTokenDto.Created;
         user.TokenExpires = refreshTokenDto.Expires;
         
-        await _userRepository.SaveChangesAsync();// TODO: Might not be compelte
+        await _userRepository.SaveChangesAsync();// TODO: Might not be complete
     }
 }

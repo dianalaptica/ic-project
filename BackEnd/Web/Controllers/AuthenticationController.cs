@@ -23,7 +23,7 @@ public class AuthenticationController : ControllerBase
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<User>> RegisterUser([FromBody] UserRegisterDto request)
+    public async Task<ActionResult<AuthenticationResponseDto>> RegisterUser([FromBody] UserRegisterDto request)
     {
         var response = await _authService.RegisterUser(request);
         if (response != null)
