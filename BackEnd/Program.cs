@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using BackEnd.Aplication.Services.Authentication;
+using BackEnd.Aplication.Services.Notification;
 using BackEnd.Aplication.Services.Trips;
 using BackEnd.Domain.Interfaces;
 using BackEnd.Domain.Models;
@@ -21,9 +22,12 @@ builder.Services.AddScoped<IAppliedForGuideRepository, AppliedForGuideRepository
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 builder.Services.AddScoped<ICityRepository, CityRepository>();
+builder.Services.AddScoped<IUserNotificationRepository, UserNotificationRepository>();
+builder.Services.AddScoped<ITripNotificationRepository, TripNotificationRepository>();
 // Add new services here
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ITripService, TripService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 builder.Services.AddCors();
 builder.Services.AddControllers();

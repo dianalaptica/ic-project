@@ -2,11 +2,6 @@ using System.Security.Claims;
 using BackEnd.Aplication.DTOs;
 using BackEnd.Domain.Interfaces;
 using BackEnd.Domain.Models;
-using BackEnd.Infrastructure.Data;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 
 namespace BackEnd.Aplication.Services.Trips;
 
@@ -16,13 +11,17 @@ public class TripService : ITripService
     private readonly IHttpContextAccessor _httpContext;
     private readonly IUserRepository _userRepository;
     private readonly ICityRepository _cityRepository;
+    private readonly ITripNotificationRepository _tripNotificationRepository;
+    private readonly IUserNotificationRepository _userNotificationRepository;
 
-    public TripService(ITripRepository tripRepository, IHttpContextAccessor httpContext, IUserRepository userRepository, ICityRepository cityRepository)
+    public TripService(ITripRepository tripRepository, IHttpContextAccessor httpContext, IUserRepository userRepository, ICityRepository cityRepository, ITripNotificationRepository tripNotificationRepository, IUserNotificationRepository userNotificationRepository)
     {
         _tripRepository = tripRepository;
         _httpContext = httpContext;
         _userRepository = userRepository;
         _cityRepository = cityRepository;
+        _tripNotificationRepository = tripNotificationRepository;
+        _userNotificationRepository = userNotificationRepository;
     }
 
     public async Task<IEnumerable<Trip>> GetAllTripsAsync(bool trackChanges)
@@ -120,6 +119,23 @@ public class TripService : ITripService
         _userRepository.Update(user);
         await _userRepository.SaveChangesAsync();
 
+        var notifications = await _tripNotificationRepository.GetByTripIdAsync(trip.Id, true);
+        if (notifications is not null && notifications.Any())
+        {
+            foreach (var notification in notifications)
+            {
+                var userNotification = new UserNotification
+                {
+                    UserId = userId,
+                    NotificationId = notification.Id,
+                    IsRead = false
+                };
+                _userNotificationRepository.Create(userNotification);
+            }
+
+            await _userNotificationRepository.SaveChangesAsync();
+        }
+
         return new TripResponseDto
         {
             Id = trip.Id,
@@ -155,7 +171,23 @@ public class TripService : ITripService
         user.Trips?.Remove(trip);
         _userRepository.Update(user);
         await _userRepository.SaveChangesAsync();
+        
+        var notifications = await _tripNotificationRepository.GetByTripIdAsync(trip.Id, true);
+        if (notifications is not null && notifications.Any())
+        {
+            foreach (var notification in notifications)
+            {   
+                foreach (var userNotification in notification.UserNotifications)
+                {
+                    if (userNotification.UserId != userId) continue;
+                    _userNotificationRepository.Delete(userNotification);
+                    break;
+                }
+            }
 
+            await _userNotificationRepository.SaveChangesAsync();
+        }
+        
         return new TripResponseDto
         {
             Id = trip.Id,

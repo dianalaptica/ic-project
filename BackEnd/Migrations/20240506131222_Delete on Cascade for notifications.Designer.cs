@@ -4,6 +4,7 @@ using BackEnd.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackEnd.Migrations
 {
     [DbContext(typeof(ToursitDbContext))]
-    partial class ToursitDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240506131222_Delete on Cascade for notifications")]
+    partial class DeleteonCascadefornotifications
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -325,7 +328,6 @@ namespace BackEnd.Migrations
                     b.HasOne("BackEnd.Domain.Models.Trip", "Trip")
                         .WithMany("TripNotifications")
                         .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_TripNotification_Trip");
 
