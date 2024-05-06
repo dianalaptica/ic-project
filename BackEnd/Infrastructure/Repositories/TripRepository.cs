@@ -23,6 +23,14 @@ public class TripRepository : Repository<Trip>, ITripRepository
             .SingleOrDefaultAsync();
     }
     
+    public async Task<IEnumerable<int>> GetAllUserIdsAsync(int tripId, bool trackChanges)
+    {
+        return await FindByCondition(t => t.Id == tripId, trackChanges)
+            .Include(t => t.Users)
+            .SelectMany(t => t.Users.Select(u => u.Id))
+            .ToListAsync();
+    }
+    
     public async Task<Trip?> GetByIdWithIncludeAsync(int id, bool trackChanges)
     {
         return await FindByCondition(t => t.Id == id, trackChanges)
