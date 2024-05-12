@@ -9,4 +9,5 @@ public class TripCreateDto
     public DateTime EndDate { get; set; }
     public int MaxTourists { get; set; }
     public int CityId { get; set; }
+    public IFormFile Image { get; set; }
 }

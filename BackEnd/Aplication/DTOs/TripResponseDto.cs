@@ -12,4 +12,5 @@ public class TripResponseDto
     public int MaxTourists { get; set; }
 
     public string CityName { get; set; }
+    public byte[] Image { get; set; }
 }

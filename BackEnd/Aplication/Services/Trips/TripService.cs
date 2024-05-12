@@ -24,14 +24,42 @@ public class TripService : ITripService
         _userNotificationRepository = userNotificationRepository;
     }
 
-    public async Task<IEnumerable<Trip>> GetAllTripsAsync(bool trackChanges)
+    public async Task<IEnumerable<TripResponseDto>> GetAllTripsAsync(bool trackChanges)
     {
-        return await _tripRepository.GetAllAsync(trackChanges);
+        var trip = await _tripRepository.GetAllAsync(trackChanges);
+        return trip.Select(t => new TripResponseDto
+        {
+            Id = t.Id,
+            GuideID = t.GuideId,
+            Title = t.Title,
+            Description = t.Description,
+            Adress = t.Address,
+            StartDate = t.StartDate,
+            EndDate = t.EndDate,
+            MaxTourists = t.MaxTourists,
+            Image = t.Image,
+            // Users = t.Users?.Select(u => u.Id).ToList(),
+            CityName = (t.City is not null) ? t.City.Name : string.Empty
+        }).ToList();
     }
 
-    public async Task<Trip?> GetTripByIdAsync(int id, bool trackChanges)
+    public async Task<TripResponseDto?> GetTripByIdAsync(int id, bool trackChanges)
     {
-        return await _tripRepository.GetByIdWithIncludeAsync(id, trackChanges);
+        var trip = await _tripRepository.GetByIdWithIncludeAsync(id, trackChanges);
+        return new TripResponseDto
+        {
+            Id = trip?.Id ?? 0,
+            GuideID = trip?.GuideId ?? 0,
+            Title = trip?.Title ?? string.Empty,
+            Description = trip?.Description ?? string.Empty,
+            Adress = trip?.Address ?? string.Empty,
+            StartDate = trip?.StartDate ?? new DateTime(),
+            EndDate = trip?.EndDate ?? new DateTime(),
+            MaxTourists = trip?.MaxTourists ?? 0,
+            Image = trip?.Image,
+            // Users = trip?.Users?.Select(t => t.Id).ToList(),
+            CityName = (trip?.City is not null) ? trip.City.Name : string.Empty
+        };
     }
     
     public async Task<TripQueryResponseDto<TripResponseDto>> GetTripsByQuery(
@@ -45,7 +73,7 @@ public class TripService : ITripService
         return await _tripRepository.GetAllQueryAsync(searchTitle, sortColumn, sortOrder, page, pageSize, trackChanges);
     }
 
-    public async Task<TripResponseDto?> CreateTripAsync(TripCreateDto tripCreateDto)
+    public async Task<TripResponseDto?> CreateTripAsync(TripCreateDto tripCreateDto, byte[] image)
     {
         var guideId = int.Parse(_httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         var guide = await _userRepository.GetByIdAsync(guideId, true);
@@ -60,8 +88,8 @@ public class TripService : ITripService
             StartDate = tripCreateDto.StartDate,
             EndDate = tripCreateDto.EndDate,
             MaxTourists = tripCreateDto.MaxTourists,
-            CityId = tripCreateDto.CityId
-            // TODO: add the rest of the fields
+            CityId = tripCreateDto.CityId,
+            Image = image
         };
 
         _tripRepository.Create(trip);
@@ -77,6 +105,7 @@ public class TripService : ITripService
             StartDate = trip.StartDate,
             EndDate = trip.EndDate,
             MaxTourists = trip.MaxTourists,
+            Image = trip.Image,
             // Users = trip.Users?.Select(t => t.Id).ToList(),
             CityName = (await _cityRepository.GetByIdAsync(trip.CityId, false)).Name
         };
@@ -146,6 +175,7 @@ public class TripService : ITripService
             StartDate = trip.StartDate,
             EndDate = trip.EndDate,
             MaxTourists = trip.MaxTourists,
+            Image = trip.Image,
             // Users = trip.Users?.Select(t => t.Id).ToList(),
             CityName = trip.City.Name
         };
