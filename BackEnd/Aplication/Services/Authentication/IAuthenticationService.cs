@@ -7,5 +7,5 @@ public interface IAuthenticationService
 {
     Task<AuthenticationResponseDto?> RegisterUser(UserRegisterDto request);
     Task<AuthenticationResponseDto> LoginUser(UserLoginDto request);
-    Task<AuthenticationResponseDto> RefreshToken();
+    Task<AuthenticationResponseDto> RefreshToken(string refreshToken);
 }

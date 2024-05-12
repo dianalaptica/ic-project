@@ -46,12 +46,13 @@ public class AuthenticationController : ControllerBase
         return Unauthorized(new {message = "Credentials are not valid!"});
     }
 
-    [HttpGet("refresh")]
+    [HttpPost("refresh")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<string>> RefreshToken()
+    public async Task<ActionResult<string>> RefreshToken([FromBody] string refreshToken)
     {
-        var response = await _authService.RefreshToken();
+        Console.WriteLine("Refresh token"); 
+        var response = await _authService.RefreshToken(refreshToken);
         if (response.Success)
         {
             return Ok(response);
