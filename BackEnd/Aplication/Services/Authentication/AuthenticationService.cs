@@ -94,9 +94,8 @@ public class AuthenticationService : IAuthenticationService
         };
     }
 
-    public async Task<AuthenticationResponseDto> RefreshToken()
+    public async Task<AuthenticationResponseDto> RefreshToken(string refreshToken)
     {
-        var refreshToken = _httpContext?.HttpContext?.Request.Cookies["refreshToken"];
         var user = await _userRepository.GetUserByRefreshToken(refreshToken, false);
 
         if (user == null)
@@ -141,7 +140,7 @@ public class AuthenticationService : IAuthenticationService
         var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
             _configuration.GetSection("AppSettings:key").Value));
         var sc = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        var token = new JwtSecurityToken(claims: claims, expires: DateTime.Now.AddHours(1), signingCredentials: sc);
+        var token = new JwtSecurityToken(claims: claims, expires: DateTime.Now.AddHours(5), signingCredentials: sc);
         var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
         return jwt;
@@ -152,7 +151,7 @@ public class AuthenticationService : IAuthenticationService
         var refreshToken = new RefreshTokenDto
         {
             Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-            Expires = DateTime.Now.AddDays(7),
+            Expires = DateTime.Now.AddHours(10),
             Created = DateTime.Now
         };
 

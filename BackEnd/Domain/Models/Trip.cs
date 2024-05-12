@@ -18,7 +18,7 @@ public partial class Trip
 
     public string Address { get; set; } = null!;
 
-    public byte[]? Image { get; set; }
+    public byte[] Image { get; set; }
 
     public int CityId { get; set; }
 

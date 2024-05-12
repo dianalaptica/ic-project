@@ -84,7 +84,8 @@ public class TripRepository : Repository<Trip>, ITripRepository
                 StartDate = t.StartDate,
                 EndDate = t.EndDate,
                 MaxTourists = t.MaxTourists,
-                CityName = t.City.Name
+                CityName = t.City.Name,
+                Image = t.Image
             })
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
