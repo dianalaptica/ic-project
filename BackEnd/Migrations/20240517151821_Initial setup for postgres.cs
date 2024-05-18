@@ -1,12 +1,13 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace BackEnd.Migrations
 {
     /// <inheritdoc />
-    public partial class Insertdata : Migration
+    public partial class Initialsetupforpostgres : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,9 +16,9 @@ namespace BackEnd.Migrations
                 name: "Country",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", unicode: false, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,9 +29,9 @@ namespace BackEnd.Migrations
                 name: "Role",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", unicode: false, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -41,10 +42,10 @@ namespace BackEnd.Migrations
                 name: "City",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false),
-                    CountryId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", unicode: false, nullable: false),
+                    CountryId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -60,20 +61,20 @@ namespace BackEnd.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false),
-                    LastName = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false),
-                    Gender = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false),
-                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    RefreshToken = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false),
-                    TokenCreated = table.Column<DateTime>(type: "datetime", nullable: false),
-                    TokenExpires = table.Column<DateTime>(type: "datetime", nullable: false),
-                    ProfilePicture = table.Column<byte[]>(type: "image", nullable: true),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    Email = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FirstName = table.Column<string>(type: "text", unicode: false, nullable: false),
+                    LastName = table.Column<string>(type: "text", unicode: false, nullable: false),
+                    Gender = table.Column<string>(type: "text", unicode: false, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "text", unicode: false, nullable: false),
+                    PasswordHash = table.Column<byte[]>(type: "bytea", nullable: false),
+                    PasswordSalt = table.Column<byte[]>(type: "bytea", nullable: false),
+                    RefreshToken = table.Column<string>(type: "text", unicode: false, nullable: false),
+                    TokenCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    TokenExpires = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ProfilePicture = table.Column<byte[]>(type: "bytea", nullable: true),
+                    RoleId = table.Column<int>(type: "integer", nullable: false),
+                    Email = table.Column<string>(type: "text", unicode: false, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -89,10 +90,10 @@ namespace BackEnd.Migrations
                 name: "AppliedForGuide",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    IdentityCard = table.Column<byte[]>(type: "image", nullable: false),
-                    IsApproved = table.Column<bool>(type: "bit", nullable: false),
-                    CityId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    IdentityCard = table.Column<byte[]>(type: "bytea", nullable: false),
+                    IsApproved = table.Column<bool>(type: "boolean", nullable: false),
+                    CityId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -108,17 +109,17 @@ namespace BackEnd.Migrations
                 name: "Trip",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    GuideId = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false),
-                    Description = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    MaxTourists = table.Column<int>(type: "int", nullable: false),
-                    Address = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false),
-                    Image = table.Column<byte[]>(type: "image", nullable: true),
-                    CityId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    GuideId = table.Column<int>(type: "integer", nullable: false),
+                    Title = table.Column<string>(type: "text", unicode: false, nullable: false),
+                    Description = table.Column<string>(type: "text", unicode: false, nullable: false),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    MaxTourists = table.Column<int>(type: "integer", nullable: false),
+                    Address = table.Column<string>(type: "text", unicode: false, nullable: false),
+                    Image = table.Column<byte[]>(type: "bytea", nullable: false),
+                    CityId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -139,11 +140,11 @@ namespace BackEnd.Migrations
                 name: "TripNotification",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TripId = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false),
-                    Message = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TripId = table.Column<int>(type: "integer", nullable: false),
+                    Title = table.Column<string>(type: "text", unicode: false, nullable: false),
+                    Message = table.Column<string>(type: "text", unicode: false, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -152,15 +153,16 @@ namespace BackEnd.Migrations
                         name: "FK_TripNotification_Trip",
                         column: x => x.TripId,
                         principalTable: "Trip",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "UserTrip",
                 columns: table => new
                 {
-                    TripId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    TripId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -169,21 +171,23 @@ namespace BackEnd.Migrations
                         name: "FK_UserTrip_Trip",
                         column: x => x.TripId,
                         principalTable: "Trip",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserTrip_User",
                         column: x => x.UserId,
                         principalTable: "User",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "UserNotification",
                 columns: table => new
                 {
-                    NotificationId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    IsRead = table.Column<bool>(type: "bit", nullable: false)
+                    NotificationId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    IsRead = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -192,12 +196,14 @@ namespace BackEnd.Migrations
                         name: "FK_UserNotification_TripNotification",
                         column: x => x.NotificationId,
                         principalTable: "TripNotification",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserNotification_User",
                         column: x => x.UserId,
                         principalTable: "User",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
