@@ -16,6 +16,8 @@
   --bgColor: hsl(113, 11%, 85%);
   --inputColor: hsl(330, 12%, 97%);
   --textColor: hsl(240, 1%, 48%);
+  --itemCardColor: hsl(120, 5%, 88%);
+  --itemCardHover: hsl(120, 27%, 87%);
   --biggestFontSize: 2.5rem;
   --h1FontSize: 1.5rem;
   --h2FontSize: 1.25rem;
