@@ -50,13 +50,13 @@ img{
     background: var(--paleGreen);
 }
 
-body{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: auto;
-    padding: 1rem;
-}
+// body{
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     margin: auto;
+//     padding: 1rem;
+// }
 
 .container{
     position: relative;
@@ -139,6 +139,13 @@ body{
                 &:hover::before{
                     height: 100%;
                     transition: .2s ease;
+                }
+            }
+
+            .listItem.active {
+                .menuLink{
+                    color: var(--selectedColor); /* or any specific color you want for the active state */
+                    transition: .3s ese;
                 }
             }
         }

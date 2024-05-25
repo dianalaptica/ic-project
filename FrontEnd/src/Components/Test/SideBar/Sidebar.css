@@ -50,14 +50,6 @@ img {
   background: var(--paleGreen);
 }
 
-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: auto;
-  padding: 1rem;
-}
-
 .container {
   position: relative;
   width: 95vw;
@@ -130,6 +122,10 @@ body {
 .sideBar .menuDiv .menuLists .listItem:hover::before, .sideBar .settingsDiv .menuLists .listItem:hover::before {
   height: 100%;
   transition: 0.2s ease;
+}
+.sideBar .menuDiv .menuLists .listItem.active .menuLink, .sideBar .settingsDiv .menuLists .listItem.active .menuLink {
+  color: var(--selectedColor); /* or any specific color you want for the active state */
+  transition: 0.3s ese;
 }
 .sideBar .sideBarCard {
   width: 100%;

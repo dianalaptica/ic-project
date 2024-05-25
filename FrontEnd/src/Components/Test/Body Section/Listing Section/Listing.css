@@ -55,4 +55,46 @@
   color: var(--blackColor);
   bottom: 1px;
   position: absolute;
+}
+.listingSection .guides {
+  width: 100%;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+.listingSection .guides .topGuides .heading {
+  padding: 1rem 0;
+}
+.listingSection .guides .topGuides .heading .btn {
+  padding: 0.5rem 0.1rem;
+}
+.listingSection .guides .topGuides .card {
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background: var(--whiteColor);
+  gap: 1rem;
+  box-shadow: 0 2px 4px var(--inputColor);
+}
+.listingSection .guides .topGuides .card .users {
+  padding-right: 1rem;
+  border-right: 2px solid var(--greyText);
+}
+.listingSection .guides .topGuides .card .users img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border: 2px solid var(--inputColor);
+  transition: 0.5s ease;
+}
+.listingSection .guides .topGuides .card .users img:hover {
+  transform: translateY(-10px);
+}
+.listingSection .guides .topGuides .card .cardText span {
+  color: var(--blackColor);
+  font-weight: 500;
+}
+.listingSection .guides .topGuides .card .cardText span small {
+  font-weight: 400;
 }/*# sourceMappingURL=Listing.css.map */

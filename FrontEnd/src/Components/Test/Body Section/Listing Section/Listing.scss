@@ -66,4 +66,58 @@
             }
         }
     }
+
+    .guides{
+        width: 100%;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: flex-start;
+
+        .topGuides{
+            .heading{
+                padding: 1rem 0;
+
+                .btn{
+                    padding: .5rem .1rem;
+                }
+            }
+
+            .card{
+                padding: 1.5rem;
+                border-radius: 1rem;
+                background: var(--whiteColor);
+                gap: 1rem;
+                box-shadow: 0 2px 4px var(--inputColor);
+
+                .users{
+                    padding-right: 1rem;
+                    border-right: 2px solid var(--greyText);
+
+                    img{
+                        width: 30px;
+                        height: 30px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                        border: 2px solid var(--inputColor);
+                        transition: .5s ease;
+
+                        &:hover{
+                            transform: translateY(-10px);
+                        }
+                    }
+                }
+
+                .cardText{
+                    span{
+                        color: var(--blackColor);
+                        font-weight: 500;
+
+                        small{
+                            font-weight: 400;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

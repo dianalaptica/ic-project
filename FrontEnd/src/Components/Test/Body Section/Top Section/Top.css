@@ -166,8 +166,8 @@
   transition: 0.3s ease;
 }
 .topSection .cardSection .leftCard .main .imgDiv {
-  transform: translateY(-20px);
+  transform: translateY(-11px);
 }
 .topSection .cardSection .leftCard .main .imgDiv img {
-  height: 280px;
+  height: 260px;
 }/*# sourceMappingURL=Top.css.map */

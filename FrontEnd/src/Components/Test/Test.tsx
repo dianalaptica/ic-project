@@ -5,16 +5,16 @@ import "./SideBar/Sidebar.css";
 
 const Test = () => {
   return (
-    // <div className="dashboard flex">
-    //   <div className="dashboardContainer flex">
-    //     <SideBar />
-    //     <Body />
-    //   </div>
-    // </div>
-    <div className="container">
-      <SideBar />
-      <Body />
+    <div className="dashboard flex">
+      <div className="dashboardContainer flex">
+        <SideBar />
+        <Body />
+      </div>
     </div>
+    // <div className="container">
+    //   <SideBar />
+    //   <Body />
+    // </div>
   );
 };
 
