@@ -10,7 +10,6 @@ const Body = () => {
       <Top />
       <div className="bottom flex">
         <Listing />
-        <Activity />
       </div>
     </div>
   );
