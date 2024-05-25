@@ -11,10 +11,6 @@ const Test = () => {
         <Body />
       </div>
     </div>
-    // <div className="container">
-    //   <SideBar />
-    //   <Body />
-    // </div>
   );
 };
 
