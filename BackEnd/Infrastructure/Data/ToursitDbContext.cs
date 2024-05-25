@@ -12,6 +12,8 @@ public partial class ToursitDbContext : DbContext
     public ToursitDbContext(DbContextOptions<ToursitDbContext> options)
         : base(options)
     {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
     }
 
     public virtual DbSet<AppliedForGuide> AppliedForGuides { get; set; }
@@ -39,7 +41,7 @@ public partial class ToursitDbContext : DbContext
             entity.ToTable("AppliedForGuide");
 
             entity.Property(e => e.UserId).ValueGeneratedNever();
-            entity.Property(e => e.IdentityCard).HasColumnType("image");
+            entity.Property(e => e.IdentityCard);
 
             entity.HasOne(d => d.City).WithMany(p => p.AppliedForGuides)
                 .HasForeignKey(d => d.CityId)
@@ -79,9 +81,9 @@ public partial class ToursitDbContext : DbContext
 
             entity.Property(e => e.Address).IsUnicode(false);
             entity.Property(e => e.Description).IsUnicode(false);
-            entity.Property(e => e.EndDate).HasColumnType("datetime");
-            entity.Property(e => e.Image).HasColumnType("image");
-            entity.Property(e => e.StartDate).HasColumnType("datetime");
+            entity.Property(e => e.EndDate);
+            entity.Property(e => e.Image);
+            entity.Property(e => e.StartDate);
             entity.Property(e => e.Title).IsUnicode(false);
 
             entity.HasOne(d => d.City).WithMany(p => p.Trips)
@@ -134,10 +136,10 @@ public partial class ToursitDbContext : DbContext
             entity.Property(e => e.Gender).IsUnicode(false);
             entity.Property(e => e.LastName).IsUnicode(false);
             entity.Property(e => e.PhoneNumber).IsUnicode(false);
-            entity.Property(e => e.ProfilePicture).HasColumnType("image");
+            entity.Property(e => e.ProfilePicture);
             entity.Property(e => e.RefreshToken).IsUnicode(false);
-            entity.Property(e => e.TokenCreated).HasColumnType("datetime");
-            entity.Property(e => e.TokenExpires).HasColumnType("datetime");
+            entity.Property(e => e.TokenCreated);
+            entity.Property(e => e.TokenExpires);
 
             entity.HasOne(d => d.Role).WithMany(p => p.Users)
                 .HasForeignKey(d => d.RoleId)

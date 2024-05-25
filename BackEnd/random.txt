@@ -1,0 +1,9 @@
+"ConnectionStrings": {
+    "Default": "Host=gdscupt.tech;Port=6969;Database=ghera-project;Username=guest;Password=cocacola"
+  }
+"AppSettings": {
+    "Key": "123456789012345678901234567890ab"
+},
+"ConnectionStrings": {
+    "TouristDbConnectionString": "Data Source=localhost;Database=test-ic;Integrated Security=sspi;TrustServerCertificate=true"
+}

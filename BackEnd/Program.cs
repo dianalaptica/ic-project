@@ -14,7 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("TouristDbConnectionString");
 
-builder.Services.AddDbContext<ToursitDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<ToursitDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 // Add repositories here
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITripRepository, TripRepository>();
