@@ -24,8 +24,9 @@ const Top = () => {
         </div>
 
         <div className="adminDiv flex">
-          <TbMessageCircle className="icon" />
-          <MdOutlineNotificationsNone className="icon" />
+          {/* <TbMessageCircle className="icon" />
+          <MdOutlineNotificationsNone className="icon" /> */}
+          <button className="btn">Log out</button>
           <div className="userImage">
             <img src={img} alt="User Image" />
           </div>
@@ -35,11 +36,12 @@ const Top = () => {
       <div className="cardSection flex">
         <div className="rightCard flex">
           <h1>Create extraordinary memories</h1>
-          <p>Lalala alallala ldkdkks kkdjdjdjdk jdjdjdjsjmd</p>
+          <br />
+          {/* <p>Lalala alallala ldkdkks kkdjdjdjdk jdjdjdjsjmd</p> */}
 
           <div className="buttons flex">
-            <button className="btn">Explore More</button>
-            <button className="btn transparent">Top Guides</button>
+            <button className="btn">Explore Trips</button>
+            <button className="btn transparent">See Guides</button>
           </div>
 
           <div className="videoDiv">
@@ -69,21 +71,6 @@ const Top = () => {
             <div className="imgDiv">
               <img src={pisa} alt="Pisa Tower" />
             </div>
-
-            {/* <div className="sideBarCard">
-        <HiUserGroup className="icon" />
-        <div className="cardContent">
-          <div className="circle1"></div>
-          <div className="circle2"></div>
-
-          <h3>Want to be a guide?</h3>
-          <p>
-            Would you like to share with other people your favorites spots in
-            the city?
-          </p>
-          <button className="btn">Apply Now</button>
-        </div>
-      </div> */}
           </div>
         </div>
       </div>

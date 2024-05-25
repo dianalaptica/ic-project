@@ -39,6 +39,7 @@
 .listingSection .secContainer .singleItem:hover {
   background: var(--itemCardHover);
   box-shadow: 0 2px 2px var(--inputColor);
+  cursor: pointer;
 }
 .listingSection .secContainer .singleItem img {
   max-width: 100px;
