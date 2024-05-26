@@ -63,7 +63,7 @@ export const UserProvider = ({ children }: Props) => {
           setToken(res?.data.token);
           setUser(userObj!);
           toast.success("Login Success!");
-          navigate("/dashboard");
+          navigate("/tourist/dashboard");
         }
       })
       .catch((e) => toast.warning("Server error occured"));
@@ -81,8 +81,9 @@ export const UserProvider = ({ children }: Props) => {
           localStorage.setItem("user", JSON.stringify(userObj));
           setToken(res?.data.token);
           setUser(userObj!);
+          console.log(userObj);
           toast.success("Login Success!");
-          navigate("/dashboard");
+          navigate("/tourist/dashboard");
         }
       })
       .catch((e) => toast.warning("Server error occured"));
