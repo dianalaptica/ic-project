@@ -21,14 +21,15 @@ public class TripsController : ControllerBase
     [HttpGet]
     [Authorize(Roles = "Tourist, Guide")]
     public async Task<ActionResult<TripQueryResponseDto<TripResponseDto>>> GetTrips(
+        [FromQuery] int? cityId,
         [FromQuery] string? searchTitle,
         [FromQuery] string? sortColumn,
         [FromQuery] string? sortOrder,
+        [FromQuery] bool hasJoined = false,
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 100)
     {
-        Console.WriteLine(123);
-        var result = await _tripsService.GetTripsByQuery(searchTitle, sortColumn, sortOrder, page, pageSize, false);
+        var result = await _tripsService.GetTripsByQuery(cityId, searchTitle, sortColumn, sortOrder, hasJoined, page, pageSize, false);
         if (!result.Trips.IsNullOrEmpty())
         {
             return Ok(result);

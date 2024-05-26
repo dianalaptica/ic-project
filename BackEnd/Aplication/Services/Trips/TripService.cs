@@ -62,15 +62,17 @@ public class TripService : ITripService
         };
     }
     
-    public async Task<TripQueryResponseDto<TripResponseDto>> GetTripsByQuery(
+    public async Task<TripQueryResponseDto<TripResponseDto>> GetTripsByQuery(int? cityId,
         string? searchTitle,
         string? sortColumn,
         string? sortOrder,
+        bool hasJoined,
         int page,
         int pageSize,
         bool trackChanges)
     {
-        return await _tripRepository.GetAllQueryAsync(searchTitle, sortColumn, sortOrder, page, pageSize, trackChanges);
+        var userId = int.Parse(_httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        return await _tripRepository.GetAllQueryAsync(cityId, searchTitle, sortColumn, sortOrder, hasJoined, userId,page, pageSize, trackChanges);
     }
 
     public async Task<TripResponseDto?> CreateTripAsync(TripCreateDto tripCreateDto, byte[] image)

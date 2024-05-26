@@ -12,16 +12,17 @@ public class UserNotificationRepository : Repository<UserNotification>, IUserNot
     {
     }
 
-    public async Task<IEnumerable<NotificationResponseDto>> GetNotificationsByUserIdAsync(int userId, bool trackChanges)
+    public async Task<IEnumerable<UserNotificationResponseDto>> GetNotificationsByUserIdAsync(int userId, bool trackChanges)
     {
         return await FindByCondition(n => n.UserId == userId, trackChanges)
             .Include(n => n.Notification)
-            .Select(n => new NotificationResponseDto
+            .Select(n => new UserNotificationResponseDto
             {
-                Id = n.Notification.Id,
+                NotificationId = n.NotificationId,
                 TripId = n.Notification.TripId,
                 Title = n.Notification.Title,
-                Message = n.Notification.Message
+                Message = n.Notification.Message,
+                IsRead = n.IsRead
             })
             .ToListAsync();
     }

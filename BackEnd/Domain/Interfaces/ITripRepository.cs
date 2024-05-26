@@ -10,10 +10,12 @@ public interface ITripRepository
     Task<IEnumerable<int>> GetAllUserIdsAsync(int tripId, bool trackChanges);
     Task<Trip?> GetByIdAsync(int id, bool trackChanges);
     Task<Trip?> GetByIdWithIncludeAsync(int id, bool trackChanges);
-    Task<TripQueryResponseDto<TripResponseDto>> GetAllQueryAsync(
+    Task<TripQueryResponseDto<TripResponseDto>> GetAllQueryAsync(int? cityId,
         string? searchTitle,
         string? sortColumn,
         string? sortOrder,
+        bool hasJoined,
+        int userId,
         int page,
         int pageSize,
         bool trackChanges);

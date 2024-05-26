@@ -8,10 +8,11 @@ public interface ITripService
 {
     public Task<IEnumerable<TripResponseDto>> GetAllTripsAsync(bool trackChanges);
     public Task<TripResponseDto?> GetTripByIdAsync(int id, bool trackChanges);
-    public Task<TripQueryResponseDto<TripResponseDto>> GetTripsByQuery(
+    public Task<TripQueryResponseDto<TripResponseDto>> GetTripsByQuery(int? cityId,
         string? searchTitle,
         string? sortColumn,
         string? sortOrder,
+        bool hasJoined,
         int page,
         int pageSize,
         bool trackChanges);
