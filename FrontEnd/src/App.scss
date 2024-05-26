@@ -17,6 +17,10 @@
     --greyText: hsl(0, 0%, 75%);
     --bgColor: hsl(113, 11%, 85%);
     --inputColor: hsl(330, 12%, 97%);
+    --textColor: hsl(240, 1%, 48%);
+    --itemCardColor: hsl(120, 5%, 88%);
+    --itemCardHover: hsl(120, 27%, 87%);
+    --selectedColor: hsl(97, 26%, 36%);
 
     --biggestFontSize: 2.5rem;
     --h1FontSize: 1.5rem;
@@ -91,7 +95,7 @@ img, video{
     background: var(--paleGreen);
 }
 
-.loginPage, .registerPage{
+.loginPage{
     height: 100vh;
     width: 100%;
     margin: auto;
@@ -315,7 +319,7 @@ img, video{
             }
 
             .formDiv{
-                gap: 1rem;
+                gap: 5rem;
                 transform: translateY(-.5rem);
 
                 .headerDiv{
@@ -396,6 +400,22 @@ img, video{
         .container{
             width: 85%;
         }
+    }
+}
+
+.dashboard{
+    height: 100vh;
+    width: 100%;
+    justify-content: center;
+    margin: auto;
+
+    .dashboardContainer{
+        height: 95vh;
+        width: 95%;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 10px rgb(194, 194, 194);
+        background: var(--bgColor);
     }
 }
 
