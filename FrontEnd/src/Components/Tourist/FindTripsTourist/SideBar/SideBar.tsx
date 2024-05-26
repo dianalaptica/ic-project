@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 const SideBar = () => {
   const navigate = useNavigate();
-  const [activeMenu, setActiveMenu] = useState("dashboard");
+  const [activeMenu, setActiveMenu] = useState("findTrips");
 
   const handleMenuClick = (menu: string, route: string) => {
     setActiveMenu(menu);

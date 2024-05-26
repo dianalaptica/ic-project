@@ -10,6 +10,10 @@ import TouristRoute from "./TouristRoute";
 import Test from "../Components/Test/Test";
 import DashboardTourist from "../Components/Tourist/DashboardTourist/DashboardTourist";
 import GuideRoute from "./GuideRoute";
+import MyTripsTourist from "../Components/Tourist/MyTripsTourist/MyTripsTourist";
+import FindTripsTourist from "../Components/Tourist/FindTripsTourist/FindTripsTourist";
+import NotificationsTourist from "../Components/Tourist/NotificationsTourist/NotificationsTourist";
+import MyAccountTourist from "../Components/Tourist/MyAccountTourist/MyAccountTourist";
 
 // create a router
 export const router = createBrowserRouter([
@@ -56,6 +60,46 @@ export const router = createBrowserRouter([
             <AdminRoute>
               <Admin />
             </AdminRoute>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "tourist/my-trips",
+        element: (
+          <ProtectedRoute>
+            <TouristRoute>
+              <MyTripsTourist />
+            </TouristRoute>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "tourist/find-trips",
+        element: (
+          <ProtectedRoute>
+            <TouristRoute>
+              <FindTripsTourist />
+            </TouristRoute>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "tourist/notifications",
+        element: (
+          <ProtectedRoute>
+            <TouristRoute>
+              <NotificationsTourist />
+            </TouristRoute>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "tourist/account",
+        element: (
+          <ProtectedRoute>
+            <TouristRoute>
+              <MyAccountTourist />
+            </TouristRoute>
           </ProtectedRoute>
         ),
       },
