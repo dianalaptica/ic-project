@@ -3,7 +3,7 @@ import { handleError } from "../Helpers/ErrorHandler";
 import { UserLogin } from "../Models/UserLogin";
 import { UserRegister } from "../Models/UserRegister";
 
-const api = "http://localhost:5179/api/auth/";
+const api = "https://localhost:7093/api/auth/";
 
 export const loginApi = async (email: string, password: string) => {
   try {
