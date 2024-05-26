@@ -8,11 +8,19 @@ const AdminRoute = ({ children }: Props) => {
   const location = useLocation();
   const { user } = useAuth();
 
-  return user?.role === "Admin" ? (
-    <>{children}</>
-  ) : (
-    <Navigate to="/dashboard" state={{ from: location }} replace />
-  );
+  if (user?.role === "Admin") {
+    return <>{children}</>;
+  } else if (user?.role === "Tourist") {
+    return (
+      <Navigate to="/tourist/dashboard" state={{ from: location }} replace />
+    );
+  } else if (user?.role === "Guide") {
+    return (
+      <Navigate to="/guide/dashboard" state={{ from: location }} replace />
+    );
+  } else {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
 };
 
 export default AdminRoute;

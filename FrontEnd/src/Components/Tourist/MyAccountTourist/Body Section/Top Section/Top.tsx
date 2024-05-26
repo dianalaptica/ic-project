@@ -2,12 +2,12 @@ import React from "react";
 import { BiSearchAlt } from "react-icons/bi";
 import { MdOutlineNotificationsNone } from "react-icons/md";
 import { TbMessageCircle } from "react-icons/tb";
-import img from "../../../../LoginAssets/no_profile_pic.png";
-import video from "../../../../LoginAssets/video.mp4";
-import pisa from "../../../../LoginAssets/pisa.png";
+import img from "../../../../../LoginAssets/no_profile_pic.png";
+import video from "../../../../../LoginAssets/video.mp4";
+import pisa from "../../../../../LoginAssets/pisa.png";
 import "./Top.css";
 import { BsArrowRightShort } from "react-icons/bs";
-import { useAuth } from "../../../../Context/useAuth";
+import { useAuth } from "../../../../../Context/useAuth";
 
 const Top = () => {
   const { logout } = useAuth();
