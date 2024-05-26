@@ -85,6 +85,8 @@ public class AuthenticationService : IAuthenticationService
         {
             Success = true,
             Message = "Login successful!",
+            FirstName = user.FirstName,
+            LastName = user.LastName,
             Token = jwt,
             RefreshToken = refreshToken.Token,
             TokenExpires = refreshToken.Expires,
