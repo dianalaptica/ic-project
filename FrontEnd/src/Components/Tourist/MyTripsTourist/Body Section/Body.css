@@ -8,4 +8,12 @@
   margin-top: 2rem;
   gap: 2rem;
   align-items: flex-start;
+  flex-direction: column;
+  height: 100%;
+}
+.mainContent .bottom .card {
+  height: 38%;
+}
+.mainContent .bottom .card .fig {
+  max-width: 55%;
 }/*# sourceMappingURL=Body.css.map */

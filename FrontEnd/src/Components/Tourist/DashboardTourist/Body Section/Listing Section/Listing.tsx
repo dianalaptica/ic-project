@@ -87,7 +87,7 @@ const Listing = () => {
             </button>
           </div>
 
-          <div className="card flex">
+          <div className="cardMy flex">
             <div className="users">
               <img src={img} alt="User Image" />
               <img src={img} alt="User Image" />

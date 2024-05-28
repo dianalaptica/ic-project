@@ -8,5 +8,15 @@
         margin-top: 2rem;
         gap: 2rem;
         align-items: flex-start;
+        flex-direction: column;
+        height: 100%;
+
+        .card{
+            height: 38%;
+    
+            .fig{
+                max-width: 55%;
+            }
+        }
     }
 }
