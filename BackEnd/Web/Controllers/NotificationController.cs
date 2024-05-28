@@ -46,7 +46,7 @@ public class NotificationController : ControllerBase
     
     [HttpGet("user")]
     [Authorize(Roles = "Tourist")]
-    public async Task<ActionResult<TripNotification>> GetUsersNotification()
+    public async Task<ActionResult<UserNotificationResponseDto>> GetUsersNotification()
     {
         var notifications = await _notificationService.GetNotificationsByUserIdAsync(false);
         if (notifications == null || !notifications.Any())

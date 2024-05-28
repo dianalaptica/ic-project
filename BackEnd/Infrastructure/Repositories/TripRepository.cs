@@ -40,16 +40,32 @@ public class TripRepository : Repository<Trip>, ITripRepository
     }
     // TODO: maybe not the nicest way to do this
     // TODO: try to refactor this
-    public async Task<TripQueryResponseDto<TripResponseDto>> GetAllQueryAsync(
+    public async Task<TripQueryResponseDto<TripResponseDto>> GetAllQueryAsync(int? cityId,
         string? searchTitle,
         string? sortColumn,
         string? sortOrder,
+        bool hasJoined,
+        int userId,
         int page,
         int pageSize,
         bool trackChanges)
     {
         var query = FindAll(trackChanges);
         
+        if (cityId.HasValue)
+        {
+            query = query.Where(t => t.CityId == cityId);
+        }
+
+        if (hasJoined)
+        {
+            query = query.Where(t => t.Users.Any(u => u.Id == userId));
+        }
+        else
+        {
+            query = query.Where(t => t.Users.All(u => u.Id != userId));
+        }
+
         if (!string.IsNullOrWhiteSpace(searchTitle))
         {
             query = query.Where(t => t.Title.Contains(searchTitle));
