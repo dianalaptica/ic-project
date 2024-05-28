@@ -18,32 +18,46 @@ public class AuthenticationController : ControllerBase
     {
         _authService = authService;
     }
-    
+
     [HttpPost("register")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<AuthenticationResponseDto>> RegisterUser([FromBody] UserRegisterDto request)
     {
-        var response = await _authService.RegisterUser(request);
-        if (response != null)
+        try
         {
-            return Ok(response);
+            var response = await _authService.RegisterUser(request);
+            if (response != null)
+            {
+                return Ok(response);
+            }
+            return BadRequest();
+        }
+        catch
+        {
+            return StatusCode(500, "Error connecting to Database.");
         }
 
-        return BadRequest();
     }
-    
+
     [HttpPost("login")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<AuthenticationResponseDto>> LoginUser([FromBody] UserLoginDto request)
     {
-        var response = await _authService.LoginUser(request);
-        if(response.Success)
-            return Ok(response);
-        return Unauthorized(new {message = "Credentials are not valid!"});
+        try
+        {
+            var response = await _authService.LoginUser(request);
+            if (response.Success)
+                return Ok(response);
+            return Unauthorized(new { message = "Credentials are not valid!" });
+        }
+        catch
+        {
+            return StatusCode(500, "Error connecting to Database.");
+        }
     }
 
     [HttpPost("refresh")]
