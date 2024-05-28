@@ -1,21 +1,23 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./Sidebar.css";
-import logo from "../../../LoginAssets/logo.png";
+import logo from "../../../../LoginAssets/logo.png";
 import { IoMdSpeedometer } from "react-icons/io";
 import { LiaGlobeAmericasSolid } from "react-icons/lia";
-import { MdOutlineExplore, MdOutlineManageAccounts } from "react-icons/md";
+import { MdOutlineManageAccounts } from "react-icons/md";
 import { IoNotificationsCircleOutline } from "react-icons/io5";
-import { HiUserGroup } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
 
 const SideBar = () => {
-  const [activeMenu, setActiveMenu] = useState("");
+  const navigate = useNavigate();
+  const [activeMenu, setActiveMenu] = useState("myAccount");
 
-  const handleMenuClick = (menu: string) => {
+  const handleMenuClick = (menu: string, route: string) => {
     setActiveMenu(menu);
+    navigate(route);
   };
 
   return (
-    <div className="sideBar grid">
+    <div className="sideBarGuide grid">
       <div className="logoDiv flex">
         <img src={logo} alt="Guided Logo" />
         <h2>Guided.</h2>
@@ -28,9 +30,9 @@ const SideBar = () => {
             className={`listItem ${activeMenu === "dashboard" ? "active" : ""}`}
           >
             <a
-              href="#"
+              href=""
               className="menuLink flex"
-              onClick={() => handleMenuClick("dashboard")}
+              onClick={() => handleMenuClick("dashboard", "/guide/dashboard")}
             >
               <IoMdSpeedometer className="icon" />
               <span className="smallText">Dashboard</span>
@@ -41,25 +43,12 @@ const SideBar = () => {
             className={`listItem ${activeMenu === "myTrips" ? "active" : ""}`}
           >
             <a
-              href="#"
+              href=""
               className="menuLink flex"
-              onClick={() => handleMenuClick("myTrips")}
+              onClick={() => handleMenuClick("myTrips", "/guide/my-trips")}
             >
               <LiaGlobeAmericasSolid className="icon" />
               <span className="smallText">My Trips</span>
-            </a>
-          </li>
-
-          <li
-            className={`listItem ${activeMenu === "findTrips" ? "active" : ""}`}
-          >
-            <a
-              href="#"
-              className="menuLink flex"
-              onClick={() => handleMenuClick("findTrips")}
-            >
-              <MdOutlineExplore className="icon" />
-              <span className="smallText">Find Trips</span>
             </a>
           </li>
 
@@ -69,9 +58,11 @@ const SideBar = () => {
             }`}
           >
             <a
-              href="#"
+              href=""
               className="menuLink flex"
-              onClick={() => handleMenuClick("notifications")}
+              onClick={() =>
+                handleMenuClick("notifications", "/guide/notifications")
+              }
             >
               <IoNotificationsCircleOutline className="icon" />
               <span className="smallText">Notifications</span>
@@ -87,9 +78,9 @@ const SideBar = () => {
             className={`listItem ${activeMenu === "myAccount" ? "active" : ""}`}
           >
             <a
-              href="#"
+              href=""
               className="menuLink flex"
-              onClick={() => handleMenuClick("myAccount")}
+              onClick={() => handleMenuClick("myAccount", "/guide/account")}
             >
               <MdOutlineManageAccounts className="icon" />
               <span className="smallText">My Account</span>
@@ -103,21 +94,6 @@ const SideBar = () => {
           </li> */}
         </ul>
       </div>
-
-      {/* <div className="sideBarCard">
-        <HiUserGroup className="icon" />
-        <div className="cardContent">
-          <div className="circle1"></div>
-          <div className="circle2"></div>
-
-          <h3>Want to be a guide?</h3>
-          <p>
-            Would you like to share with other people your favorites spots in
-            the city?
-          </p>
-          <button className="btn">Apply Now</button>
-        </div>
-      </div> */}
     </div>
   );
 };
