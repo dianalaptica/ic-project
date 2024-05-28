@@ -17,14 +17,14 @@
 .listingSection .heading .btn:hover {
   border: 1px solid var(--primaryColor);
 }
-.listingSection .secContainer {
+.listingSection .secContainerTourist {
   width: 100%;
   margin: 1rem 0;
   gap: 1rem;
   flex-wrap: wrap;
   justify-content: space-between;
 }
-.listingSection .secContainer .singleItem {
+.listingSection .secContainerTourist .singleItem {
   position: relative;
   width: 150px;
   height: 175px;
@@ -36,22 +36,22 @@
   border-radius: 10px;
   background: var(--itemCardColor);
 }
-.listingSection .secContainer .singleItem:hover {
+.listingSection .secContainerTourist .singleItem:hover {
   background: var(--itemCardHover);
   box-shadow: 0 2px 2px var(--inputColor);
   cursor: pointer;
 }
-.listingSection .secContainer .singleItem img {
+.listingSection .secContainerTourist .singleItem img {
   max-width: 100px;
   transform: translateY(-5px);
 }
-.listingSection .secContainer .singleItem .icon {
+.listingSection .secContainerTourist .singleItem .icon {
   position: absolute;
   top: 10px;
   right: 10px;
   color: var(--primaryColor);
 }
-.listingSection .secContainer .singleItem h3 {
+.listingSection .secContainerTourist .singleItem h3 {
   font-size: var(--h3FontSize);
   color: var(--blackColor);
   bottom: 1px;
