@@ -1,15 +1,12 @@
 import img from "../../../../../LoginAssets/no_profile_pic.png";
-import video from "../../../../../LoginAssets/video.mp4";
-import pisa from "../../../../../LoginAssets/pisa.png";
+
 import "./Top.css";
 import { useAuth } from "../../../../../Context/useAuth";
-import { useNavigate } from "react-router-dom";
 
 const Top = () => {
-  const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
-  const name = "Name";
+  const name = user?.firstName;
   return (
     <div className="topSection">
       <div className="headerSection flex">

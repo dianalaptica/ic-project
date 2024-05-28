@@ -1,6 +1,7 @@
-import img from "../../../../../LoginAssets/no_profile_pic.png";
+import img from "../../../../LoginAssets/no_profile_pic.png";
+
 import "./Top.css";
-import { useAuth } from "../../../../../Context/useAuth";
+import { useAuth } from "../../../../Context/useAuth";
 
 const Top = () => {
   const { logout, user } = useAuth();

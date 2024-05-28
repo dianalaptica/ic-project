@@ -1,4 +1,3 @@
-import React from "react";
 import { BiSearchAlt } from "react-icons/bi";
 import img from "../../../../../LoginAssets/no_profile_pic.png";
 import video from "../../../../../LoginAssets/video.mp4";
@@ -10,9 +9,9 @@ import { useNavigate } from "react-router-dom";
 
 const Top = () => {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
-  const name = "Name";
+  const name = user?.firstName;
   return (
     <div className="topSection">
       <div className="headerSection flex">

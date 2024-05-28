@@ -7,9 +7,9 @@ import { useNavigate } from "react-router-dom";
 
 const Top = () => {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
-  const name = "Name";
+  const name = user?.firstName;
   return (
     <div className="topSection">
       <div className="headerSection flex">
