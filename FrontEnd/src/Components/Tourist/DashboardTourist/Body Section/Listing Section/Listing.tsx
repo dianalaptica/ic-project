@@ -8,26 +8,31 @@ import berlin from "../../../../../LoginAssets/berlin.png";
 import img from "../../../../../LoginAssets/no_profile_pic.png";
 import Trip from "../Trip/Trip.tsx";
 import useAxiosPrivate from "../../../../../Hooks/useAxiosPrivate.ts";
+import { useNavigate } from "react-router-dom";
 
 const Listing = () => {
-  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+  // const axiosPrivate = useAxiosPrivate();
 
-  const callApi = async (cityId: number) => {
-    try {
-      const response = await axiosPrivate.get(`/trips?cityId=${cityId}`);
-      console.log(response.data); // TODO: from here somehow render the components
-      // TODO: the endpoint return Not Found if there are no trips and/or the city does not exist
-      // London and Berlin is in this scenario
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const callApi = async (cityId: number) => {
+  //   try {
+  //     const response = await axiosPrivate.get(`/trips?cityId=${cityId}`);
+  //     console.log(response.data); // TODO: from here somehow render the components
+  //     // TODO: the endpoint return Not Found if there are no trips and/or the city does not exist
+  //     // London and Berlin is in this scenario
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   return (
     <div className="listingSection">
       <div className="heading flex">
         <h1>See trips from popular locations</h1>
-        <button className="btn flex">
+        <button
+          className="btn flex"
+          onClick={() => navigate("/tourist/find-trips")}
+        >
           See All <BsArrowRightShort className="icon" />
         </button>
       </div>
@@ -35,9 +40,10 @@ const Listing = () => {
       <div className="secContainerTourist flex">
         <div
           className="singleItem"
-          onClick={async () => {
-            await callApi(14);
-          }}
+          onClick={() => navigate("/tourist/trip/paris")}
+          // onClick={async () => {
+          //   await callApi(14);
+          // }}
         >
           {/* <AiFillHeart className="icon" /> */}
           <img src={paris} alt="Eiffel Tower" />
@@ -46,9 +52,10 @@ const Listing = () => {
 
         <div
           className="singleItem"
-          onClick={async () => {
-            await callApi(17);
-          }}
+          onClick={() => navigate("/tourist/trip/london")}
+          // onClick={async () => {
+          //   await callApi(17);
+          // }}
         >
           {/* <AiOutlineHeart className="icon" /> */}
           <img src={london} alt="Big Ben" />
@@ -57,9 +64,10 @@ const Listing = () => {
 
         <div
           className="singleItem"
-          onClick={async () => {
-            await callApi(9);
-          }}
+          onClick={() => navigate("/tourist/trip/rome")}
+          // onClick={async () => {
+          //   await callApi(9);
+          // }}
         >
           {/* <AiOutlineHeart className="icon" /> */}
           <img src={rome} alt="Colosseum" />
@@ -68,9 +76,10 @@ const Listing = () => {
 
         <div
           className="singleItem"
-          onClick={async () => {
-            await callApi(8);
-          }}
+          onClick={() => navigate("/tourist/trip/berlin")}
+          // onClick={async () => {
+          //   await callApi(8);
+          // }}
         >
           {/* <AiFillHeart className="icon" /> */}
           <img src={berlin} alt="Berlin" />
