@@ -15,6 +15,7 @@ public interface ITripRepository
         string? sortColumn,
         string? sortOrder,
         bool hasJoined,
+        string? role,
         int userId,
         int page,
         int pageSize,

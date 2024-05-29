@@ -5,6 +5,7 @@ namespace BackEnd.Domain.Interfaces;
 public interface ICityRepository
 {
     Task<IEnumerable<City>> GetAllAsync(bool trackChanges);
+    Task<IEnumerable<City>> GetAllCitiesWithCountriesAsync(bool trackChanges);
     Task<City?> GetByIdAsync(int id, bool trackChanges);
     void Create(City city);
     void Delete(City city);

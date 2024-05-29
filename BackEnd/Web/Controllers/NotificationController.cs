@@ -58,11 +58,30 @@ public class NotificationController : ControllerBase
     
     [HttpGet("user")]
     [Authorize(Roles = "Tourist")]
-    public async Task<ActionResult<UserNotificationResponseDto>> GetUsersNotification()
+    public async Task<ActionResult<IEnumerable<UserNotificationResponseDto>>> GetUsersNotification()
     {
         try
         {
             var notifications = await _notificationService.GetNotificationsByUserIdAsync(false);
+            if (notifications == null || !notifications.Any())
+            {
+                return NotFound();
+            }
+            return Ok(notifications);
+        }
+        catch
+        {
+            return StatusCode(500, "Error connecting to Database.");
+        }
+    }
+    
+    [HttpGet("guide")]
+    [Authorize(Roles = "Guide")]
+    public async Task<ActionResult<IEnumerable<TripNotificationResponseDto>>> GetGuideNotification()
+    {
+        try
+        {
+            var notifications = await _notificationService.GetNotificationsByGuideIdAsync(false);
             if (notifications == null || !notifications.Any())
             {
                 return NotFound();

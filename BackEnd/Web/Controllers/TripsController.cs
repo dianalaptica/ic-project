@@ -21,7 +21,7 @@ public class TripsController : ControllerBase
     [HttpGet]
     [Authorize(Roles = "Tourist, Guide")]
     public async Task<ActionResult<TripQueryResponseDto<TripResponseDto>>> GetTrips(
-        [FromQuery] int? cityId,
+        [FromQuery] int? cityId,    
         [FromQuery] string? searchTitle,
         [FromQuery] string? sortColumn,
         [FromQuery] string? sortOrder,
@@ -63,6 +63,7 @@ public class TripsController : ControllerBase
     }
 
     [HttpPost]
+    [RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = int.MaxValue)]
     [Authorize(Roles = "Guide")]
     public async Task<ActionResult<TripResponseDto>> CreateTrip([FromForm] TripCreateDto trip)
     {
