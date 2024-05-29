@@ -1,9 +1,8 @@
-import React from "react";
 import { useAuth } from "../../../Context/useAuth";
 import SideBar from "./SideBar/SideBar";
 import Body from "./Body Section/Body";
 
-export const MyAccountTourist = () => {
+const MyTripsGuide = () => {
   const { isLoggedIn } = useAuth();
 
   return (
@@ -21,3 +20,5 @@ export const MyAccountTourist = () => {
     </>
   );
 };
+
+export default MyTripsGuide;

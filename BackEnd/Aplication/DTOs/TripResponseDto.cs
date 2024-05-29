@@ -10,7 +10,7 @@ public class TripResponseDto
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public int MaxTourists { get; set; }
-
     public string CityName { get; set; }
     public byte[] Image { get; set; }
+    public string CountryName { get; set; }
 }

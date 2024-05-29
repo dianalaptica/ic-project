@@ -4,9 +4,17 @@
     padding: 2rem;
     overflow: auto;
 
+    h1{
+        padding-top: 4%;
+    }
+
     .bottom{
         margin-top: 2rem;
         gap: 2rem;
         align-items: flex-start;
+
+        .card.read{
+            opacity: 0.5;
+        }
     }
 }

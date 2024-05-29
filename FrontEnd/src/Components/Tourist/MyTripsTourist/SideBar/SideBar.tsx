@@ -21,7 +21,7 @@ const SideBar = () => {
     <div className="sideBar grid">
       <div className="logoDiv flex">
         <img src={logo} alt="Guided Logo" />
-        <h2>Guided.</h2>
+        <h2 className="font-custom1">Guided.</h2>
       </div>
 
       <div className="menuDiv">

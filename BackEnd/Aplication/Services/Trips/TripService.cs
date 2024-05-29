@@ -134,6 +134,7 @@ public class TripService : ITripService
         {
             trip.Users.Add(user);
         }
+        trip.MaxTourists--;
 
         _tripRepository.Update(trip);
         await _tripRepository.SaveChangesAsync();
@@ -197,6 +198,7 @@ public class TripService : ITripService
             trip.Users.Any(t => t.Id == userId) == false) return null;
         
         trip.Users?.Remove(user);
+        trip.MaxTourists++;
         _tripRepository.Update(trip);
         await _tripRepository.SaveChangesAsync();
 

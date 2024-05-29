@@ -96,11 +96,8 @@ public class NotificationService : INotificationService
             return null;
         }
 
-        if (userNotification.IsRead == false)
-        {
-            userNotification.IsRead = true;
-            await _tripRepository.SaveChangesAsync();
-        }
+        userNotification.IsRead = !userNotification.IsRead;
+        await _tripRepository.SaveChangesAsync();
         
         return new NotificationResponseDto
         {

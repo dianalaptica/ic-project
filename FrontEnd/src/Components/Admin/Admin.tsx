@@ -1,19 +1,20 @@
 import React from "react";
 import { useAuth } from "../../Context/useAuth";
 import "../../App.css";
+import SideBar from "./SideBar/SideBar";
+import Body from "./Body Section/Body";
 
 const Admin = () => {
-  const { isLoggedIn, user, logout } = useAuth();
+  const { isLoggedIn } = useAuth();
 
   return (
     <>
-      <h1>Admin</h1>
       {isLoggedIn() ? (
-        <div className="container flex">
-          <h3>Welcome, {user?.email} </h3>
-          <button className="btn flex" onClick={logout}>
-            Logout
-          </button>
+        <div className="dashboard flex">
+          <div className="dashboardContainer flex">
+            <SideBar />
+            <Body />
+          </div>
         </div>
       ) : (
         <div></div>

@@ -1,7 +1,4 @@
-import React from "react";
 import { BiSearchAlt } from "react-icons/bi";
-import { MdOutlineNotificationsNone } from "react-icons/md";
-import { TbMessageCircle } from "react-icons/tb";
 import img from "../../../../LoginAssets/no_profile_pic.png";
 import video from "../../../../LoginAssets/video.mp4";
 import pisa from "../../../../LoginAssets/pisa.png";
@@ -10,9 +7,9 @@ import { BsArrowRightShort } from "react-icons/bs";
 import { useAuth } from "../../../../Context/useAuth";
 
 const Top = () => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
-  const name = "Name";
+  const name = user?.firstName;
   return (
     <div className="topSection">
       <div className="headerSection flex">

@@ -1,4 +1,6 @@
 export type UserLogin = {
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
     token: string;
@@ -6,8 +8,8 @@ export type UserLogin = {
 }
 
 export type UserProfile = {
-    // firstName: string;
-    // lastName: string;
+    firstName: string;
+    lastName: string;
     email: string;
     role: string;
 }

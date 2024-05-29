@@ -16,13 +16,15 @@ public class UserNotificationRepository : Repository<UserNotification>, IUserNot
     {
         return await FindByCondition(n => n.UserId == userId, trackChanges)
             .Include(n => n.Notification)
+            .ThenInclude(t => t.Trip)
             .Select(n => new UserNotificationResponseDto
             {
                 NotificationId = n.NotificationId,
                 TripId = n.Notification.TripId,
                 Title = n.Notification.Title,
                 Message = n.Notification.Message,
-                IsRead = n.IsRead
+                IsRead = n.IsRead,
+                TripTitle = n.Notification.Trip.Title,
             })
             .ToListAsync();
     }
