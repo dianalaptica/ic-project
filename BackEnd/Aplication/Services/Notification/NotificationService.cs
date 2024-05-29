@@ -37,7 +37,7 @@ public class NotificationService : INotificationService
         };
     }
 
-    public async Task<IEnumerable<NotificationResponseDto>> GetNotificationsByUserIdAsync(bool trackChanges)
+    public async Task<IEnumerable<UserNotificationResponseDto>> GetNotificationsByUserIdAsync(bool trackChanges)
     {
         var userId = int.Parse(_httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         return await _userNotificationRepository.GetNotificationsByUserIdAsync(userId, trackChanges);
@@ -96,11 +96,8 @@ public class NotificationService : INotificationService
             return null;
         }
 
-        if (userNotification.IsRead == false)
-        {
-            userNotification.IsRead = true;
-            await _tripRepository.SaveChangesAsync();
-        }
+        userNotification.IsRead = !userNotification.IsRead;
+        await _tripRepository.SaveChangesAsync();
         
         return new NotificationResponseDto
         {

@@ -3,5 +3,6 @@ export type UserNotification = {
     message: string,
     notificationId: number,
     tripId: number,
-    isRead: boolean
+    isRead: boolean,
+    tripTitle: string,
 };

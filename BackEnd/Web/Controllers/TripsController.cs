@@ -21,32 +21,45 @@ public class TripsController : ControllerBase
     [HttpGet]
     [Authorize(Roles = "Tourist, Guide")]
     public async Task<ActionResult<TripQueryResponseDto<TripResponseDto>>> GetTrips(
+        [FromQuery] int? cityId,
         [FromQuery] string? searchTitle,
         [FromQuery] string? sortColumn,
         [FromQuery] string? sortOrder,
+        [FromQuery] bool hasJoined = false,
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 100)
     {
-        Console.WriteLine(123);
-        var result = await _tripsService.GetTripsByQuery(searchTitle, sortColumn, sortOrder, page, pageSize, false);
-        if (!result.Trips.IsNullOrEmpty())
+        try
         {
-            return Ok(result);
+            var result = await _tripsService.GetTripsByQuery(cityId, searchTitle, sortColumn, sortOrder, hasJoined, page, pageSize, false);
+            if (!result.Trips.IsNullOrEmpty())
+            {
+                return Ok(result);
+            }
+            return NotFound();
+        } catch
+        {
+            return StatusCode(500, "Error connecting to Database.");
         }
-        return NotFound();
     }
     
     [HttpGet("{id}")]
     [Authorize(Roles = "Guide, Tourist")]
     public async Task<ActionResult<TripResponseDto>> GetTripById([FromRoute]int id)
     {
-        var trip = await _tripsService.GetTripByIdAsync(id, false);
-        if (trip is not null)
+        try
         {
-            return Ok(trip);
-        }
+            var trip = await _tripsService.GetTripByIdAsync(id, false);
+            if (trip is not null)
+            {
+                return Ok(trip);
+            }
     
-        return NotFound();
+            return NotFound();
+        } catch
+        {
+            return StatusCode(500, "Error connecting to Database.");
+        }
     }
 
     [HttpPost]
@@ -63,51 +76,66 @@ public class TripsController : ControllerBase
             {
                 return CreatedAtAction(nameof(GetTrips), new { id = result.Id }, result);
             }
-        }
-        catch (Exception exception)
+            return BadRequest();
+        } catch
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            return StatusCode(500, "Error connecting to Database.");
         }
-        
-        return BadRequest();
     }
 
     [HttpPatch("join/{id}")]
     [Authorize(Roles = "Tourist")]
     public async Task<ActionResult<TripResponseDto>> JoinTrip([FromRoute]int id)
     {
-        var result = await _tripsService.JoinTripAsync(id);
-        if (result is not null)
+        try
         {
-            return Ok(result);
+            var result = await _tripsService.JoinTripAsync(id);
+            if (result is not null)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
         }
-
-        return BadRequest();
+        catch
+        {
+            return BadRequest();
+        }
     }
     
     [HttpPatch("remove/{id}")]
     [Authorize(Roles = "Tourist")]
     public async Task<ActionResult<TripResponseDto>> RemoveTrip([FromRoute]int id)
     {
-        var result = await _tripsService.RemoveTripAsync(id);
-        if (result is not null)
+        try
         {
-            return Ok(result);
+            var result = await _tripsService.RemoveTripAsync(id);
+            if (result is not null)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
+        } catch
+        {
+            return BadRequest();
         }
 
-        return BadRequest();
     }
     
     [HttpDelete("{id}")]
     [Authorize(Roles = "Guide")]
     public async Task<ActionResult> DeleteTrip([FromRoute]int id)
     {
-        var result = await _tripsService.DeleteTripAsync(id);
-        if (result is null)
+        try
+        {
+            var result = await _tripsService.DeleteTripAsync(id);
+            if (result is null)
+            {
+                return BadRequest();
+            }
+            return NoContent();
+        } catch
         {
             return BadRequest();
         }
-
-        return NoContent();
     }
 }

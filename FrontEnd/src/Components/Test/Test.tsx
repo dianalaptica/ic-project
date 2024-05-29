@@ -9,16 +9,16 @@ const Test = () => {
 
   return (
     <>
-      {isLoggedIn() ? (
-        <div className="dashboard flex">
-          <div className="dashboardContainer flex">
-            <SideBar />
-            <Body />
-          </div>
+      {/* {isLoggedIn() ? ( */}
+      <div className="dashboard flex">
+        <div className="dashboardContainer flex">
+          <SideBar />
+          <Body />
         </div>
-      ) : (
-        <div></div>
-      )}
+      </div>
+      {/* // ) : (
+      //   <div></div>
+      // )} */}
     </>
   );
 };

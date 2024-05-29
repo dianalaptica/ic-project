@@ -14,6 +14,11 @@ import MyTripsTourist from "../Components/Tourist/MyTripsTourist/MyTripsTourist"
 import FindTripsTourist from "../Components/Tourist/FindTripsTourist/FindTripsTourist";
 import NotificationsTourist from "../Components/Tourist/NotificationsTourist/NotificationsTourist";
 import MyAccountTourist from "../Components/Tourist/MyAccountTourist/MyAccountTourist";
+import DashboardGuide from "../Components/Guide/DashboardGuide/DashboardGuide";
+import MyTripsGuide from "../Components/Guide/MyTripsGuide/MyTripsGuide";
+import NotificationsGuide from "../Components/Guide/NotificationsGuide/NotificationsGuide";
+import MyAccountGuide from "../Components/Guide/MyAccountGuide/MyAccountGuide";
+import ApplyTourist from "../Components/Tourist/ApplyTourist/ApplyTourist";
 
 // create a router
 export const router = createBrowserRouter([
@@ -28,7 +33,37 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <GuideRoute>
-              <Test />
+              <DashboardGuide />
+            </GuideRoute>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "guide/my-trips",
+        element: (
+          <ProtectedRoute>
+            <GuideRoute>
+              <MyTripsGuide />
+            </GuideRoute>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "guide/notifications",
+        element: (
+          <ProtectedRoute>
+            <GuideRoute>
+              <NotificationsGuide />
+            </GuideRoute>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "guide/account",
+        element: (
+          <ProtectedRoute>
+            <GuideRoute>
+              <MyAccountGuide />
             </GuideRoute>
           </ProtectedRoute>
         ),
@@ -43,26 +78,16 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      {
-        path: "dashboard",
-        element: (
-          <ProtectedRoute>
-            <TouristRoute>
-              <Dashboard />
-            </TouristRoute>
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "admin",
-        element: (
-          <ProtectedRoute>
-            <AdminRoute>
-              <Admin />
-            </AdminRoute>
-          </ProtectedRoute>
-        ),
-      },
+      // {
+      //   path: "dashboard",
+      //   element: (
+      //     <ProtectedRoute>
+      //       <TouristRoute>
+      //         <Dashboard />
+      //       </TouristRoute>
+      //     </ProtectedRoute>
+      //   ),
+      // },
       {
         path: "tourist/my-trips",
         element: (
@@ -103,6 +128,30 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: "tourist/apply",
+        element: (
+          <ProtectedRoute>
+            <TouristRoute>
+              <ApplyTourist />
+            </TouristRoute>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "admin",
+        element: (
+          <ProtectedRoute>
+            <AdminRoute>
+              <Admin />
+            </AdminRoute>
+          </ProtectedRoute>
+        ),
+      },
+      // {
+      //   path: "test",
+      //   element: <Test />,
+      // },
     ],
   },
 ]);

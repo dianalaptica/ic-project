@@ -38,18 +38,35 @@ public class TripRepository : Repository<Trip>, ITripRepository
             .Include(t => t.City)
             .SingleOrDefaultAsync();
     }
+
     // TODO: maybe not the nicest way to do this
     // TODO: try to refactor this
-    public async Task<TripQueryResponseDto<TripResponseDto>> GetAllQueryAsync(
+    public async Task<TripQueryResponseDto<TripResponseDto>> GetAllQueryAsync(int? cityId,
         string? searchTitle,
         string? sortColumn,
         string? sortOrder,
+        bool hasJoined,
+        int userId,
         int page,
         int pageSize,
         bool trackChanges)
     {
         var query = FindAll(trackChanges);
         
+        if (cityId.HasValue)
+        {
+            query = query.Where(t => t.CityId == cityId);
+        }
+
+        if (hasJoined)
+        {
+            query = query.Where(t => t.Users.Any(u => u.Id == userId));
+        }
+        else
+        {
+            query = query.Where(t => t.Users.All(u => u.Id != userId));
+        }
+
         if (!string.IsNullOrWhiteSpace(searchTitle))
         {
             query = query.Where(t => t.Title.Contains(searchTitle));
@@ -72,8 +89,10 @@ public class TripRepository : Repository<Trip>, ITripRepository
         }
         
         var result = await query
+            .Include(g => g.Guide)
             .Include(t => t.City)
-            // .Include(c => c.City.Country)
+            .ThenInclude(c => c.Country)
+            .Where(t => t.MaxTourists > 0)
             .Select(t => new TripResponseDto
             {
                 Id = t.Id,
@@ -85,7 +104,8 @@ public class TripRepository : Repository<Trip>, ITripRepository
                 EndDate = t.EndDate,
                 MaxTourists = t.MaxTourists,
                 CityName = t.City.Name,
-                Image = t.Image
+                Image = t.Image,
+                CountryName = t.City.Country.Name
             })
             .Skip((page - 1) * pageSize)
             .Take(pageSize)

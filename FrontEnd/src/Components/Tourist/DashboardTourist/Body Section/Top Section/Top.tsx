@@ -1,4 +1,3 @@
-import React from "react";
 import { BiSearchAlt } from "react-icons/bi";
 import img from "../../../../../LoginAssets/no_profile_pic.png";
 import video from "../../../../../LoginAssets/video.mp4";
@@ -6,11 +5,13 @@ import pisa from "../../../../../LoginAssets/pisa.png";
 import "./Top.css";
 import { BsArrowRightShort } from "react-icons/bs";
 import { useAuth } from "../../../../../Context/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const Top = () => {
-  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const { logout, user } = useAuth();
 
-  const name = "Name";
+  const name = user?.firstName;
   return (
     <div className="topSection">
       <div className="headerSection flex">
@@ -43,7 +44,12 @@ const Top = () => {
           {/* <p>Lalala alallala ldkdkks kkdjdjdjdk jdjdjdjsjmd</p> */}
 
           <div className="buttons flex">
-            <button className="btn">Explore Trips</button>
+            <button
+              className="btn"
+              onClick={() => navigate("/tourist/find-trips")}
+            >
+              Explore Trips
+            </button>
             <button className="btn transparent">See Guides</button>
           </div>
 
@@ -66,7 +72,10 @@ const Top = () => {
                 </span>
               </div>
 
-              <span className="flex link">
+              <span
+                className="flex link"
+                onClick={() => navigate("/tourist/my-trips")}
+              >
                 Go to my trips <BsArrowRightShort className="icon" />
               </span>
             </div>

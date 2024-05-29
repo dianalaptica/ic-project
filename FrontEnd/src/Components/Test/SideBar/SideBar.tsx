@@ -104,7 +104,7 @@ const SideBar = () => {
         </ul>
       </div>
 
-      <div className="sideBarCard">
+      {/* <div className="sideBarCard">
         <HiUserGroup className="icon" />
         <div className="cardContent">
           <div className="circle1"></div>
@@ -117,7 +117,7 @@ const SideBar = () => {
           </p>
           <button className="btn">Apply Now</button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

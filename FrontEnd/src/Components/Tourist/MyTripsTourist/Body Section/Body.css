@@ -4,8 +4,16 @@
   padding: 2rem;
   overflow: auto;
 }
-.mainContent .bottom {
+.mainContent .bottomTripTourist {
   margin-top: 2rem;
   gap: 2rem;
   align-items: flex-start;
+  flex-direction: column;
+  height: 100%;
+}
+.mainContent .bottomTripTourist .card {
+  height: 38%;
+}
+.mainContent .bottomTripTourist .card .fig {
+  max-width: 55%;
 }/*# sourceMappingURL=Body.css.map */

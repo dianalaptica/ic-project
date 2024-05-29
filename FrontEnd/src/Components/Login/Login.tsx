@@ -10,6 +10,7 @@ import * as Yup from "yup";
 import { useAuth } from "../../Context/useAuth";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
 
 type LoginFormInputs = {
   email: string;
@@ -23,14 +24,17 @@ const validation = Yup.object().shape({
 
 const Login = () => {
   const { loginUser } = useAuth();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormInputs>({ resolver: yupResolver(validation) });
 
-  const handleLogin = (form: LoginFormInputs) => {
-    loginUser(form.email, form.password);
+  const handleLogin = async (form: LoginFormInputs) => {
+    setIsLoading(true);
+    await loginUser(form.email, form.password);
+    setIsLoading(false);
   };
 
   return (
@@ -71,6 +75,7 @@ const Login = () => {
                   type="text"
                   id="email"
                   placeholder="Enter Email"
+                  value="sds"
                   {...register("email")}
                 />
                 {errors.email ? <p>{errors.email.message}</p> : ""}
@@ -92,14 +97,18 @@ const Login = () => {
               </div>
             </div>
 
-            <button type="submit" className="btn flex">
-              <span>Login</span>
-              <AiOutlineSwapRight className="icon" />
-            </button>
+            {isLoading === false ? (
+              <button type="submit" className="btn flex">
+                <span>Login</span>
+                <AiOutlineSwapRight className="icon" />
+              </button>
+            ) : (
+              <span className="loading loading-dots loading-lg"></span>
+            )}
 
-            <span className="forgotPassword">
+            {/* <span className="forgotPassword">
               Forgot your password? <a href="">Click Here</a>
-            </span>
+            </span> */}
           </form>
         </div>
       </div>

@@ -54,8 +54,8 @@ export const UserProvider = ({ children }: Props) => {
         if (res) {
           localStorage.setItem("token", res?.data.token);
           const userObj = {
-            // firstName: res?.data.firstName,
-            // lastName: res?.data.lastName,
+            firstName: res?.data.firstName,
+            lastName: res?.data.lastName,
             email: res?.data.email,
             role: res?.data.role,
           };
@@ -64,7 +64,7 @@ export const UserProvider = ({ children }: Props) => {
           setUser(userObj!);
           toast.success("Login Success!");
           navigate("/tourist/dashboard");
-        }
+        } else toast.warning("Server error occured");
       })
       .catch((e) => toast.warning("Server error occured"));
   };
@@ -75,6 +75,8 @@ export const UserProvider = ({ children }: Props) => {
         if (res) {
           localStorage.setItem("token", res?.data.token);
           const userObj = {
+            firstName: res?.data.firstName,
+            lastName: res?.data.lastName,
             email: res?.data.email,
             role: res?.data.role,
           };
@@ -84,7 +86,7 @@ export const UserProvider = ({ children }: Props) => {
           console.log(userObj);
           toast.success("Login Success!");
           navigate("/tourist/dashboard");
-        }
+        } else toast.warning("Server error occured");
       })
       .catch((e) => toast.warning("Server error occured"));
   };
