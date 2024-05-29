@@ -65,6 +65,7 @@ export const UserProvider = ({ children }: Props) => {
           toast.success("Login Success!");
           navigate("/tourist/dashboard");
         }
+        toast.warning("Server error occured");
       })
       .catch((e) => toast.warning("Server error occured"));
   };

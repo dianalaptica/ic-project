@@ -12,6 +12,7 @@ import * as Yup from "yup";
 import { useAuth } from "../../Context/useAuth";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
 
 type RegisterFormInputs = {
   firstName: string;
@@ -31,20 +32,23 @@ const validation = Yup.object().shape({
 
 const Register = () => {
   const { registerUser } = useAuth();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterFormInputs>({ resolver: yupResolver(validation) });
 
-  const handleRegister = (form: RegisterFormInputs) => {
-    registerUser(
+  const handleRegister = async (form: RegisterFormInputs) => {
+    setIsLoading(true);
+    await registerUser(
       form.firstName,
       form.lastName,
       form.email,
       form.phoneNumber,
       form.password
     );
+    setIsLoading(false);
   };
 
   return (
@@ -145,10 +149,14 @@ const Register = () => {
               </div>
             </div>
 
-            <button type="submit" className="btn flex">
-              <span>Register</span>
-              <AiOutlineSwapRight className="icon" />
-            </button>
+            {isLoading === false ? (
+              <button type="submit" className="btn flex">
+                <span>Register</span>
+                <AiOutlineSwapRight className="icon" />
+              </button>
+            ) : (
+              <span className="loading loading-dots loading-lg"></span>
+            )}
           </form>
         </div>
       </div>
