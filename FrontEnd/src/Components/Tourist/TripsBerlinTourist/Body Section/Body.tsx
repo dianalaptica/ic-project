@@ -41,7 +41,7 @@ const Body = () => {
   };
 
   useEffect(() => {
-    callApi(9);
+    callApi(8);
   }, []);
 
   function formatDateString(inputDate: string) {
