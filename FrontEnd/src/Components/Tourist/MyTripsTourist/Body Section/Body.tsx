@@ -5,6 +5,19 @@ import { Trips } from "../../../../Models/Trips.ts";
 import Top from "./Top Section/Top.tsx";
 import default_trip_pic from "../../../../LoginAssets/default_trip_picture.png";
 
+function base64ToBlob(base64String: string, contentType: string) {
+  contentType = contentType || "";
+  const byteCharacters = atob(base64String);
+  const byteNumbers = new Array(byteCharacters.length);
+
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+
+  const byteArray = new Uint8Array(byteNumbers);
+  return new Blob([byteArray], { type: contentType });
+}
+
 const Body = () => {
   const axiosPrivate = useAxiosPrivate();
   const [trips, setTrips] = useState<Trips>();
@@ -41,57 +54,42 @@ const Body = () => {
     return " " + formattedDate;
   }
 
+  const createImageSrc = (imageFile) => {
+    return URL.createObjectURL(base64ToBlob(imageFile, "image/png"));
+  };
+
   return (
     <div className="mainContent">
       <Top />
-      <div className="bottom flex">
-        {trips?.trips.map((elem) => (
-          // <div key={elem.id}>
-          //   <p>{elem.title}</p>
-          //   <p>{elem.cityName}</p>
-          //   <button onClick={async () => removeUserFromTrip(elem.id)}>
-          //     RemoveFromTrip
-          //   </button>
-          //   <p>--------------------</p>
-          //   </div>
-          <div className="card card-side bg-base-100 shadow-xl">
-            <figure className="fig">
-              <img src={default_trip_pic} alt="Movie" />
-            </figure>
-            <div className="card-body">
-              <h2 className="card-title">{elem.title}</h2>
-              <p>{elem.description}</p>
-              <p>Location: {elem.cityName}</p>
-              <p>Adress: {elem.adress}</p>
-              <p>
-                Start Date:
-                {formatDateString(elem.startDate.toString())}
-              </p>
-              <p>End Date: {formatDateString(elem.endDate.toString())}</p>
-              <div className="card-actions justify-end">
-                <button
-                  className="btn"
-                  onClick={async () => removeUserFromTrip(elem.id)}
-                >
-                  Remove me from trip
-                </button>
+      <div className="bottomTripTourist flex">
+        {trips?.trips && trips.trips.length > 0 ? (
+          trips.trips.map((elem) => (
+            <div key={elem.id} className="card card-side bg-base-100 shadow-xl">
+              <figure className="fig">
+                <img src={createImageSrc(elem.image)} alt="Trip" />
+              </figure>
+              <div className="card-body">
+                <h2 className="card-title">{elem.title}</h2>
+                <p>{elem.description}</p>
+                <p>Location: {elem.cityName}</p>
+                <p>Address: {elem.adress}</p>
+                <p>Start Date: {formatDateString(elem.startDate.toString())}</p>
+                <p>End Date: {formatDateString(elem.endDate.toString())}</p>
+                <div className="card-actions justify-end">
+                  <button
+                    className="btn"
+                    onClick={async () => removeUserFromTrip(elem.id)}
+                  >
+                    Remove me from trip
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p>No trips</p>
+        )}
       </div>
-      {/* <div className="card card-side bg-base-100 shadow-xl">
-        <figure className="fig">
-          <img src={default_trip_pic} alt="Movie" />
-        </figure>
-        <div className="card-body">
-          <h2 className="card-title">New movie is released!</h2>
-          <p>Click the button to watch on Jetflix app.</p>
-          <div className="card-actions justify-end">
-            <button className="btn btn-primary">Watch</button>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 };
