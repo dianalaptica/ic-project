@@ -72,7 +72,8 @@ public class TripService : ITripService
         bool trackChanges)
     {
         var userId = int.Parse(_httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        return await _tripRepository.GetAllQueryAsync(cityId, searchTitle, sortColumn, sortOrder, hasJoined, userId,page, pageSize, trackChanges);
+        var role = _httpContext.HttpContext.User.FindFirst(ClaimTypes.Role)?.Value;
+        return await _tripRepository.GetAllQueryAsync(cityId, searchTitle, sortColumn, sortOrder, hasJoined, role, userId,page, pageSize, trackChanges);
     }
 
     public async Task<TripResponseDto?> CreateTripAsync(TripCreateDto tripCreateDto, byte[] image)
