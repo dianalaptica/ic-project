@@ -1,1 +1,6 @@
-/*# sourceMappingURL=Login.css.map */
+.loading {
+  color: var(--primaryColor);
+  align-items: center;
+  margin: auto;
+  justify-content: center;
+}/*# sourceMappingURL=Login.css.map */
