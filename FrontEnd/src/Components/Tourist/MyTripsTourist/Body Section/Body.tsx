@@ -71,7 +71,9 @@ const Body = () => {
               <div className="card-body">
                 <h2 className="card-title">{elem.title}</h2>
                 <p>{elem.description}</p>
-                <p>Location: {elem.cityName}</p>
+                <p>
+                  Location: {elem.cityName}, {elem.countryName}
+                </p>
                 <p>Address: {elem.adress}</p>
                 <p>Start Date: {formatDateString(elem.startDate.toString())}</p>
                 <p>End Date: {formatDateString(elem.endDate.toString())}</p>

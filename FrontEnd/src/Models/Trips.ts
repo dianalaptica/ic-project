@@ -8,7 +8,8 @@ type Trip = {
     image: Blob,
     maxTourist: number,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
+    countryName: string,
 }
 
 export type Trips = {
