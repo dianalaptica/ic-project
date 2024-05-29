@@ -33,6 +33,7 @@ const Login = () => {
 
   const handleLogin = async (form: LoginFormInputs) => {
     setIsLoading(true);
+    console.log(form.email);
     await loginUser(form.email, form.password);
     setIsLoading(false);
   };
@@ -75,7 +76,6 @@ const Login = () => {
                   type="text"
                   id="email"
                   placeholder="Enter Email"
-                  value="sds"
                   {...register("email")}
                 />
                 {errors.email ? <p>{errors.email.message}</p> : ""}
