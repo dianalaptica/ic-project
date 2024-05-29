@@ -16,7 +16,9 @@ const NotificationsTourist = () => {
           </div>
         </div>
       ) : (
-        <div></div>
+        <div>
+          <p>123</p>
+        </div>
       )}
     </>
   );
