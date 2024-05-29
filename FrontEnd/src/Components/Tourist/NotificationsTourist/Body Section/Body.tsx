@@ -3,6 +3,7 @@ import useAxiosPrivate from "../../../../Hooks/useAxiosPrivate.ts";
 import { useEffect, useState } from "react";
 import { UserNotification } from "../../../../Models/UserNotification.ts";
 import Top from "./Top Section/Top.tsx";
+import { DiVim } from "react-icons/di";
 
 const Body = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -32,62 +33,77 @@ const Body = () => {
     <div className="mainContent">
       <Top />
       <h1>New notifications</h1>
-      <div className="bottom flex">
-        {notification.map(
-          (elem) =>
-            elem.isRead === false && (
-              <div key={`${elem.notificationId}` + `${elem.tripId}`}>
-                <div className="card w-96 bg-base-100 shadow-xl">
-                  <div className="card-body">
-                    <h2 className="card-title">{elem.title}</h2>
-                    <br />
-                    <p>{elem.message}</p>
-                    <p>Trip: {elem.tripTitle}</p>
-                    <p>{elem.isRead ?? "true"}</p>
-                    <div className="card-actions justify-end">
-                      <button
-                        className="btn"
-                        onClick={async () =>
-                          updateReadStatus(elem.notificationId)
-                        }
-                      >
-                        Mark as read
-                      </button>
+      {notification.find((n) => n.isRead === false) ? (
+        <div className="bottom flex">
+          {notification.map(
+            (elem) =>
+              elem.isRead === false && (
+                <div key={`${elem.notificationId}` + `${elem.tripId}`}>
+                  <div className="card w-96 bg-base-100 shadow-xl">
+                    <div className="card-body">
+                      <h2 className="card-title">{elem.title}</h2>
+                      <br />
+                      <p>{elem.message}</p>
+                      <p>Trip: {elem.tripTitle}</p>
+                      <p>{elem.isRead ?? "true"}</p>
+                      <div className="card-actions justify-end">
+                        <button
+                          className="btn"
+                          onClick={async () =>
+                            updateReadStatus(elem.notificationId)
+                          }
+                        >
+                          Mark as read
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )
-        )}
-      </div>
+              )
+          )}
+        </div>
+      ) : (
+        <div>
+          <br />
+          <p>No unread notifications</p>
+        </div>
+      )}
+
       <h1>Read notifications</h1>
-      <div className="bottom flex">
-        {notification.map(
-          (elem) =>
-            elem.isRead === true && (
-              <div key={`${elem.notificationId}` + `${elem.tripId}`}>
-                <div className="card read w-96 bg-base-100 shadow-xl">
-                  <div className="card-body">
-                    <h2 className="card-title">{elem.title}</h2>
-                    <p>{elem.message}</p>
-                    <p>Trip: {elem.tripTitle}</p>
-                    <p>{elem.isRead ?? "true"}</p>
-                    <div className="card-actions justify-end">
-                      <button
-                        className="btn"
-                        onClick={async () =>
-                          updateReadStatus(elem.notificationId)
-                        }
-                      >
-                        Mark as unread
-                      </button>
+      {notification.find((n) => n.isRead === true) ? (
+        <div className="bottom flex">
+          {notification.map(
+            (elem) =>
+              elem.isRead === true && (
+                <div key={`${elem.notificationId}` + `${elem.tripId}`}>
+                  <div className="card read w-96 bg-base-100 shadow-xl">
+                    <div className="card-body">
+                      <h2 className="card-title">{elem.title}</h2>
+                      <p>{elem.message}</p>
+                      <p>Trip: {elem.tripTitle}</p>
+                      <p>{elem.isRead ?? "true"}</p>
+                      <div className="card-actions justify-end">
+                        <button
+                          className="btn"
+                          onClick={async () =>
+                            updateReadStatus(elem.notificationId)
+                          }
+                        >
+                          Mark as unread
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )
-        )}
-      </div>
+              )
+          )}
+        </div>
+      ) : (
+        <div>
+          <br />
+          <p>No read notifications</p>
+        </div>
+      )}
     </div>
   );
 };
