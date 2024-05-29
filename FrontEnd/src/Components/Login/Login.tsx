@@ -32,10 +32,8 @@ const Login = () => {
   } = useForm<LoginFormInputs>({ resolver: yupResolver(validation) });
 
   const handleLogin = async (form: LoginFormInputs) => {
-    console.log(isLoading);
     setIsLoading(true);
     await loginUser(form.email, form.password);
-    console.log(isLoading);
     setIsLoading(false);
   };
 
