@@ -75,6 +75,7 @@ const Login = () => {
                   type="text"
                   id="email"
                   placeholder="Enter Email"
+                  value="sds"
                   {...register("email")}
                 />
                 {errors.email ? <p>{errors.email.message}</p> : ""}

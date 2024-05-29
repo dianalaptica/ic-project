@@ -6,7 +6,7 @@ type Trip = {
     description: string,
     title: string,
     image: Blob,
-    maxTourist: number,
+    maxTourists: number,
     startDate: Date,
     endDate: Date,
     countryName: string,

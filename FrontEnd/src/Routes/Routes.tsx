@@ -18,6 +18,7 @@ import DashboardGuide from "../Components/Guide/DashboardGuide/DashboardGuide";
 import MyTripsGuide from "../Components/Guide/MyTripsGuide/MyTripsGuide";
 import NotificationsGuide from "../Components/Guide/NotificationsGuide/NotificationsGuide";
 import MyAccountGuide from "../Components/Guide/MyAccountGuide/MyAccountGuide";
+import ApplyTourist from "../Components/Tourist/ApplyTourist/ApplyTourist";
 
 // create a router
 export const router = createBrowserRouter([
@@ -77,26 +78,16 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      {
-        path: "dashboard",
-        element: (
-          <ProtectedRoute>
-            <TouristRoute>
-              <Dashboard />
-            </TouristRoute>
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "admin",
-        element: (
-          <ProtectedRoute>
-            <AdminRoute>
-              <Admin />
-            </AdminRoute>
-          </ProtectedRoute>
-        ),
-      },
+      // {
+      //   path: "dashboard",
+      //   element: (
+      //     <ProtectedRoute>
+      //       <TouristRoute>
+      //         <Dashboard />
+      //       </TouristRoute>
+      //     </ProtectedRoute>
+      //   ),
+      // },
       {
         path: "tourist/my-trips",
         element: (
@@ -138,9 +129,29 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "test",
-        element: <Test />,
+        path: "tourist/apply",
+        element: (
+          <ProtectedRoute>
+            <TouristRoute>
+              <ApplyTourist />
+            </TouristRoute>
+          </ProtectedRoute>
+        ),
       },
+      {
+        path: "admin",
+        element: (
+          <ProtectedRoute>
+            <AdminRoute>
+              <Admin />
+            </AdminRoute>
+          </ProtectedRoute>
+        ),
+      },
+      // {
+      //   path: "test",
+      //   element: <Test />,
+      // },
     ],
   },
 ]);

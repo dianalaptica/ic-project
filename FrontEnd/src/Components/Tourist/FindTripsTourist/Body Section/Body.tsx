@@ -82,7 +82,9 @@ const Body = () => {
                     Start Date: {formatDateString(elem.startDate.toString())}
                   </p>
                   <p>End Date: {formatDateString(elem.endDate.toString())}</p>
-                  <p className="pColor">{elem.maxTourist ?? 15} places left</p>
+                  <p className="pColor">
+                    {elem.maxTourists !== 0 ? elem.maxTourists : 0} places left
+                  </p>
                   <div className="card-actions justify-end">
                     <button
                       className="btn"

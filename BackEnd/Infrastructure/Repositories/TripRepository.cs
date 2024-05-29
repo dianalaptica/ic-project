@@ -92,6 +92,7 @@ public class TripRepository : Repository<Trip>, ITripRepository
             .Include(g => g.Guide)
             .Include(t => t.City)
             .ThenInclude(c => c.Country)
+            .Where(t => t.MaxTourists > 0)
             .Select(t => new TripResponseDto
             {
                 Id = t.Id,
