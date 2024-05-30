@@ -12,12 +12,23 @@ public class UserNotificationRepository : Repository<UserNotification>, IUserNot
     {
     }
 
-    public async Task<IEnumerable<UserNotificationResponseDto>> GetNotificationsByUserIdAsync(int userId,
+    public async Task<IEnumerable<UserNotificationResponseDto>> GetNotificationsByUserIdAsync(bool isUpcoming, int userId,
         bool trackChanges)
     {
-        return await FindByCondition(n => n.UserId == userId, trackChanges)
+        IQueryable<UserNotification> query = FindByCondition(n => n.UserId == userId, trackChanges)
             .Include(n => n.Notification)
-            .ThenInclude(t => t.Trip)
+            .ThenInclude(t => t.Trip);
+
+        if (isUpcoming)
+        {
+            query = query.Where(t => t.Notification.Trip.StartDate >= DateTime.Today);
+        }
+        else
+        {
+            query = query.Where(t => t.Notification.Trip.StartDate < DateTime.Today);
+        }
+
+        return await query
             .Select(n => new UserNotificationResponseDto
             {
                 NotificationId = n.NotificationId,

@@ -5,7 +5,7 @@ namespace BackEnd.Domain.Interfaces;
 
 public interface IUserNotificationRepository
 {
-    Task<IEnumerable<UserNotificationResponseDto>> GetNotificationsByUserIdAsync(int userId, bool trackChanges);
+    Task<IEnumerable<UserNotificationResponseDto>> GetNotificationsByUserIdAsync(bool isUpcoming, int userId, bool trackChanges);
     void Create(UserNotification user);
     void Delete(UserNotification user);
     void Update(UserNotification user);
