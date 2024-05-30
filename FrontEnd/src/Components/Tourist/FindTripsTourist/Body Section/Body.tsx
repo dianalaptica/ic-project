@@ -3,7 +3,6 @@ import useAxiosPrivate from "../../../../Hooks/useAxiosPrivate.ts";
 import { useEffect, useState } from "react";
 import { Trips } from "../../../../Models/Trips.ts";
 import Top from "./Top Section/Top.tsx";
-import default_trip_pic from "../../../../LoginAssets/default_trip_picture.png";
 import { useNavigate } from "react-router-dom";
 import video from "../../../../LoginAssets/video.mp4";
 
@@ -23,23 +22,44 @@ function base64ToBlob(base64String: string, contentType: string) {
 const Body = () => {
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
-  const [trips, setTrips] = useState<Trips>();
+  const [pastTrips, setPastTrips] = useState<Trips>();
+  const [upcomingTrips, setUpcomingTrips] = useState<Trips>();
 
-  const getAllTrips = async () => {
-    const response = await axiosPrivate.get(`trips?hasJoined=${false}`);
-    setTrips(response.data);
-    console.log(response.data);
+  const getAllPastTrips = async () => {
+    try {
+      const response = await axiosPrivate.get(`trips?hasJoined=${false}&isUpcoming=${false}`);
+      if (response.status === 200) {
+        setPastTrips(response.data);
+      } else {
+        setPastTrips({hasNextPage: false, hasPreviousPage: false, page: 0, pageSize: 0, totalCount: 0, trips: []})
+      }
+    } catch (err) {
+      setPastTrips({hasNextPage: false, hasPreviousPage: false, page: 0, pageSize: 0, totalCount: 0, trips: []})
+    }
+  };
+
+  const getAllUpcomingTrips = async () => {
+    try {
+      const response = await axiosPrivate.get(`trips?hasJoined=${false}`);
+      if (response.status === 200) {
+        setUpcomingTrips(response.data);
+      } else {
+        setUpcomingTrips({hasNextPage: false, hasPreviousPage: false, page: 0, pageSize: 0, totalCount: 0, trips: []})
+      }
+    } catch (err) {
+      setUpcomingTrips({hasNextPage: false, hasPreviousPage: false, page: 0, pageSize: 0, totalCount: 0, trips: []})
+    }
   };
 
   const addUserToTrip = async (tripId: number) => {
     const responsePatch = await axiosPrivate.patch(`trips/join/${tripId}`);
     // after we update we force a rerender by making a new get req
-    const responseGet = await axiosPrivate.get(`trips?hasJoined=${false}`);
-    setTrips(responseGet.data);
+    await getAllUpcomingTrips()
   };
 
   useEffect(() => {
-    getAllTrips();
+    getAllPastTrips();
+    getAllUpcomingTrips();
   }, []);
 
   function formatDateString(inputDate: string) {
@@ -65,8 +85,8 @@ const Body = () => {
     <div className="mainContent">
       <Top />
       <div className="bottomTripTourist flex">
-        {trips?.trips && trips.trips.length > 0 ? (
-          trips.trips.map((elem) => {
+        {pastTrips?.trips && pastTrips.trips.length > 0 ? (
+          pastTrips.trips.map((elem) => {
             return (
               <div
                 key={elem.id}
