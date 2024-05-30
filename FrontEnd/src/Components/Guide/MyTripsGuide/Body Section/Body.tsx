@@ -145,6 +145,7 @@ const Body = () => {
             </div>
           </div>
         </dialog>
+
         <h2>Upcoming Trips</h2>
 
         {upcomingTrips?.trips && upcomingTrips.trips.length > 0 ? (
@@ -183,28 +184,38 @@ const Body = () => {
             );
           })
         ) : (
-          <div className="cardSection flex">
-            <div className="rightCard flex">
-              <h1>No available trips at the moment</h1>
-              <br />
-
-              <div className="videoDiv">
-                <video src={video} autoPlay loop muted></video>
-              </div>
-            </div>
-          </div>
+          <p>No upcoming trips</p>
         )}
 
-        <div>
-          {pastTrips?.trips.map((elem) => (
-            <div key={elem.id}>
-              <p>{elem.title}</p>
-              <p>{elem.adress}</p>
-              <p>{elem.cityName}</p>
-              <button onClick={() => deleteTrip(elem.id)}>DELETE</button>
-            </div>
-          ))}
-        </div>
+        <h2>Past Trips</h2>
+
+        {pastTrips?.trips && pastTrips.trips.length > 0 ? (
+          pastTrips.trips.map((elem) => {
+            return (
+              <div
+                key={elem.id}
+                className="card past card-side bg-base-100 shadow-xl"
+              >
+                <figure className="fig">
+                  <img src={createImageSrc(elem.image)} alt="Trip" />
+                </figure>
+                <div className="card-body">
+                  <h2 className="card-title">{elem.title}</h2>
+                  <p>{elem.description}</p>
+                  <p>
+                    Location: {elem.cityName}, {elem.countryName}
+                  </p>
+                  <p>
+                    Start Date: {formatDateString(elem.startDate.toString())}
+                  </p>
+                  <p>End Date: {formatDateString(elem.endDate.toString())}</p>
+                </div>
+              </div>
+            );
+          })
+        ) : (
+          <p>No past trips</p>
+        )}
       </div>
       <br />
     </div>
