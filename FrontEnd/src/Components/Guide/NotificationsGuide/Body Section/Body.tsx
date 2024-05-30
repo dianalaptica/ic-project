@@ -6,12 +6,16 @@ import { GuideNotification } from "../../../../Models/GuideNotification.ts";
 
 const Body = () => {
   const axiosPrivate = useAxiosPrivate();
-  const [pastNotifications, setPastNotification] = useState<GuideNotification[]>();
-  const [upcomingNotifications, setUpcomingNotification] = useState<GuideNotification[]>();
+  const [pastNotifications, setPastNotification] =
+    useState<GuideNotification[]>();
+  const [upcomingNotifications, setUpcomingNotification] =
+    useState<GuideNotification[]>();
 
   const getAllPastNotifications = async () => {
     try {
-      const response = await axiosPrivate.get(`notification/guide?isUpcoming=${false}`);
+      const response = await axiosPrivate.get(
+        `notification/guide?isUpcoming=${false}`
+      );
       if (response.status === 200) {
         setPastNotification(response.data);
       } else {

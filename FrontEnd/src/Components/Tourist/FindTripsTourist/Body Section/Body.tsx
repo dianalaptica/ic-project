@@ -27,14 +27,30 @@ const Body = () => {
 
   const getAllPastTrips = async () => {
     try {
-      const response = await axiosPrivate.get(`trips?hasJoined=${false}&isUpcoming=${false}`);
+      const response = await axiosPrivate.get(
+        `trips?hasJoined=${false}&isUpcoming=${false}`
+      );
       if (response.status === 200) {
         setPastTrips(response.data);
       } else {
-        setPastTrips({hasNextPage: false, hasPreviousPage: false, page: 0, pageSize: 0, totalCount: 0, trips: []})
+        setPastTrips({
+          hasNextPage: false,
+          hasPreviousPage: false,
+          page: 0,
+          pageSize: 0,
+          totalCount: 0,
+          trips: [],
+        });
       }
     } catch (err) {
-      setPastTrips({hasNextPage: false, hasPreviousPage: false, page: 0, pageSize: 0, totalCount: 0, trips: []})
+      setPastTrips({
+        hasNextPage: false,
+        hasPreviousPage: false,
+        page: 0,
+        pageSize: 0,
+        totalCount: 0,
+        trips: [],
+      });
     }
   };
 
@@ -44,17 +60,31 @@ const Body = () => {
       if (response.status === 200) {
         setUpcomingTrips(response.data);
       } else {
-        setUpcomingTrips({hasNextPage: false, hasPreviousPage: false, page: 0, pageSize: 0, totalCount: 0, trips: []})
+        setUpcomingTrips({
+          hasNextPage: false,
+          hasPreviousPage: false,
+          page: 0,
+          pageSize: 0,
+          totalCount: 0,
+          trips: [],
+        });
       }
     } catch (err) {
-      setUpcomingTrips({hasNextPage: false, hasPreviousPage: false, page: 0, pageSize: 0, totalCount: 0, trips: []})
+      setUpcomingTrips({
+        hasNextPage: false,
+        hasPreviousPage: false,
+        page: 0,
+        pageSize: 0,
+        totalCount: 0,
+        trips: [],
+      });
     }
   };
 
   const addUserToTrip = async (tripId: number) => {
     const responsePatch = await axiosPrivate.patch(`trips/join/${tripId}`);
     // after we update we force a rerender by making a new get req
-    await getAllUpcomingTrips()
+    await getAllUpcomingTrips();
   };
 
   useEffect(() => {

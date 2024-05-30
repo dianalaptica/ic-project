@@ -6,18 +6,25 @@ import Top from "./Top Section/Top.tsx";
 
 const Body = () => {
   const axiosPrivate = useAxiosPrivate();
-  const [pastNotification, setPastNotification] = useState<UserNotification[]>([]);
-  const [upcomingNotifications, setUpcomingNotification] = useState<UserNotification[]>();
-
+  const [pastNotification, setPastNotification] = useState<UserNotification[]>(
+    []
+  );
+  const [upcomingNotifications, setUpcomingNotification] =
+    useState<UserNotification[]>();
 
   const updateReadStatus = async (id: number) => {
-    const response = await axiosPrivate.patch(`notification/user/${id}`, updateReadStatus);
+    const response = await axiosPrivate.patch(
+      `notification/user/${id}`,
+      updateReadStatus
+    );
     await getAllUpcomingNotifications();
   };
 
   const getAllPastNotifications = async () => {
     try {
-      const response = await axiosPrivate.get(`notification/user?isUpcoming=${false}`);
+      const response = await axiosPrivate.get(
+        `notification/user?isUpcoming=${false}`
+      );
       if (response.status === 200) {
         setPastNotification(response.data);
       } else {
