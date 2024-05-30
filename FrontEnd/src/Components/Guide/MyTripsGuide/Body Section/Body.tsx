@@ -39,7 +39,39 @@ const Body = () => {
     <div className="mainContent">
       <Top />
       <div className="bottom flex">
-        <button className="btn">Create New Trip</button>
+        {/* Open the modal using document.getElementById('ID').showModal() method */}
+        <button
+          className="btn"
+          onClick={() =>
+            document.getElementById("guide_create_trip").showModal()
+          }
+        >
+          Create New Trip
+        </button>
+        <dialog id="guide_create_trip" className="modal">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">Create a new Trip!</h3>
+            <p className="py-4">
+              Press ESC key or click the button below to close
+            </p>
+            <p className="py-4">
+              Press ESC key or click the button below to close
+            </p>
+            <p className="py-4">
+              Press ESC key or click the button below to close
+            </p>
+            <p className="py-4">
+              Press ESC key or click the button below to close
+            </p>
+            <div className="modal-action">
+              <button className="btn submitTrip">Submit</button>
+              <form method="dialog">
+                {/* if there is a button in form, it will close the modal */}
+                <button className="btn">Close</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
       </div>
       <br />
       {trips?.trips.map((elem) => (

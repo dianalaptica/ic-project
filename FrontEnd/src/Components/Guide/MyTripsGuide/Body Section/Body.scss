@@ -8,5 +8,10 @@
         margin-top: 2rem;
         gap: 2rem;
         align-items: flex-start;
+
+        .btn.submitTrip{
+            background: var(--primaryColor);
+            color: white;
+        }
     }
 }
