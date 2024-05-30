@@ -49,12 +49,6 @@ public class NotificationService : INotificationService
         return await _tripNotificationRepository.GetNotificationsByGuideIdAsync(isUpcoming, guideId, trackChanges);
     }
 
-    public async Task<IEnumerable<TripNotificationResponseDto>> GetNotificationsByGuideIdAsync(bool trackChanges)
-    {
-        var guideId = int.Parse(_httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        return await _tripNotificationRepository.GetNotificationsByGuideIdAsync(guideId, trackChanges);
-    }
-
     public async Task<NotificationResponseDto?> CreateNotificationAsync(NotificationCreateDto tripNotificationCreateDto)
     {
         var trip = await _tripRepository.GetByIdAsync(tripNotificationCreateDto.TripId, false);
@@ -69,7 +63,7 @@ public class NotificationService : INotificationService
             Title = tripNotificationCreateDto.Title,
             Message = tripNotificationCreateDto.Message
         };
-        
+
         _tripNotificationRepository.Create(tripNotification);
         await _tripNotificationRepository.SaveChangesAsync();
         var userIds = await _tripRepository.GetAllUserIdsAsync(tripNotification.TripId, false);
@@ -83,7 +77,7 @@ public class NotificationService : INotificationService
             });
         }
         await _userNotificationRepository.SaveChangesAsync();
-        
+
         return new NotificationResponseDto
         {
             Id = tripNotification.Id,
@@ -101,7 +95,7 @@ public class NotificationService : INotificationService
         {
             return null;
         }
-        
+
         var userNotification = notification.UserNotifications.FirstOrDefault(un => un.UserId == userId);
         if (userNotification == null)
         {
@@ -110,7 +104,7 @@ public class NotificationService : INotificationService
 
         userNotification.IsRead = !userNotification.IsRead;
         await _tripRepository.SaveChangesAsync();
-        
+
         return new NotificationResponseDto
         {
             Id = notification.Id,
@@ -119,18 +113,18 @@ public class NotificationService : INotificationService
             Message = notification.Message
         };
     }
-    
+
     public async Task<NotificationResponseDto?> DeleteNotificationAsync(int id)
-    {   
+    {
         var notification = await _tripNotificationRepository.GetByIdAsync(id, true);
         if (notification == null)
         {
             return null;
         }
-        
+
         _tripNotificationRepository.Delete(notification);
         await _tripNotificationRepository.SaveChangesAsync();
-        
+
         return new NotificationResponseDto
         {
             Id = notification.Id,

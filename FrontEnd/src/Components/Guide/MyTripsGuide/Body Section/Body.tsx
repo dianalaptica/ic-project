@@ -196,7 +196,7 @@ const Body = () => {
         )}
 
         <div>
-          {trips?.trips.map((elem) => (
+          {pastTrips?.trips.map((elem) => (
             <div key={elem.id}>
               <p>{elem.title}</p>
               <p>{elem.adress}</p>
