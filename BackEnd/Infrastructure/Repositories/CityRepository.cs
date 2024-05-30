@@ -17,6 +17,13 @@ public class CityRepository : Repository<City>, ICityRepository
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<City>> GetAllCitiesWithCountriesAsync(bool trackChanges)
+    {
+        return await FindAll(trackChanges)
+            .Include(c => c.Country)
+            .ToListAsync();
+    }
+
     public async Task<City?> GetByIdAsync(int id, bool trackChanges)
     {
         return await FindByCondition(c => c.Id == id, trackChanges)

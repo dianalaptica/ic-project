@@ -46,6 +46,7 @@ public class TripRepository : Repository<Trip>, ITripRepository
         string? sortColumn,
         string? sortOrder,
         bool hasJoined,
+        string? role,
         int userId,
         int page,
         int pageSize,
@@ -57,10 +58,17 @@ public class TripRepository : Repository<Trip>, ITripRepository
         {
             query = query.Where(t => t.CityId == cityId);
         }
-
+        
         if (hasJoined)
-        {
-            query = query.Where(t => t.Users.Any(u => u.Id == userId));
+        {   
+            if (role == "Guide")
+            {
+                query = query.Where(t => t.GuideId == userId);
+            }
+            else
+            {
+                query = query.Where(t => t.Users.Any(u => u.Id == userId));
+            }
         }
         else
         {

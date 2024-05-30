@@ -5,6 +5,7 @@ using BackEnd.Domain.Interfaces;
 using BackEnd.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BackEnd.Web.Controllers;
 
@@ -29,7 +30,7 @@ public class UserController : ControllerBase
     [Authorize(Roles = "Tourist")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<AppliedForGuide>> ApplyGuide([FromBody] UserApplicationDto request)
+    public async Task<ActionResult<AppliedForGuide>> ApplyGuide([FromForm] UserApplicationDto request)
     {
         try
         {
@@ -39,11 +40,15 @@ public class UserController : ControllerBase
             {
                 return BadRequest();
             }
+            
+            using var memoryStream = new MemoryStream();
+            request.Image.CopyTo(memoryStream);
+            var image = memoryStream.ToArray();
 
             var application = new AppliedForGuide
             {
                 UserId = userId,
-                IdentityCard = new byte[1],
+                IdentityCard = image,
                 CityId = request.CityId,
                 IsApproved = false
             };
@@ -55,6 +60,27 @@ public class UserController : ControllerBase
         } catch
         {
             return StatusCode(500, "Error connecting to Database.");
+        }
+    }
+    
+    [HttpGet("apply-guide")]
+    [Authorize(Roles = "Admin")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<ApplianceResponseDto>> GetAppliances()
+    {
+        try
+        {
+            var result = await _appliedForGuideRepository.GetAppliancesWithCity(false);
+            if (!result.IsNullOrEmpty())
+            {
+                return Ok(result);
+            }
+            return BadRequest();
+        }
+        catch
+        {
+            return BadRequest();
         }
     }
     

@@ -12,7 +12,8 @@ public class UserNotificationRepository : Repository<UserNotification>, IUserNot
     {
     }
 
-    public async Task<IEnumerable<UserNotificationResponseDto>> GetNotificationsByUserIdAsync(int userId, bool trackChanges)
+    public async Task<IEnumerable<UserNotificationResponseDto>> GetNotificationsByUserIdAsync(int userId,
+        bool trackChanges)
     {
         return await FindByCondition(n => n.UserId == userId, trackChanges)
             .Include(n => n.Notification)

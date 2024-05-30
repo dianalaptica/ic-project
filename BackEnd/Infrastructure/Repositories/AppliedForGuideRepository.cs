@@ -1,3 +1,4 @@
+using BackEnd.Aplication.DTOs;
 using BackEnd.Domain.Interfaces;
 using BackEnd.Domain.Models;
 using BackEnd.Infrastructure.Data;
@@ -14,6 +15,22 @@ public class AppliedForGuideRepository : Repository<AppliedForGuide>, IAppliedFo
     public async Task<IEnumerable<AppliedForGuide>> GetAllAsync(bool trackChanges)
     {
         return await FindAll(trackChanges)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<ApplianceResponseDto>> GetAppliancesWithCity(bool trackChanges)
+    {
+        return await FindAll(trackChanges)
+            .Include(c => c.City)
+            .Include(co => co.City.Country)
+            .Select(a => new ApplianceResponseDto
+            {
+                UserId = a.UserId,
+                CityName = a.City.Name,
+                CountryName = a.City.Country.Name,
+                IdentityCard = a.IdentityCard,
+                IsApproved = a.IsApproved
+            })
             .ToListAsync();
     }
 

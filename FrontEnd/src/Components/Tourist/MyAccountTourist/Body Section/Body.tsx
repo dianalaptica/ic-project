@@ -17,6 +17,8 @@ type EditDetailsFormInputs = {
   profilePicture?: Blob;
 };
 
+// request ca sa iei datele userului pt a le edita
+
 const Body = () => {
   // TO DO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   // change this mocked data to what api returns

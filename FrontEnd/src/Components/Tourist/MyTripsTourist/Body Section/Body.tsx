@@ -33,7 +33,18 @@ const Body = () => {
     const responsePatch = await axiosPrivate.patch(`trips/remove/${tripId}`);
     // after we update we force a rerender by making a new get req
     const responseGet = await axiosPrivate.get(`trips?hasJoined=${true}`);
-    setTrips(responseGet.data);
+    if (responseGet.status === 404) {
+      setTrips({
+        hasNextPage: false,
+        hasPreviousPage: false,
+        page: 0,
+        pageSize: 0,
+        totalCount: 0,
+        trips: [],
+      });
+    } else {
+      setTrips(responseGet.data);
+    }
   };
 
   useEffect(() => {
