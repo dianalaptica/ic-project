@@ -1,6 +1,6 @@
 import "./Listing.css";
-import paris from "../../../../../LoginAssets/paris.png";
-import london from "../../../../../LoginAssets/london.png";
+import cluj from "../../../../../LoginAssets/cluj.png";
+import timisoara from "../../../../../LoginAssets/timisoara.png";
 import useAxiosPrivate from "../../../../../Hooks/useAxiosPrivate.ts";
 
 const Listing = () => {
@@ -30,8 +30,8 @@ const Listing = () => {
             await callApi(14);
           }}
         >
-          <img src={paris} alt="Eiffel Tower" />
-          <h3>Paris, FR</h3>
+          <img src={timisoara} alt="Eiffel Tower" />
+          <h3>Timisoara, RO</h3>
         </div>
 
         <div
@@ -40,8 +40,8 @@ const Listing = () => {
             await callApi(17);
           }}
         >
-          <img src={london} alt="Big Ben" />
-          <h3>London, UK</h3>
+          <img src={cluj} alt="Catedrala" />
+          <h3>Cluj-Napoca, RO</h3>
         </div>
       </div>
     </div>
