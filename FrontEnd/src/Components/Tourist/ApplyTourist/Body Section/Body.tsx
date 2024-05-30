@@ -4,6 +4,7 @@ import useAxiosPrivate from "../../../../Hooks/useAxiosPrivate.ts";
 import { useEffect, useRef, useState } from "react";
 import { CityModel } from "../../../../Models/CityModel.ts";
 import { Form } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Body = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -39,8 +40,10 @@ const Body = () => {
     try {
       const response = await axiosPrivate.postForm("user/apply-guide", form);
       console.log(response);
+      toast.success("Applied successfully!");
     } catch (err) {
       console.log(err);
+      toast.error("You already applied!");
     }
     // TODO CEVA LOGICA CU TOAST POATE AR FI COOL
   };

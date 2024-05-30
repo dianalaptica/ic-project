@@ -4,8 +4,19 @@
   padding: 2rem;
   overflow: auto;
 }
-.mainContent .bottom {
+.mainContent .bottomAdmin {
   margin-top: 2rem;
   gap: 2rem;
   align-items: flex-start;
+  flex-direction: column;
+}
+.mainContent .bottomAdmin .card {
+  height: 20%;
+  width: 55%;
+}
+.mainContent .bottomAdmin .card .fig {
+  max-width: 50%;
+}
+.mainContent .bottomAdmin .card .card-body p {
+  padding: 0;
 }/*# sourceMappingURL=Body.css.map */

@@ -19,7 +19,8 @@ const Body = () => {
   const axiosPrivate = useAxiosPrivate();
   const [pastTrips, setPastTrips] = useState<Trips>();
   const [upcomingTrips, setUpcomingTrips] = useState<Trips>();
-  const { register, handleSubmit } = useForm<CreateTripForm>({});
+  const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
+  const { register, handleSubmit, setValue } = useForm<CreateTripForm>({});
 
   const getAllPastTrips = async () => {
     try {
@@ -135,10 +136,19 @@ const Body = () => {
     console.log(form.title);
     console.log(form.description);
     console.log(form.adress);
-    console.log(parseDateString(form.startDate));
+    // ????????????????????????????????????????????????????????
+    //console.log(parseDateString(form.startDate));
     console.log(form.endDate);
     console.log(form.maxTourists);
+    setValue("image", form.image as Blob);
     console.log(form.image);
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedImage(e.target.files[0]);
+      setValue("image", e.target.files[0]); // Register the selected image with react-hook-form
+    }
   };
 
   return (
@@ -238,7 +248,7 @@ const Body = () => {
               <input
                 type="file"
                 className="file-input file-input-bordered w-full max-w-xs"
-                {...register("image")}
+                onChange={handleImageChange}
               />
               <button type="submit" className="btn submitTrip">
                 Submit

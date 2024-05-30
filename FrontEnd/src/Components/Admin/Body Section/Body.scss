@@ -4,9 +4,24 @@
     padding: 2rem;
     overflow: auto;
 
-    .bottom{
+    .bottomAdmin{
         margin-top: 2rem;
         gap: 2rem;
         align-items: flex-start;
+        flex-direction: column;
+
+        .card{
+            height: 20%;
+            width: 55%;
+    
+            .fig{
+                max-width: 50%;
+            }
+            .card-body{
+                p{
+                    padding: 0;
+                }
+            }
+        }
     }
 }
