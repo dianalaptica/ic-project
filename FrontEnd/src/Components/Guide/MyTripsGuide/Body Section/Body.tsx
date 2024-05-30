@@ -38,7 +38,10 @@ const Body = () => {
   return (
     <div className="mainContent">
       <Top />
-      <div className="bottom flex">trips guide</div>
+      <div className="bottom flex">
+        <button className="btn">Create New Trip</button>
+      </div>
+      <br />
       {trips?.trips.map((elem) => (
         <div key={elem.id}>
           <p>{elem.title}</p>
