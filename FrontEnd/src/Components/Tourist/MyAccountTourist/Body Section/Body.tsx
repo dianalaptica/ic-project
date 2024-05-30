@@ -132,7 +132,7 @@ const Body = () => {
             </div>
           </div>
 
-          <label htmlFor="phonenumber">Profile picture</label>
+          <label htmlFor="profilePicture">Profile picture</label>
           <input
             type="file"
             className="file-input file-input-bordered w-full max-w-xs"
