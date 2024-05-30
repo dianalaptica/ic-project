@@ -67,13 +67,14 @@ public class TripService : ITripService
         string? sortColumn,
         string? sortOrder,
         bool hasJoined,
+        bool isUpcomming,
         int page,
         int pageSize,
         bool trackChanges)
     {
         var userId = int.Parse(_httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         var role = _httpContext.HttpContext.User.FindFirst(ClaimTypes.Role)?.Value;
-        return await _tripRepository.GetAllQueryAsync(cityId, searchTitle, sortColumn, sortOrder, hasJoined, role, userId,page, pageSize, trackChanges);
+        return await _tripRepository.GetAllQueryAsync(cityId, searchTitle, sortColumn, sortOrder, hasJoined, isUpcomming, role, userId,page, pageSize, trackChanges);
     }
 
     public async Task<TripResponseDto?> CreateTripAsync(TripCreateDto tripCreateDto, byte[] image)

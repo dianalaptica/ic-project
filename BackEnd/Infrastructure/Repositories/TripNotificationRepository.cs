@@ -27,11 +27,22 @@ public class TripNotificationRepository : Repository<TripNotification>, ITripNot
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<TripNotificationResponseDto>> GetNotificationsByGuideIdAsync(int guideId, bool trackChanges)
+    public async Task<IEnumerable<TripNotificationResponseDto>> GetNotificationsByGuideIdAsync(bool isUpcoming, int guideId, bool trackChanges)
     {
-        return await FindByCondition(n => n.Trip.GuideId == guideId, trackChanges)
+        IQueryable<TripNotification> query = FindByCondition(n => n.Trip.GuideId == guideId, trackChanges)
             .Include(n => n.UserNotifications)
-            .Include(t => t.Trip)
+            .Include(t => t.Trip);
+
+        if (isUpcoming)
+        {
+            query = query.Where(t => t.Trip.StartDate >= DateTime.Today);
+        }
+        else
+        {
+            query = query.Where(t => t.Trip.StartDate < DateTime.Today);
+        }
+        
+        return await query
             .Select(t => new TripNotificationResponseDto
             {
                 Id = t.Id,

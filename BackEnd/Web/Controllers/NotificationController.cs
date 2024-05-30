@@ -77,11 +77,11 @@ public class NotificationController : ControllerBase
     
     [HttpGet("guide")]
     [Authorize(Roles = "Guide")]
-    public async Task<ActionResult<IEnumerable<TripNotificationResponseDto>>> GetGuideNotification()
+    public async Task<ActionResult<IEnumerable<TripNotificationResponseDto>>> GetGuideNotification([FromQuery] bool isUpcoming = true)
     {
         try
         {
-            var notifications = await _notificationService.GetNotificationsByGuideIdAsync(false);
+            var notifications = await _notificationService.GetNotificationsByGuideIdAsync(isUpcoming, false);
             if (notifications == null || !notifications.Any())
             {
                 return NotFound();

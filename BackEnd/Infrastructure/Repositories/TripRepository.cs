@@ -46,6 +46,7 @@ public class TripRepository : Repository<Trip>, ITripRepository
         string? sortColumn,
         string? sortOrder,
         bool hasJoined,
+        bool isUpcomming,
         string? role,
         int userId,
         int page,
@@ -73,6 +74,15 @@ public class TripRepository : Repository<Trip>, ITripRepository
         else
         {
             query = query.Where(t => t.Users.All(u => u.Id != userId));
+        }
+
+        if (isUpcomming)
+        {
+            query = query.Where(t => t.StartDate >= DateTime.Today);
+        }
+        else
+        {
+            query = query.Where(t => t.StartDate < DateTime.Today);
         }
 
         if (!string.IsNullOrWhiteSpace(searchTitle))
