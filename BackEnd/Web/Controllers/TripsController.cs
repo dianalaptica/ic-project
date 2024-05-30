@@ -26,12 +26,13 @@ public class TripsController : ControllerBase
         [FromQuery] string? sortColumn,
         [FromQuery] string? sortOrder,
         [FromQuery] bool hasJoined = false,
+        [FromQuery] bool isUpcoming = true,
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 100)
     {
         try
         {
-            var result = await _tripsService.GetTripsByQuery(cityId, searchTitle, sortColumn, sortOrder, hasJoined, page, pageSize, false);
+            var result = await _tripsService.GetTripsByQuery(cityId, searchTitle, sortColumn, sortOrder, hasJoined, isUpcoming, page, pageSize, false);
             if (!result.Trips.IsNullOrEmpty())
             {
                 return Ok(result);
