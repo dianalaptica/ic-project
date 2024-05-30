@@ -43,10 +43,10 @@ public class NotificationService : INotificationService
         return await _userNotificationRepository.GetNotificationsByUserIdAsync(userId, trackChanges);
     }
 
-    public async Task<IEnumerable<TripNotificationResponseDto>> GetNotificationsByGuideIdAsync(bool trackChanges)
+    public async Task<IEnumerable<TripNotificationResponseDto>> GetNotificationsByGuideIdAsync(bool isUpcoming, bool trackChanges)
     {
         var guideId = int.Parse(_httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        return await _tripNotificationRepository.GetNotificationsByGuideIdAsync(guideId, trackChanges);
+        return await _tripNotificationRepository.GetNotificationsByGuideIdAsync(isUpcoming, guideId, trackChanges);
     }
 
     public async Task<NotificationResponseDto?> CreateNotificationAsync(NotificationCreateDto tripNotificationCreateDto)
