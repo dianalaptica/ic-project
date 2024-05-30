@@ -3,12 +3,24 @@ import "./Body.css";
 import useAxiosPrivate from "../../../../Hooks/useAxiosPrivate.ts";
 import { useEffect, useState } from "react";
 import { Trips } from "../../../../Models/Trips.ts";
-import video from "../../../../LoginAssets/video.mp4";
+import { useForm } from "react-hook-form";
+
+type CreateTripForm = {
+  title: string;
+  description: string;
+  adress: string;
+  startDate: Date;
+  endDate: Date;
+  maxTourists: number;
+  image: Blob;
+};
 
 const Body = () => {
   const axiosPrivate = useAxiosPrivate();
   const [pastTrips, setPastTrips] = useState<Trips>();
   const [upcomingTrips, setUpcomingTrips] = useState<Trips>();
+  const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
+  const { register, handleSubmit, setValue } = useForm<CreateTripForm>({});
 
   const getAllPastTrips = async () => {
     try {
@@ -108,11 +120,41 @@ const Body = () => {
     return URL.createObjectURL(base64ToBlob(imageFile, "image/png"));
   };
 
+  function parseDateString(dateString: string) {
+    const [datePart, timePart] = dateString.split(" ");
+
+    const [day, month, year] = datePart.split(".").map(Number);
+
+    const [hours, minutes, seconds] = timePart.split(":").map(Number);
+
+    const date = new Date(year, month - 1, day, hours, minutes, seconds);
+
+    return date;
+  }
+
+  const handleCreateTrip = async (form: CreateTripForm) => {
+    console.log(form.title);
+    console.log(form.description);
+    console.log(form.adress);
+    // ????????????????????????????????????????????????????????
+    //console.log(parseDateString(form.startDate));
+    console.log(form.endDate);
+    console.log(form.maxTourists);
+    setValue("image", form.image as Blob);
+    console.log(form.image);
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedImage(e.target.files[0]);
+      setValue("image", e.target.files[0]); // Register the selected image with react-hook-form
+    }
+  };
+
   return (
     <div className="mainContent">
       <Top />
       <div className="bottomTripTourist flex">
-        {/* Open the modal using document.getElementById('ID').showModal() method */}
         <button
           className="btn"
           onClick={() =>
@@ -124,27 +166,103 @@ const Body = () => {
         <dialog id="guide_create_trip" className="modal">
           <div className="modal-box">
             <h3 className="font-bold text-lg">Create a new Trip!</h3>
-            <p className="py-4">
-              Press ESC key or click the button below to close
-            </p>
-            <p className="py-4">
-              Press ESC key or click the button below to close
-            </p>
-            <p className="py-4">
-              Press ESC key or click the button below to close
-            </p>
-            <p className="py-4">
-              Press ESC key or click the button below to close
-            </p>
+
+            <form
+              action=""
+              className="form grid"
+              onSubmit={handleSubmit(handleCreateTrip)}
+            >
+              <div className="inputDiv">
+                <label htmlFor="title">Title</label>
+                <div className="input flex">
+                  <input
+                    type="text"
+                    id="title"
+                    placeholder="Enter trip title"
+                    {...register("title")}
+                  />
+                </div>
+              </div>
+
+              <div className="inputDiv">
+                <label htmlFor="description">Description</label>
+                <div className="input flex">
+                  <input
+                    type="text"
+                    id="description"
+                    placeholder="Enter trip description"
+                    {...register("description")}
+                  />
+                </div>
+              </div>
+
+              <div className="inputDiv">
+                <label htmlFor="adress">Adress</label>
+                <div className="input flex">
+                  <input
+                    type="text"
+                    id="adress"
+                    placeholder="Enter the adress of the trip"
+                    {...register("adress")}
+                  />
+                </div>
+              </div>
+
+              <div className="inputDiv">
+                <label htmlFor="startDate">Start Date</label>
+                <div className="input flex">
+                  <input
+                    type="text"
+                    id="startDate"
+                    placeholder="Eg. 01.06.2024 16:30:00"
+                    {...register("startDate")}
+                  />
+                </div>
+              </div>
+
+              <div className="inputDiv">
+                <label htmlFor="endDate">End Date</label>
+                <div className="input flex">
+                  <input
+                    type="text"
+                    id="endDate"
+                    placeholder="Eg. 01.06.2024 17:30:00"
+                    {...register("endDate")}
+                  />
+                </div>
+              </div>
+
+              <div className="inputDiv">
+                <label htmlFor="maxTourists">Max Tourists</label>
+                <div className="input flex">
+                  <input
+                    type="number"
+                    id="maxTourists"
+                    placeholder="Enter the max number of tourists"
+                    {...register("maxTourists")}
+                  />
+                </div>
+              </div>
+
+              <label htmlFor="image">Trip Image</label>
+              <input
+                type="file"
+                className="file-input file-input-bordered w-full max-w-xs"
+                onChange={handleImageChange}
+              />
+              <button type="submit" className="btn submitTrip">
+                Submit
+              </button>
+            </form>
+
             <div className="modal-action">
-              <button className="btn submitTrip">Submit</button>
               <form method="dialog">
-                {/* if there is a button in form, it will close the modal */}
                 <button className="btn">Close</button>
               </form>
             </div>
           </div>
         </dialog>
+
         <h2>Upcoming Trips</h2>
 
         {upcomingTrips?.trips && upcomingTrips.trips.length > 0 ? (
@@ -183,28 +301,38 @@ const Body = () => {
             );
           })
         ) : (
-          <div className="cardSection flex">
-            <div className="rightCard flex">
-              <h1>No available trips at the moment</h1>
-              <br />
-
-              <div className="videoDiv">
-                <video src={video} autoPlay loop muted></video>
-              </div>
-            </div>
-          </div>
+          <p>No upcoming trips</p>
         )}
 
-        <div>
-          {pastTrips?.trips.map((elem) => (
-            <div key={elem.id}>
-              <p>{elem.title}</p>
-              <p>{elem.adress}</p>
-              <p>{elem.cityName}</p>
-              <button onClick={() => deleteTrip(elem.id)}>DELETE</button>
-            </div>
-          ))}
-        </div>
+        <h2>Past Trips</h2>
+
+        {pastTrips?.trips && pastTrips.trips.length > 0 ? (
+          pastTrips.trips.map((elem) => {
+            return (
+              <div
+                key={elem.id}
+                className="card past card-side bg-base-100 shadow-xl"
+              >
+                <figure className="fig">
+                  <img src={createImageSrc(elem.image)} alt="Trip" />
+                </figure>
+                <div className="card-body">
+                  <h2 className="card-title">{elem.title}</h2>
+                  <p>{elem.description}</p>
+                  <p>
+                    Location: {elem.cityName}, {elem.countryName}
+                  </p>
+                  <p>
+                    Start Date: {formatDateString(elem.startDate.toString())}
+                  </p>
+                  <p>End Date: {formatDateString(elem.endDate.toString())}</p>
+                </div>
+              </div>
+            );
+          })
+        ) : (
+          <p>No past trips</p>
+        )}
       </div>
       <br />
     </div>

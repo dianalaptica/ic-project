@@ -61,15 +61,4 @@
 }
 .mainContent .bottom .form .btn.disable {
   background-color: var(--greyText);
-}
-.mainContent .bottom .form .forgotPassword {
-  font-size: 13px;
-  color: var(--blackColor);
-  opacity: 0.7;
-  text-align: center;
-}
-.mainContent .bottom .form .forgotPassword a {
-  text-decoration: underline;
-  cursor: pointer;
-  opacity: 1;
 }/*# sourceMappingURL=Body.css.map */

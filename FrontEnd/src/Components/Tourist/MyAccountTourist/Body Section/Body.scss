@@ -72,19 +72,6 @@
             .btn.disable{
                 background-color: var(--greyText);
             }
-
-            .forgotPassword{
-                font-size: 13px;
-                color: var(--blackColor);
-                opacity: .7;
-                text-align: center;
-
-                a{
-                    text-decoration: underline;
-                    cursor: pointer;
-                    opacity: 1;
-                }
-            }
         }
     }
 }

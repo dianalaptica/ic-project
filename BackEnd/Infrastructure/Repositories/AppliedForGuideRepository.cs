@@ -23,6 +23,7 @@ public class AppliedForGuideRepository : Repository<AppliedForGuide>, IAppliedFo
         return await FindAll(trackChanges)
             .Include(c => c.City)
             .Include(co => co.City.Country)
+            .Where(a => a.IsApproved == false)
             .Select(a => new ApplianceResponseDto
             {
                 UserId = a.UserId,
