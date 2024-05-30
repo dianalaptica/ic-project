@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Trips } from "../../../../Models/Trips.ts";
 import Top from "./Top Section/Top.tsx";
 import default_trip_pic from "../../../../LoginAssets/default_trip_picture.png";
+import video from "../../../../LoginAssets/video.mp4";
 
 function base64ToBlob(base64String: string, contentType: string) {
   contentType = contentType || "";
@@ -33,7 +34,14 @@ const Body = () => {
     // after we update we force a rerender by making a new get req
     const responseGet = await axiosPrivate.get(`trips?hasJoined=${true}`);
     if (responseGet.status === 404) {
-      setTrips({hasNextPage: false, hasPreviousPage: false, page: 0, pageSize: 0, totalCount: 0, trips: []})
+      setTrips({
+        hasNextPage: false,
+        hasPreviousPage: false,
+        page: 0,
+        pageSize: 0,
+        totalCount: 0,
+        trips: [],
+      });
     } else {
       setTrips(responseGet.data);
     }
@@ -93,7 +101,16 @@ const Body = () => {
             </div>
           ))
         ) : (
-          <p>No trips</p>
+          <div className="cardSection flex">
+            <div className="rightCard flex">
+              <h1>You don't have any trips booked at the moment</h1>
+              <br />
+
+              <div className="videoDiv">
+                <video src={video} autoPlay loop muted></video>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>

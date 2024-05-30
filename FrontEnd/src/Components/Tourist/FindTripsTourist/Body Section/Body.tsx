@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Trips } from "../../../../Models/Trips.ts";
 import Top from "./Top Section/Top.tsx";
 import default_trip_pic from "../../../../LoginAssets/default_trip_picture.png";
+import { useNavigate } from "react-router-dom";
+import video from "../../../../LoginAssets/video.mp4";
 
 function base64ToBlob(base64String: string, contentType: string) {
   contentType = contentType || "";
@@ -19,6 +21,7 @@ function base64ToBlob(base64String: string, contentType: string) {
 }
 
 const Body = () => {
+  const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const [trips, setTrips] = useState<Trips>();
 
@@ -98,7 +101,16 @@ const Body = () => {
             );
           })
         ) : (
-          <p>No trips</p>
+          <div className="cardSection flex">
+            <div className="rightCard flex">
+              <h1>No available trips at the moment</h1>
+              <br />
+
+              <div className="videoDiv">
+                <video src={video} autoPlay loop muted></video>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>

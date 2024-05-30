@@ -33,7 +33,6 @@ const Login = () => {
 
   const handleLogin = async (form: LoginFormInputs) => {
     setIsLoading(true);
-    console.log(form.email);
     await loginUser(form.email, form.password);
     setIsLoading(false);
   };

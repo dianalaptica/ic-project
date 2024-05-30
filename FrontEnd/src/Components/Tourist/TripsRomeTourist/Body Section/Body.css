@@ -1,0 +1,23 @@
+.mainContent {
+  width: 82%;
+  height: 100%;
+  padding: 2rem;
+  overflow: auto;
+}
+.mainContent .bottomTripTourist {
+  margin-top: 2rem;
+  gap: 2rem;
+  align-items: flex-start;
+  flex-direction: column;
+  height: 100%;
+}
+.mainContent .bottomTripTourist .card {
+  height: 38%;
+  width: 100%;
+}
+.mainContent .bottomTripTourist .card .fig {
+  max-width: 55%;
+}
+.mainContent .bottomTripTourist .card .pColor {
+  color: var(--primaryColor);
+}/*# sourceMappingURL=Body.css.map */

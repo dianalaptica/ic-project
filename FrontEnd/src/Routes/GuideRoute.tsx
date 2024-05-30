@@ -18,7 +18,7 @@ const GuideRoute = ({ children }: Props) => {
     );
   } else {
     // Fallback in case the role doesn't match any of the expected roles
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/" state={{ from: location }} replace />;
   }
 };
 

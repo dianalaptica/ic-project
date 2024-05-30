@@ -5,6 +5,7 @@ import { loginApi, registerApi } from "../Services/AuthService";
 import { toast } from "react-toastify";
 import React from "react";
 import axios from "axios";
+import { handleError } from "../Helpers/ErrorHandler";
 
 type UserContextType = {
   user: UserProfile | null;
@@ -62,7 +63,7 @@ export const UserProvider = ({ children }: Props) => {
           localStorage.setItem("user", JSON.stringify(userObj));
           setToken(res?.data.token);
           setUser(userObj!);
-          toast.success("Login Success!");
+          toast.success("Register Success!");
           navigate("/tourist/dashboard");
         } else toast.warning("Server error occured");
       })

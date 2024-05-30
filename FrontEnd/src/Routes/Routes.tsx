@@ -19,6 +19,10 @@ import MyTripsGuide from "../Components/Guide/MyTripsGuide/MyTripsGuide";
 import NotificationsGuide from "../Components/Guide/NotificationsGuide/NotificationsGuide";
 import MyAccountGuide from "../Components/Guide/MyAccountGuide/MyAccountGuide";
 import ApplyTourist from "../Components/Tourist/ApplyTourist/ApplyTourist";
+import TripsParisTourist from "../Components/Tourist/TripsParisTourist/TripsParisTourist";
+import TripsLondonTourist from "../Components/Tourist/TripsLondonTourist/TripsLondonTourist";
+import TripsRomeTourist from "../Components/Tourist/TripsRomeTourist/TripsRomeTourist";
+import TripsBerlinTourist from "../Components/Tourist/TripsBerlinTourist/TripsBerlinTourist";
 
 // create a router
 export const router = createBrowserRouter([
@@ -134,6 +138,46 @@ export const router = createBrowserRouter([
           <ProtectedRoute>
             <TouristRoute>
               <ApplyTourist />
+            </TouristRoute>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "tourist/trip/paris",
+        element: (
+          <ProtectedRoute>
+            <TouristRoute>
+              <TripsParisTourist />
+            </TouristRoute>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "tourist/trip/london",
+        element: (
+          <ProtectedRoute>
+            <TouristRoute>
+              <TripsLondonTourist />
+            </TouristRoute>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "tourist/trip/rome",
+        element: (
+          <ProtectedRoute>
+            <TouristRoute>
+              <TripsRomeTourist />
+            </TouristRoute>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "tourist/trip/berlin",
+        element: (
+          <ProtectedRoute>
+            <TouristRoute>
+              <TripsBerlinTourist />
             </TouristRoute>
           </ProtectedRoute>
         ),

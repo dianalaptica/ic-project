@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace BackEnd.Aplication.DTOs;
 
 public class UserNotificationResponseDto
