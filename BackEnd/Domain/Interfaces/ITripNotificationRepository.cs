@@ -8,7 +8,7 @@ public interface ITripNotificationRepository
     Task<TripNotification?> GetByIdAsync(int id, bool trackChanges);
     Task<IEnumerable<TripNotification>> GetByTripIdAsync(int tripId, bool trackChanges);
     
-    Task<IEnumerable<TripNotificationResponseDto>> GetNotificationsByGuideIdAsync(int guideId, bool trackChanges);
+    Task<IEnumerable<TripNotificationResponseDto>> GetNotificationsByGuideIdAsync(bool isUpcoming, int guideId, bool trackChanges);
     void Create(TripNotification user);
     void Delete(TripNotification user);
     void Update(TripNotification user);

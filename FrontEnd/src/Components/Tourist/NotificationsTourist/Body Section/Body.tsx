@@ -3,28 +3,57 @@ import useAxiosPrivate from "../../../../Hooks/useAxiosPrivate.ts";
 import { useEffect, useState } from "react";
 import { UserNotification } from "../../../../Models/UserNotification.ts";
 import Top from "./Top Section/Top.tsx";
-import { DiVim } from "react-icons/di";
 
 const Body = () => {
   const axiosPrivate = useAxiosPrivate();
-  const [notification, setNotification] = useState<UserNotification[]>([]);
+  const [pastNotification, setPastNotification] = useState<UserNotification[]>(
+    []
+  );
+  const [upcomingNotifications, setUpcomingNotification] =
+    useState<UserNotification[]>();
 
   const updateReadStatus = async (id: number) => {
-    const response = await axiosPrivate.patch(`notification/user/${id}`);
-    getNotifications();
+    const response = await axiosPrivate.patch(
+      `notification/user/${id}`,
+      updateReadStatus
+    );
+    await getAllUpcomingNotifications();
   };
 
-  const getNotifications = async () => {
-    const response = await axiosPrivate.get("notification/user");
-    setNotification(response.data);
-    console.log(notification);
+  const getAllPastNotifications = async () => {
+    try {
+      const response = await axiosPrivate.get(
+        `notification/user?isUpcoming=${false}`
+      );
+      if (response.status === 200) {
+        setPastNotification(response.data);
+      } else {
+        setPastNotification([]);
+      }
+    } catch (err) {
+      setPastNotification([]);
+    }
+  };
+
+  const getAllUpcomingNotifications = async () => {
+    try {
+      const response = await axiosPrivate.get(`notification/user`);
+      if (response.status === 200) {
+        setPastNotification(response.data);
+      } else {
+        setUpcomingNotification([]);
+      }
+    } catch (err) {
+      setUpcomingNotification([]);
+    }
   };
 
   useEffect(() => {
-    getNotifications();
+    // getAllPastNotifications();
+    getAllUpcomingNotifications();
   }, []);
 
-  console.log(notification);
+  console.log(pastNotification);
 
   // TODO: map all documents and display a component for each one, when clicked call the method
   // IDEE Se poate face ceva care daca isRead e false sa arate ca nu e citit si daca e true sa apara citit
@@ -33,9 +62,9 @@ const Body = () => {
     <div className="mainContent">
       <Top />
       <h1>New notifications</h1>
-      {notification.find((n) => n.isRead === false) ? (
+      {pastNotification.find((n) => n.isRead === false) ? (
         <div className="bottom flex">
-          {notification.map(
+          {pastNotification.map(
             (elem) =>
               elem.isRead === false && (
                 <div key={`${elem.notificationId}` + `${elem.tripId}`}>
@@ -70,9 +99,9 @@ const Body = () => {
       )}
 
       <h1>Read notifications</h1>
-      {notification.find((n) => n.isRead === true) ? (
+      {pastNotification.find((n) => n.isRead === true) ? (
         <div className="bottom flex">
-          {notification.map(
+          {pastNotification.map(
             (elem) =>
               elem.isRead === true && (
                 <div key={`${elem.notificationId}` + `${elem.tripId}`}>

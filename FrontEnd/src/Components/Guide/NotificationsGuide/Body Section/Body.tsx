@@ -6,34 +6,54 @@ import { GuideNotification } from "../../../../Models/GuideNotification.ts";
 
 const Body = () => {
   const axiosPrivate = useAxiosPrivate();
-  const [notifications, setNotification] = useState<GuideNotification[]>();
+  const [pastNotifications, setPastNotification] =
+    useState<GuideNotification[]>();
+  const [upcomingNotifications, setUpcomingNotification] =
+    useState<GuideNotification[]>();
 
-  const getAllNotifications = async () => {
-    const response = await axiosPrivate.get(`notification/guide`);
-    setNotification(response.data);
-    console.log(response.data);
-  };
-
-  const deleteNotification = async (id: number) => {
-    console.log(id);
-    const responseDelete = await axiosPrivate.delete(`notification/${id}`);
-    const responseGet = await axiosPrivate.get(`notification/guide`);
-    if (responseGet.status === 404) {
-      setNotification([]);
-    } else {
-      setNotification(responseGet.data);
+  const getAllPastNotifications = async () => {
+    try {
+      const response = await axiosPrivate.get(
+        `notification/guide?isUpcoming=${false}`
+      );
+      if (response.status === 200) {
+        setPastNotification(response.data);
+      } else {
+        setPastNotification([]);
+      }
+    } catch (err) {
+      setPastNotification([]);
     }
   };
 
+  const getAllUpcomingNotifications = async () => {
+    try {
+      const response = await axiosPrivate.get(`notification/guide`);
+      if (response.status === 200) {
+        setUpcomingNotification(response.data);
+      } else {
+        setUpcomingNotification([]);
+      }
+    } catch (err) {
+      setUpcomingNotification([]);
+    }
+  };
+
+  const deleteNotification = async (id: number) => {
+    const responseDelete = await axiosPrivate.delete(`notification/${id}`);
+    await getAllUpcomingNotifications();
+  };
+
   useEffect(() => {
-    getAllNotifications();
+    getAllPastNotifications();
+    getAllUpcomingNotifications();
   }, []);
 
   return (
     <div className="mainContent">
       <Top />
       <div className="bottom flex">notifications guide</div>
-      {notifications?.map((elem) => (
+      {pastNotifications?.map((elem) => (
         <div key={elem.id}>
           <p>{elem.tripTitle}</p>
           <p>{elem.title}</p>

@@ -13,6 +13,7 @@ public interface ITripService
         string? sortColumn,
         string? sortOrder,
         bool hasJoined,
+        bool isUpcoming,
         int page,
         int pageSize,
         bool trackChanges);
