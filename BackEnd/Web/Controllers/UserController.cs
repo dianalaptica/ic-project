@@ -1,6 +1,7 @@
 using System.Net.Mime;
 using System.Security.Claims;
 using BackEnd.Aplication.DTOs;
+using BackEnd.Aplication.Services.Trips;
 using BackEnd.Domain.Interfaces;
 using BackEnd.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -17,12 +18,14 @@ public class UserController : ControllerBase
     private readonly IUserRepository _userRepository;
     private readonly IAppliedForGuideRepository _appliedForGuideRepository;
     private readonly IHttpContextAccessor _httpContext;
+    private readonly ITripService _tripService;
     
-    public UserController(IUserRepository userRepository, IHttpContextAccessor httpContext, IAppliedForGuideRepository appliedForGuideRepository)
+    public UserController(IUserRepository userRepository, IHttpContextAccessor httpContext, IAppliedForGuideRepository appliedForGuideRepository, ITripService tripService)
     {
         _userRepository = userRepository;
         _httpContext = httpContext;
         _appliedForGuideRepository = appliedForGuideRepository;
+        _tripService = tripService;
     }
     
     // TODO: change response to be nicer
@@ -117,6 +120,40 @@ public class UserController : ControllerBase
         } catch
         {
             return StatusCode(500, "Error connecting to Database.");
+        }
+    }
+
+    [HttpGet("tourist/stats")]
+    [Authorize(Roles = "Tourist")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<TripStatsDto>> GetTouristStats()
+    {
+        try
+        {
+            var result = await _tripService.GetTouristTripStats(false);
+            return Ok(result);
+        }
+        catch
+        {
+            return StatusCode(500);
+        }
+    }
+    
+    [HttpGet("guide/stats")]
+    [Authorize(Roles = "Guide")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<TripStatsDto>> GetGuideStats()
+    {
+        try
+        {
+            var result = await _tripService.GetGuideTripStats(false);
+            return Ok(result);
+        }
+        catch
+        {
+            return StatusCode(500);
         }
     }
 }

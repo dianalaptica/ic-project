@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using BackEnd.Aplication.DTOs;
 using BackEnd.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -12,10 +13,14 @@ namespace BackEnd.Web.Controllers;
 public class CityController : ControllerBase
 {
     private readonly ICityRepository _cityRepository;
+    private readonly IAppliedForGuideRepository _appliedForGuideRepository;
+    private readonly IHttpContextAccessor _httpContext;
 
-    public CityController(ICityRepository cityRepository)
+    public CityController(ICityRepository cityRepository, IAppliedForGuideRepository appliedForGuideRepository, IHttpContextAccessor httpContext)
     {
         _cityRepository = cityRepository;
+        _appliedForGuideRepository = appliedForGuideRepository;
+        _httpContext = httpContext;
     }
     
     [HttpGet]
@@ -32,6 +37,25 @@ public class CityController : ControllerBase
                     CityName = c.Name,
                     CountryName = c.Country.Name
                 }));
+            }
+            return NotFound();
+        } catch
+        {
+            return StatusCode(500, "Error connecting to Database.");
+        }
+    }
+    
+    [HttpGet("guide")]
+    [Authorize(Roles = "Guide")]
+    public async Task<ActionResult<CityResponseDto>> GetGuideCity()
+    {
+        try
+        {
+            var guideId = int.Parse(_httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var city = await _appliedForGuideRepository.GetByIdWithCityAsync(guideId,false);
+            if (city is not null)
+            {
+                return Ok(city);
             }
             return NotFound();
         } catch

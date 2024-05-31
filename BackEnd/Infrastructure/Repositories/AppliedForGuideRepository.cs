@@ -40,4 +40,18 @@ public class AppliedForGuideRepository : Repository<AppliedForGuide>, IAppliedFo
         return await FindByCondition(r => r.UserId == id, trackChanges)
             .SingleOrDefaultAsync();
     }
+
+    public async Task<CityResponseDto?> GetByIdWithCityAsync(int id, bool trackChanges)
+    {
+        return await FindByCondition(a => a.UserId == id, trackChanges)
+            .Include(c => c.City)
+            .ThenInclude(co => co.Country)
+            .Select(c => new CityResponseDto
+            {
+                Id = c.CityId,
+                CityName = c.City.Name,
+                CountryName = c.City.Country.Name
+            })
+            .SingleOrDefaultAsync();
+    }
 }
