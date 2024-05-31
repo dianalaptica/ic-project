@@ -17,6 +17,19 @@ public class TripRepository : Repository<Trip>, ITripRepository
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Trip>> GetAllTripsForTourist(int id, bool trackChanges)
+    {
+        return await FindByCondition(t => t.Users.Any(i => i.Id == id), trackChanges)
+            .Include(u => u.Users)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Trip>> GetAllTripsForGuide(int id, bool trackChanges)
+    {
+        return await FindByCondition(t => t.GuideId == id, trackChanges)
+            .ToListAsync();
+    }
+
     public async Task<Trip?> GetByIdAsync(int id, bool trackChanges)
     {
         return await FindByCondition(t => t.Id == id, trackChanges)

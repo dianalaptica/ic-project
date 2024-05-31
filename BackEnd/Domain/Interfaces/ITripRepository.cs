@@ -7,6 +7,8 @@ namespace BackEnd.Domain.Interfaces;
 public interface ITripRepository
 {
     Task<IEnumerable<Trip>> GetAllAsync(bool trackChanges);
+    Task<IEnumerable<Trip>> GetAllTripsForTourist(int id, bool trackChanges);
+    Task<IEnumerable<Trip>> GetAllTripsForGuide(int id, bool trackChanges);
     Task<IEnumerable<int>> GetAllUserIdsAsync(int tripId, bool trackChanges);
     Task<Trip?> GetByIdAsync(int id, bool trackChanges);
     Task<Trip?> GetByIdWithIncludeAsync(int id, bool trackChanges);

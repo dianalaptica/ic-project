@@ -115,6 +115,60 @@ public class TripService : ITripService
         };
     }
 
+    public async Task<TripStatsDto> GetTouristTripStats(bool trackChanges)
+    {
+        var userId = int.Parse(_httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        var trips = await _tripRepository.GetAllTripsForTourist(userId, false);
+
+        var todayTrips = 0;
+        var monthTrips = 0;
+        
+        foreach (var trip in trips)
+        {
+            if (trip.StartDate.Month == DateTime.Today.Month && trip.StartDate.Year == DateTime.Today.Year)
+            {
+                monthTrips++;
+                if (trip.StartDate.Day == DateTime.Today.Day)
+                {
+                    todayTrips++;
+                }
+            }
+        }
+
+        return new TripStatsDto
+        {
+            TripsToday = todayTrips,
+            TripsThisMonth = monthTrips
+        };
+    }
+
+    public async Task<TripStatsDto> GetGuideTripStats(bool trackChanges)
+    {
+        var guideId = int.Parse(_httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        var trips = await _tripRepository.GetAllTripsForGuide(guideId, false);
+
+        var todayTrips = 0;
+        var monthTrips = 0;
+        
+        foreach (var trip in trips)
+        {
+            if (trip.StartDate.Month == DateTime.Today.Month && trip.StartDate.Year == DateTime.Today.Year)
+            {
+                monthTrips++;
+                if (trip.StartDate.Day == DateTime.Today.Day)
+                {
+                    todayTrips++;
+                }
+            }
+        }
+
+        return new TripStatsDto
+        {
+            TripsToday = todayTrips,
+            TripsThisMonth = monthTrips
+        };
+    }
+
     public async Task<TripResponseDto?> JoinTripAsync(int id)
     {
         var trip = await _tripRepository.GetByIdWithIncludeAsync(id, true);

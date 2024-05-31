@@ -18,6 +18,8 @@ public interface ITripService
         int pageSize,
         bool trackChanges);
     public Task<TripResponseDto?> CreateTripAsync(TripCreateDto tripCreateDto, byte[] image);
+    public Task<TripStatsDto> GetTouristTripStats(bool trackChanges);
+    public Task<TripStatsDto> GetGuideTripStats(bool trackChanges);
     public Task<TripResponseDto?> JoinTripAsync(int id);
     public Task<TripResponseDto?> RemoveTripAsync(int id);
     public Task<TripResponseDto?> DeleteTripAsync(int id);
