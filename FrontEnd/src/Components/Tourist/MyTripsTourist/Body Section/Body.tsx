@@ -112,9 +112,11 @@ const Body = () => {
   return (
     <div className="mainContent">
       <Top />
+
       <div className="bottomTripTourist flex">
-        {pastTrips?.trips && pastTrips.trips.length > 0 ? (
-          pastTrips.trips.map((elem) => (
+        <h2>My upcoming trips</h2>
+        {upcomingTrips?.trips && upcomingTrips.trips.length > 0 ? (
+          upcomingTrips.trips.map((elem) => (
             <div key={elem.id} className="card card-side bg-base-100 shadow-xl">
               <figure className="fig">
                 <img src={createImageSrc(elem.image)} alt="Trip" />
@@ -150,6 +152,33 @@ const Body = () => {
               </div>
             </div>
           </div>
+        )}
+        {/* </div> */}
+        {/* <div className="bottomTripTourist flex"> */}
+        <h2>My past trips</h2>
+        {pastTrips?.trips && pastTrips.trips.length > 0 ? (
+          pastTrips.trips.map((elem) => (
+            <div
+              key={elem.id}
+              className="card read card-side bg-base-100 shadow-xl"
+            >
+              <figure className="fig">
+                <img src={createImageSrc(elem.image)} alt="Trip" />
+              </figure>
+              <div className="card-body">
+                <h2 className="card-title">{elem.title}</h2>
+                <p>{elem.description}</p>
+                <p>
+                  Location: {elem.cityName}, {elem.countryName}
+                </p>
+                <p>Address: {elem.adress}</p>
+                <p>Start Date: {formatDateString(elem.startDate.toString())}</p>
+                <p>End Date: {formatDateString(elem.endDate.toString())}</p>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p>No past trips</p>
         )}
       </div>
     </div>
