@@ -4,6 +4,8 @@ import useAxiosPrivate from "../../../../Hooks/useAxiosPrivate.ts";
 import { useEffect, useState } from "react";
 import { Trips } from "../../../../Models/Trips.ts";
 import { useForm } from "react-hook-form";
+import {CityModel} from "../../../../Models/CityModel.ts";
+import {toast} from "react-toastify";
 
 type CreateTripForm = {
   title: string;
@@ -12,6 +14,7 @@ type CreateTripForm = {
   startDate: Date;
   endDate: Date;
   maxTourists: number;
+  cityId: number;
   image: Blob;
 };
 
@@ -21,6 +24,7 @@ const Body = () => {
   const [upcomingTrips, setUpcomingTrips] = useState<Trips>();
   const [selectedImage, setSelectedImage] = useState<Blob | null>(null);
   const { register, handleSubmit, setValue } = useForm<CreateTripForm>({});
+  const [currentCity, setCurrentCity] = useState<CityModel | null>(null);
 
   const getAllPastTrips = async () => {
     try {
@@ -83,9 +87,23 @@ const Body = () => {
     await getAllUpcomingTrips();
   };
 
+  const getGuideCity = async () => {
+    try {
+      const response = await axiosPrivate.get(`city/guide`);
+      if (response.status === 200) {
+        setCurrentCity(response.data);
+      } else {
+        setCurrentCity(null);
+      }
+    } catch (err) {
+      setCurrentCity(null);
+    }
+  }
+
   useEffect(() => {
     getAllPastTrips();
     getAllUpcomingTrips();
+    getGuideCity();
   }, []);
 
   function base64ToBlob(base64String: string, contentType: string) {
@@ -133,15 +151,19 @@ const Body = () => {
   }
 
   const handleCreateTrip = async (form: CreateTripForm) => {
-    console.log(form.title);
-    console.log(form.description);
-    console.log(form.adress);
-    // ????????????????????????????????????????????????????????
-    //console.log(parseDateString(form.startDate));
-    console.log(form.endDate);
-    console.log(form.maxTourists);
-    setValue("image", form.image as Blob);
-    console.log(form.image);
+    try {
+      setValue("image", form.image as Blob);
+      setValue("cityId", currentCity?.id as number)
+      const response = await axiosPrivate.postForm("trips", form);
+      if (response.status === 201)
+        toast.success("Created Trip!");
+      else
+        toast.error("Something went wrong");
+    } catch (err) {
+      toast.error("Something went wrong");
+    }
+
+    await getAllUpcomingTrips()
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -168,18 +190,18 @@ const Body = () => {
             <h3 className="font-bold text-lg">Create a new Trip!</h3>
 
             <form
-              action=""
-              className="form grid"
-              onSubmit={handleSubmit(handleCreateTrip)}
+                action=""
+                className="form grid"
+                onSubmit={handleSubmit(handleCreateTrip)}
             >
               <div className="inputDiv">
                 <label htmlFor="title">Title</label>
                 <div className="input flex">
                   <input
-                    type="text"
-                    id="title"
-                    placeholder="Enter trip title"
-                    {...register("title")}
+                      type="text"
+                      id="title"
+                      placeholder="Enter trip title"
+                      {...register("title")}
                   />
                 </div>
               </div>
@@ -188,10 +210,10 @@ const Body = () => {
                 <label htmlFor="description">Description</label>
                 <div className="input flex">
                   <input
-                    type="text"
-                    id="description"
-                    placeholder="Enter trip description"
-                    {...register("description")}
+                      type="text"
+                      id="description"
+                      placeholder="Enter trip description"
+                      {...register("description")}
                   />
                 </div>
               </div>
@@ -200,10 +222,10 @@ const Body = () => {
                 <label htmlFor="adress">Adress</label>
                 <div className="input flex">
                   <input
-                    type="text"
-                    id="adress"
-                    placeholder="Enter the adress of the trip"
-                    {...register("adress")}
+                      type="text"
+                      id="adress"
+                      placeholder="Enter the adress of the trip"
+                      {...register("adress")}
                   />
                 </div>
               </div>
@@ -212,10 +234,10 @@ const Body = () => {
                 <label htmlFor="startDate">Start Date</label>
                 <div className="input flex">
                   <input
-                    type="text"
-                    id="startDate"
-                    placeholder="Eg. 01.06.2024 16:30:00"
-                    {...register("startDate")}
+                      type="datetime-local"
+                      id="startDate"
+                      placeholder="Eg. 01.06.2024 16:30:00"
+                      {...register("startDate")}
                   />
                 </div>
               </div>
@@ -224,11 +246,19 @@ const Body = () => {
                 <label htmlFor="endDate">End Date</label>
                 <div className="input flex">
                   <input
-                    type="text"
-                    id="endDate"
-                    placeholder="Eg. 01.06.2024 17:30:00"
-                    {...register("endDate")}
+                      type="datetime-local"
+                      id="endDate"
+                      placeholder="Eg. 01.06.2024 17:30:00"
+                      {...register("endDate")}
                   />
+                </div>
+              </div>
+
+              <div className="inputDiv">
+                <label htmlFor="cityId">City</label>
+                <div className="input flex">
+                  <input type="text" placeholder={currentCity ? `${currentCity.cityName}, ${currentCity.countryName}` : 'City Name'}
+                         disabled/>
                 </div>
               </div>
 
@@ -236,19 +266,19 @@ const Body = () => {
                 <label htmlFor="maxTourists">Max Tourists</label>
                 <div className="input flex">
                   <input
-                    type="number"
-                    id="maxTourists"
-                    placeholder="Enter the max number of tourists"
-                    {...register("maxTourists")}
+                      type="number"
+                      id="maxTourists"
+                      placeholder="Enter the max number of tourists"
+                      {...register("maxTourists")}
                   />
                 </div>
               </div>
 
               <label htmlFor="image">Trip Image</label>
               <input
-                type="file"
-                className="file-input file-input-bordered w-full max-w-xs"
-                onChange={handleImageChange}
+                  type="file"
+                  className="file-input file-input-bordered w-full max-w-xs"
+                  onChange={handleImageChange}
               />
               <button type="submit" className="btn submitTrip">
                 Submit
@@ -266,10 +296,10 @@ const Body = () => {
         <h2>Upcoming Trips</h2>
 
         {upcomingTrips?.trips && upcomingTrips.trips.length > 0 ? (
-          upcomingTrips.trips.map((elem) => {
-            return (
-              <div
-                key={elem.id}
+            upcomingTrips.trips.map((elem) => {
+              return (
+                  <div
+                      key={elem.id}
                 className="card card-side bg-base-100 shadow-xl"
               >
                 <figure className="fig">

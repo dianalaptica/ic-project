@@ -4,10 +4,25 @@ import pisa from "../../../../../LoginAssets/pisa.png";
 import "./Top.css";
 import { useAuth } from "../../../../../Context/useAuth";
 import { useNavigate } from "react-router-dom";
+import useAxiosPrivate from "../../../../../Hooks/useAxiosPrivate.ts";
+import {useEffect, useState} from "react";
+import {StatsModel} from "../../../../../Models/StatsModel.ts";
 
 const Top = () => {
   const navigate = useNavigate();
   const { logout, user } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
+
+  const [stats, setStats] = useState<StatsModel>({tripsToday: 0, tripsThisMonth: 0});
+
+  const getStats = async () => {
+    const response = await axiosPrivate.get("user/guide/stats")
+    setStats(response.data)
+  }
+
+  useEffect(() => {
+    getStats()
+  }, []);
 
   const name = user?.firstName;
   return (
@@ -56,10 +71,10 @@ const Top = () => {
 
               <div className="flex">
                 <span>
-                  Today <br /> <small>5 Trips</small>
+                  Today <br /> <small>{stats.tripsToday} Trips</small>
                 </span>
                 <span>
-                  This Month <br /> <small>14 Trips</small>
+                  This Month <br /> <small>{stats.tripsThisMonth} Trips</small>
                 </span>
               </div>
             </div>
