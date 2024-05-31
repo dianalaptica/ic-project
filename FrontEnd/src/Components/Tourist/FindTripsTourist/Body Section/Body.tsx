@@ -115,8 +115,8 @@ const Body = () => {
     <div className="mainContent">
       <Top />
       <div className="bottomTripTourist flex">
-        {pastTrips?.trips && pastTrips.trips.length > 0 ? (
-          pastTrips.trips.map((elem) => {
+        {upcomingTrips?.trips && upcomingTrips.trips.length > 0 ? (
+          upcomingTrips.trips.map((elem) => {
             return (
               <div
                 key={elem.id}
