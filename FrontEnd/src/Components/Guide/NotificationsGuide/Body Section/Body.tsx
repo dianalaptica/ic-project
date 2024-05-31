@@ -94,11 +94,21 @@ const Body = () => {
   };
 
   const handleCreateNotification = async (form: CreateNotificationForm) => {
-    console.log(form.tripId);
-    console.log(form.title);
-    console.log(form.message);
-    // daca response status ==- 200
-    toast.success("Created notification!");
+    try {
+      const request = {
+        tripId: form.tripId,
+        title: form.title,
+        message: form.message,
+      }
+      const response = await axiosPrivate.post("notification", request)
+      if (response.status === 201)
+        toast.success("Created notification!");
+      else
+        toast.error("Something went wrong");
+    } catch (err) {
+      toast.error("Something went wrong");
+    }
+    await getAllUpcomingNotifications();
   };
 
   useEffect(() => {
