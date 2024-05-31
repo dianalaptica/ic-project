@@ -39,7 +39,7 @@ const Body = () => {
     try {
       const response = await axiosPrivate.get(`notification/user`);
       if (response.status === 200) {
-        setPastNotification(response.data);
+        setUpcomingNotification(response.data);
       } else {
         setUpcomingNotification([]);
       }
@@ -49,7 +49,7 @@ const Body = () => {
   };
 
   useEffect(() => {
-    // getAllPastNotifications();
+    getAllPastNotifications();
     getAllUpcomingNotifications();
   }, []);
 
@@ -62,9 +62,9 @@ const Body = () => {
     <div className="mainContent">
       <Top />
       <h1>New notifications</h1>
-      {pastNotification.find((n) => n.isRead === false) ? (
+      {upcomingNotifications?.find((n) => n.isRead === false) ? (
         <div className="bottom flex">
-          {pastNotification.map(
+          {upcomingNotifications?.map(
             (elem) =>
               elem.isRead === false && (
                 <div key={`${elem.notificationId}` + `${elem.tripId}`}>
@@ -99,9 +99,9 @@ const Body = () => {
       )}
 
       <h1>Read notifications</h1>
-      {pastNotification.find((n) => n.isRead === true) ? (
+      {upcomingNotifications?.find((n) => n.isRead === true) ? (
         <div className="bottom flex">
-          {pastNotification.map(
+          {upcomingNotifications?.map(
             (elem) =>
               elem.isRead === true && (
                 <div key={`${elem.notificationId}` + `${elem.tripId}`}>
@@ -131,6 +131,29 @@ const Body = () => {
         <div>
           <br />
           <p>No read notifications</p>
+        </div>
+      )}
+
+      <h1>Past notifications</h1>
+      {pastNotification?.length > 0 ? (
+        <div className="bottom flex">
+          {pastNotification?.map((elem) => (
+            <div key={`${elem.notificationId}` + `${elem.tripId}`}>
+              <div className="card read w-96 bg-base-100 shadow-xl">
+                <div className="card-body">
+                  <h2 className="card-title">{elem.title}</h2>
+                  <p>{elem.message}</p>
+                  <p>Trip: {elem.tripTitle}</p>
+                  <p>{elem.isRead ?? "true"}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div>
+          <br />
+          <p>No past notifications</p>
         </div>
       )}
     </div>
